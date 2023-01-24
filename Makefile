@@ -6,7 +6,7 @@ RESET		= "\033[m"
 # Variables
 NAME		=	ft_container
 CXX			=	c++
-FCXXLAGS	=	-Wall -Wextra -Werror
+CXXFLAGS	=	-Wall -Wextra -Werror
 
 SRC			=	test.cpp
 OBJ			=	$(addprefix $(OBJDIR), $(SRC:.cpp=.o))
@@ -18,17 +18,22 @@ UTILS_DIR	= utils/
 HEADERS		=	$(addprefix $(UTILS_DIR), type_traits.hpp) \
 				$(addprefix $(VECTOR_DIR), vector.hpp)
 
-INC			=	-I $(UTILS_DIR) -I $(VECTOR_DIR)
+INC			=	-I./$(UTILS_DIR) -I./$(VECTOR_DIR)
 
-all: $(NAME) 
+ifeq ($(REAL),1)
+CXXFLAGS	+= -DREAL=1
+endif
+
+all: $(NAME)
+	./$(NAME)
 
 $(OBJDIR)%.o : %.cpp
 	mkdir -p ${@D}
-	$(CXX) $(CXXLAGS) $(INC) -c $< -o $@
+	$(CXX) $(CXXFLAGS) $(INC) -c $< -o $@
 
-$(NAME): $(OBJ)
+$(NAME): $(OBJ) $(HEADERS)
 	@echo -n "Compiling " $(NAME)
-	@$(CXX) $(CXXLAGS) $(OBJ) $(MINILIBX) -o $@
+	@$(CXX) $(CXXFLAGS) $(OBJ) $(MINILIBX) -o $@
 	@echo ${GREEN}"\tOK"${RESET}
 
 clean:

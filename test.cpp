@@ -6,12 +6,20 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 21:58:20 by owalsh            #+#    #+#             */
-/*   Updated: 2023/01/24 22:19:17 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/01/24 22:31:04 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
-#include "vector.hpp"
+
+#if REAL
+	#include <map>
+	#include <stack>
+	#include <vector>
+	namespace ft = std;
+#else
+	#include <vector.hpp>
+#endif
 
 int main()
 {
