@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:03:35 by owalsh            #+#    #+#             */
-/*   Updated: 2023/01/23 19:05:55 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/01/24 22:18:41 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define VECTOR_HPP
 
 # include <memory>
+# include "type_traits.hpp"
 
 namespace ft
 {
@@ -22,7 +23,7 @@ namespace ft
 	{
 		public:
 			typedef typename	T::value_type				value_type;
-			typedef typename	Allocator					allocator_type;
+			typedef				Allocator					allocator_type;
 			typedef typename	Allocator::pointer			pointer;
 			typedef 			const pointer				const_pointer;
 			typedef typename	Allocator::value_type		reference;
