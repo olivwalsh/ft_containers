@@ -8,6 +8,17 @@
 		"array": "cpp",
 		"functional": "cpp",
 		"tuple": "cpp",
-		"utility": "cpp"
+		"utility": "cpp",
+		"string_view": "cpp",
+		"deque": "cpp",
+		"string": "cpp",
+		"vector": "cpp",
+		"ranges": "cpp",
+		"span": "cpp",
+		"unordered_map": "cpp",
+		"*.tcc": "cpp",
+		"memory": "cpp",
+		"sstream": "cpp",
+		"streambuf": "cpp"
 	}
 }
