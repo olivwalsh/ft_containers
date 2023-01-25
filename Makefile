@@ -5,7 +5,7 @@ RESET		= "\033[m"
 
 # Variables
 NAME		=	ft_container
-CXX			=	c++
+CXX			=	c++ -std=c++98
 CXXFLAGS	=	-Wall -Wextra -Werror
 
 SRC			=	test.cpp
@@ -33,7 +33,7 @@ $(OBJDIR)%.o : %.cpp
 
 $(NAME): $(OBJ) $(HEADERS)
 	@echo -n "Compiling " $(NAME)
-	@$(CXX) $(CXXFLAGS) $(OBJ) $(MINILIBX) -o $@
+	@$(CXX) $(CXXFLAGS) $(OBJ) -o $@
 	@echo ${GREEN}"\tOK"${RESET}
 
 clean:

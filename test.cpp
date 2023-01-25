@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 21:58:20 by owalsh            #+#    #+#             */
-/*   Updated: 2023/01/24 22:31:04 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/01/25 14:38:48 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,21 @@
 	#include <vector.hpp>
 #endif
 
+template <typename T>
+typename ft::enable_if<ft::is_integral<T>::value, T>::type add(T a, T b)
+{
+    return a + b;
+}
+
+template <typename T>
+typename ft::enable_if<!ft::is_integral<T>::value, T>::type add(T a, T b)
+{
+	(void)a;
+	(void)b;
+    std::cout << "This function is only available for integral types." << std::endl;
+    return T();
+}
+
 int main()
 {
 	std::cout << "***TESTING IS_INTEGRAL TEMPLATE***" << "\n" << "\n";
@@ -33,5 +48,10 @@ int main()
 	std::cout << "ft::vector<int> : " << ft::is_integral<ft::vector<int> >::value << "\n";
 	std::cout << "short : " << ft::is_integral<short>::value << "\n";
 	std::cout << "***" << "\n";
+
+	std::cout << "***TESTING ENABLE IF***" << "\n\n";
+	std::cout << add(4, 2) << std::endl;
+    std::cout << add("hoho", "hihi") << std::endl;
+	
 	return 0;
 }

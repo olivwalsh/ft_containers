@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 17:43:35 by owalsh            #+#    #+#             */
-/*   Updated: 2023/01/24 22:55:54 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/01/25 14:40:26 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,31 +61,53 @@ namespace ft
 
 	/* ------------- is_integral ------------- */
 	template <typename T>
-	struct is_int : ft::false_type { };
+	struct is_integral_helper : ft::false_type { };
 
 	template <>
-	struct is_int<signed char> : ft::true_type {};
+	struct is_integral_helper<signed char> : ft::true_type {};
+
+	template <>
+	struct is_integral_helper<unsigned char> : ft::true_type {};
 	
 	template <>
-	struct is_int<short int> : ft::true_type {};
+	struct is_integral_helper<short int> : ft::true_type {};
+
+	template <>
+	struct is_integral_helper<unsigned short int> : ft::true_type {};
 	
 	template <>
-	struct is_int<int> : ft::true_type {};
+	struct is_integral_helper<int> : ft::true_type {};
 
 	template <>
-	struct is_int<long int> : ft::true_type {};
+	struct is_integral_helper<unsigned int> : ft::true_type {};
 
 	template <>
-	struct is_int<long long int> : ft::true_type {};
+	struct is_integral_helper<long int> : ft::true_type {};
 
 	template <>
-	struct is_int<bool> : ft::true_type {};
+	struct is_integral_helper<long long int> : ft::true_type {};
+
+	template <>
+	struct is_integral_helper<bool> : ft::true_type {};
 	
 	template <>
-	struct is_int<char> : ft::true_type {};
+	struct is_integral_helper<char> : ft::true_type {};
+
+	template <>
+	struct is_integral_helper<wchar_t> : ft::true_type {};
 
 	template <typename T>
-	struct is_integral : is_int<typename remove_cv<T>::type> {};
+	struct is_integral : is_integral_helper<typename remove_cv<T>::type> {};
+
+	/* ------------- enable_if ------------- */
+	template <bool B, typename T = void>
+	struct enable_if { };
+
+	template <typename T>
+	struct enable_if<true, T>
+	{
+		typedef T type;
+	};
 	
 };
 
