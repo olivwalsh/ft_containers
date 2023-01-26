@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:03:35 by owalsh            #+#    #+#             */
-/*   Updated: 2023/01/25 19:02:10 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/01/26 18:41:18 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,137 @@
 
 namespace ft
 {
+	template <typename _Iterator>
+	class normal_iterator : public std::iterator<std::random_access_iterator_tag,
+												class T,
+												class Distance = std::ptrdiff_t,
+												class Pointer = T*,
+												class Reference = T&>
+	{
+		protected:
+			_Iterator											current;
+			typedef				ft::iterator_traits<_Iterator>	__traits_type;
+		
+		public:
+			typedef				_Iterator							iterator_type;
+			typedef typename	__traits_type::iterator_category	iterator_category;
+			typedef typename	__traits_type::value_type			value_type;
+			typedef typename	__traits_type::difference_type		difference_type;
+			typedef typename	__traits_type::reference			reference;
+			typedef typename	__traits_type::pointer				pointer;
+			
+			normal_iterator() : current(_Iterator()) { }
+			explicit
+			normal_iterator(const _Iterator& i) : current(i) { }
+			~normal_iterator(void) { }
+						
+			reference operator[](const difference_type& n) const
+			{
+				return current[n];
+			}
+
+			normal_iterator& operator+=(const difference_type& n)
+			{
+				current += n;
+				return *this;
+			}
+
+			normal_iterator& operator+(cosnt difference_type& n) const
+			{
+				return normal_iterator(current + n);
+			}
+
+			normal_iterator operator-(const difference_type& n) const
+			{
+				return normal_iterator(current - n);
+			}
+			
+			const _Iterator& base() const
+			{
+				return current;
+			}
+	};
+
+	template<typename _IteratorL, typename _IteratorR>
+		inline bool
+		operator<(const normal_iterator<_IteratorL>& __lhs,
+			const normal_iterator<_IteratorR>& __rhs)
+		{ 
+			return __lhs.base() < __rhs.base();
+		}
+	
+	template<typename _Iterator>
+		inline bool
+		operator<(const normal_iterator<_Iterator>& __lhs,
+			const normal_iterator<_Iterator>& __rhs)
+		{ 
+			return __lhs.base() < __rhs.base();
+		}
+
+	template<typename _IteratorL, typename _IteratorR>
+		inline bool
+		operator>(const normal_iterator<_IteratorL>& __lhs,
+			const normal_iterator<_IteratorR>& __rhs)
+		{ 
+			return __lhs.base() > __rhs.base();
+		}
+	
+	template<typename _Iterator>
+		inline bool
+		operator>(const normal_iterator<_Iterator>& __lhs,
+			const normal_iterator<_Iterator>& __rhs)
+		{
+			return __lhs.base() > __rhs.base();
+		}
+		
+	template<typename _IteratorL, typename _IteratorR>
+		inline bool
+		operator<=(const normal_iterator<_IteratorL>& __lhs,
+			const normal_iterator<_IteratorR>& __rhs)
+		{
+			return !(__lhs > __rhs);
+		}
+	
+	template<typename _Iterator>
+		inline bool
+		operator<=(const normal_iterator<_Iterator>& __lhs,
+			const normal_iterator<_Iterator>& __rhs)
+		{ 
+			return __lhs.base() <= __rhs.base();
+		}
+
+	template<typename _IteratorL, typename _IteratorR>
+		inline bool
+		operator>=(const normal_iterator<_IteratorL>& __lhs,
+			const normal_iterator<_IteratorR>& __rhs)
+		{
+			return __lhs.base() >= __rhs.base();
+		}
+	
+	template<typename _Iterator>
+		inline bool
+		operator>=(const normal_iterator<_Iterator>& __lhs,
+			const normal_iterator<_Iterator>& __rhs)
+		{
+			return __lhs.base() >= __rhs.base();
+		}
+
+	template<typename _Iterator>
+		inline typename normal_iterator<_Iterator>::difference_type
+		operator-(const normal_iterator<_Iterator>& __lhs,
+			const normal_iterator<_Iterator>& __rhs)
+		{
+			return __lhs.base() - __rhs.base();
+		}
+	
+	template<typename _Iterator>
+		inline normal_iterator<_Iterator>
+		operator+(typename normal_iterator<_Iterator>::difference_type
+			__n, const normal_iterator<_Iterator>& __i)
+		{
+			return normal_iterator<_Iterator>(__i.base() + __n);
+		}
+	
 	template <typename T, typename Allocator = std::allocator<T> >
 	class vector
 	{
@@ -32,10 +163,10 @@ namespace ft
 			typedef typename	Allocator::size_type		size_type;
 			typedef typename	Allocator::difference_type difference_type;
 	
-			// using iterator               = /* implementation-defined */;
+			typedef ft::normal_iterator						iterator;
+			typedef ft::reverse_iterator<iterator>			reverse_iterator;
 			// using const_iterator         = /* implementation-defined */;
-			// using reverse_iterator       = std::reverse_iterator<iterator>;
-			// using const_reverse_iterator = std::reverse_iterator<const_iterator>;
+			// using std::const_reverse_iterator = std::reverse_iterator<const_iterator>;
 			
 			
 			// /* ------------- constructors ------------- */
