@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:03:35 by owalsh            #+#    #+#             */
-/*   Updated: 2023/01/26 18:41:18 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/01/26 18:45:32 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,7 @@
 namespace ft
 {
 	template <typename _Iterator>
-	class normal_iterator : public std::iterator<std::random_access_iterator_tag,
-												class T,
-												class Distance = std::ptrdiff_t,
-												class Pointer = T*,
-												class Reference = T&>
+	class normal_iterator : public std::iterator<std::random_access_iterator_tag, std::ptrdiff_t>
 	{
 		protected:
 			_Iterator											current;
@@ -54,7 +50,7 @@ namespace ft
 				return *this;
 			}
 
-			normal_iterator& operator+(cosnt difference_type& n) const
+			normal_iterator& operator+(const difference_type& n) const
 			{
 				return normal_iterator(current + n);
 			}
@@ -163,7 +159,7 @@ namespace ft
 			typedef typename	Allocator::size_type		size_type;
 			typedef typename	Allocator::difference_type difference_type;
 	
-			typedef ft::normal_iterator						iterator;
+			typedef ft::normal_iterator<pointer>			iterator;
 			typedef ft::reverse_iterator<iterator>			reverse_iterator;
 			// using const_iterator         = /* implementation-defined */;
 			// using std::const_reverse_iterator = std::reverse_iterator<const_iterator>;
