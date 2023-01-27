@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:03:35 by owalsh            #+#    #+#             */
-/*   Updated: 2023/01/26 18:45:32 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/01/27 18:11:36 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 namespace ft
 {
 	template <typename _Iterator>
-	class normal_iterator : public std::iterator<std::random_access_iterator_tag, std::ptrdiff_t>
+	class normal_iterator : public std::iterator<std::random_access_iterator_tag, class T, std::ptrdiff_t, T*, T&> 
 	{
 		protected:
 			_Iterator											current;
@@ -38,6 +38,27 @@ namespace ft
 			explicit
 			normal_iterator(const _Iterator& i) : current(i) { }
 			~normal_iterator(void) { }
+
+			reference operator*() const
+			{
+				return *current;
+			}
+
+			pointer operator->() const
+			{
+				return current;
+			}
+			
+			normal_iterator& operator++()
+			{
+				++current;
+				return *this;
+			}
+
+			normal_iterator operator++(int)
+			{
+				return normal_iterator(current++);
+			}
 						
 			reference operator[](const difference_type& n) const
 			{
@@ -66,6 +87,38 @@ namespace ft
 			}
 	};
 
+	template<typename _IteratorL, typename _IteratorR>
+		inline bool
+		operator==(const normal_iterator<_IteratorL>& __lhs,
+			const normal_iterator<_IteratorR>& __rhs)
+		{ 
+			return __lhs.base() == __rhs.base();
+		}
+
+	template<typename _Iterator>
+		inline bool
+		operator==(const normal_iterator<_Iterator>& __lhs,
+			const normal_iterator<_Iterator>& __rhs)
+		{ 
+			return __lhs.base() == __rhs.base();
+		}
+
+	template<typename _IteratorL, typename _IteratorR>
+		inline bool
+		operator!=(const normal_iterator<_IteratorL>& __lhs,
+			const normal_iterator<_IteratorR>& __rhs)
+		{ 
+			return __lhs.base() != __rhs.base();
+		}
+
+	template<typename _Iterator>
+		inline bool
+		operator!=(const normal_iterator<_Iterator>& __lhs,
+			const normal_iterator<_Iterator>& __rhs)
+		{ 
+			return __lhs.base() != __rhs.base();
+		}
+		
 	template<typename _IteratorL, typename _IteratorR>
 		inline bool
 		operator<(const normal_iterator<_IteratorL>& __lhs,
@@ -150,36 +203,66 @@ namespace ft
 	class vector
 	{
 		public:
-			typedef typename	T::value_type				value_type;
-			typedef				Allocator					allocator_type;
-			typedef typename	Allocator::pointer			pointer;
-			typedef 			const pointer				const_pointer;
-			typedef typename	Allocator::value_type		reference;
-			typedef 			const reference				const_reference;
-			typedef typename	Allocator::size_type		size_type;
-			typedef typename	Allocator::difference_type difference_type;
+			typedef 			T								value_type;
+			typedef				Allocator						allocator_type;
+			typedef typename	Allocator::pointer				pointer;
+			typedef 			const pointer					const_pointer;
+			typedef typename	Allocator::value_type			reference;
+			typedef 			const reference					const_reference;
+			typedef typename	Allocator::size_type			size_type;
+			typedef typename	Allocator::difference_type		difference_type;
 	
-			typedef ft::normal_iterator<pointer>			iterator;
-			typedef ft::reverse_iterator<iterator>			reverse_iterator;
-			// using const_iterator         = /* implementation-defined */;
-			// using std::const_reverse_iterator = std::reverse_iterator<const_iterator>;
+			typedef ft::normal_iterator<pointer>				iterator;
+			typedef ft::normal_iterator<const_pointer>			const_iterator;
+			typedef ft::reverse_iterator<const_iterator>		const_reverse_iterator;
+			typedef ft::reverse_iterator<iterator>				reverse_iterator;
 			
 			
-			// /* ------------- constructors ------------- */
-			// vector();
-			// explicit vector(const Allocator& alloc);
-			// explicit vector(size_type count, const T& value = T(), const Allocator& alloc = Allocator());
-			// template <class InputIt>
-			// vector(InputIt first, InputIt last, const Allocator& alloc = Allocator());
+			/* ------------- constructors ------------- */
+			explicit vector(const Allocator& alloc = allocator_type())
+				:	_size(0), _capacity(0), _first_element(NULL), _memory_handle(alloc) { }
+			
+			explicit vector(size_type count, const T& value = T(), const Allocator& alloc = allocator_type())
+				:	_size(count), _capacity(count), _first_element(NULL), _memory_handle(alloc)
+				{
+					(void)value;
+					// insert value up to nth elements when insert is ready
+				}
+			
+			template <class InputIt>
+			vector(InputIt first, InputIt last,
+				typename ft::enable_if<!ft::is_integral<InputIt>::value>::type * = 0, 
+				const Allocator& alloc = allocator_type())
+			{
+				// Check whether it's an integral type.  If so, it's not an iterator
+				_memory_handle = alloc;
+				_size = std::distance(first, last);
+				_capacity = _size * 2;
+				_first_element = _memory_handle.allocate(_size);
+				// while (first != last)
+				// {
+				// 	_first_elem = first;
+				// 	_first_elem++;
+				// 	first++;
+				// }
+			}
+			
 			// vector(const vector& other);
-			// ~vector();
+			
+			~vector()
+			{
+				_memory_handle.deallocate(_first_element, _size);
+			}
 			
 			// vector& 				operator=(const vector& other);
 			// void					assign(size_type count, const T& value);
 			// template <class InputIt>
 			// void					assign(InputIt first, InputIt last);
 			
-			// allocator_type 			get_allocator() const;
+			allocator_type 			get_allocator() const
+			{
+				return _memory_handle;
+			}
 			
 			// /* ------------- element access ------------- */
 			// reference				at(size_type pos);
@@ -193,27 +276,113 @@ namespace ft
 			// T*						data();
 			// const T*				data() const;
 
-			// /* ------------- iterators ------------- */
-			// iterator				begin();
-			// const_iterator			begin() const;
-			// iterator				end();
-			// const_iterator			end() const;
-			// reverse_iterator		rbegin();
-			// const_reverse_iterator	rbegin()const;
-			// reverse_iterator		rend();
-			// const_reverse_iterator	rend() const;
+			/* ------------- iterators ------------- */
+			
+			iterator				begin(void)
+			{
+				return iterator(_first_element);
+			}
+			
+			const_iterator			begin() const
+			{
+				return const_iterator(_first_element);
+			}
+
+			iterator				end(void)
+			{
+				return iterator(_first_element + _size);
+			}
+			
+			const_iterator			end() const
+			{
+				return const_iterator(_first_element + _size);
+			}
+			
+			reverse_iterator		rbegin()
+			{
+				return reverse_iterator(_first_element + _size);
+			}
+			
+			const_reverse_iterator	rbegin() const
+			{
+				return const_reverse_iterator(_first_element + _size);
+			}
+
+			reverse_iterator		rend()
+			{
+				return reverse_iterator(_first_element);
+			}
+			
+			const_reverse_iterator	rend() const
+			{
+				return const_reverse_iterator(_first_element);
+			}
 
 			// /* ------------- capacity ------------- */
-			// bool					empty() const;
+			bool					empty() const
+			{
+				return _size == 0;
+			}
 			// size_type				size() const;
 			// size_type				max_size() const;
-			// void					reserve(size_type new_cap);
+			
+			// void					reserve(size_type new_cap)
+			// {
+			// 	if (new_cap > _capacity)
+			// 		_capacity.allocate(new_cap);
+			// }
 			// size_type				capacity() const;
 
 			// /* ------------- modifiers ------------- */
 			// void					clear();
-			// iterator				insert(const_iterator pos, const T& value);
-			// iterator				insert(const_iterator pos, size_type count, const T& value);
+			// iterator insert(const_iterator pos, const T& value)
+			// {
+				
+			// }
+			size_t	getPosition(iterator pos)
+			{
+				size_t index = 0;
+				
+				for (iterator it = this->begin(); it != this->end() && it != pos; ++it)
+				{
+					index++;
+				}
+				return (index);
+			}
+			
+			iterator insert(iterator pos, size_type count, const T& value)
+			{
+				// in case we have the right capacity
+				size_t index = getPosition(pos);
+				if (empty())
+				{
+					_first_element = _memory_handle.allocate(count);
+					
+				}
+				else
+				{
+					pointer tab_end = _first_element + _size;
+					// copy the content of the tab from pos to end of tab, to pos + count until new end of tab
+					for (pointer new_tab_end = tab_end + count; new_tab_end != _first_element + index + count; --new_tab_end)
+					{
+						_memory_handle.construct(new_tab_end, *tab_end);
+						_memory_handle.destroy(tab_end);
+						tab_end--;
+					}
+					
+				}
+				// then add value at
+				pointer tmp = _first_element + index;
+				while (--count)
+				{
+					_memory_handle.construct(tmp, value);
+					tmp++;
+					_size++;
+				}
+				
+				return begin();
+			}
+			
 			// template <class InputIt>
 			// iterator				insert(const_iterator pos, InputIt first, InputIt last);
 			// iterator				erase(iterator pos);
@@ -241,7 +410,11 @@ namespace ft
 			// void					swap(ft::vector<T, Alloc>& lhs, ft::vector<T, Alloc>& rhs);
 			
 			
-
+		private:
+			size_type		_size;
+			size_type		_capacity;
+			pointer			_first_element;
+			allocator_type	_memory_handle;
 			
 			
 	};

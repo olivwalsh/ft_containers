@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 21:58:20 by owalsh            #+#    #+#             */
-/*   Updated: 2023/01/26 15:45:53 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/01/27 18:13:13 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,7 @@
 	#include <vector>
 	namespace ft = std;
 #else
-	#include "iterator.hpp"
-	#include <vector.hpp>
+	#include "vector.hpp"
 #endif
 
 // template <typename T>
@@ -39,22 +38,19 @@
 
 int main()
 {
-	// std::cout << "***TESTING IS_INTEGRAL TEMPLATE***" << "\n" << "\n";
-	// std::cout << std::boolalpha;
-	// std::cout << "char : " << ft::is_integral<char>::value << std::endl;
-	// std::cout << "const char : " << ft::is_integral<const char >::value << std::endl;
-	// std::cout << "const volatile int : " << ft::is_integral<const volatile int>::value << std::endl;
-	// std::cout << "float : " << ft::is_integral<float>::value << "\n";
-	// std::cout << "int : " << ft::is_integral<int>::value << "\n";
-	// std::cout << "ft::vector<int> : " << ft::is_integral<ft::vector<int> >::value << "\n";
-	// std::cout << "short : " << ft::is_integral<short>::value << "\n";
-	// std::cout << "***" << "\n";
+	ft::vector<int> vec;
 
-	// std::cout << "***TESTING ENABLE IF***" << "\n\n";
-	// std::cout << add(4, 2) << std::endl;
-    // std::cout << add("hoho", "hihi") << std::endl;
-	
-
+	if (vec.empty())
+		std::cout << "Before insert, vec is empty" << std::endl;
+	vec.insert(vec.begin(), 3, 2);
 								  
+	if (vec.empty())
+		std::cout << "After insert, vec is still empty" << std::endl;
+	
+	ft::vector<int>::iterator it;
+
+	for (it = vec.begin(); it != vec.end(); it++)
+		std::cout << *it << " ";
+
 	return 0;
 }
