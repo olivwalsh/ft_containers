@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:03:35 by owalsh            #+#    #+#             */
-/*   Updated: 2023/01/27 18:11:36 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/01/27 18:56:56 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -339,6 +339,7 @@ namespace ft
 			// {
 				
 			// }
+			
 			size_t	getPosition(iterator pos)
 			{
 				size_t index = 0;
@@ -361,10 +362,14 @@ namespace ft
 				}
 				else
 				{
-					pointer tab_end = _first_element + _size;
+					
+					pointer tab_end = _first_element + _size - 1;
+					// std::cout << "old tab end is " << _size - 1 << std::endl;
+					// std::cout << "starting new tab end at " << index + count << std::endl;
 					// copy the content of the tab from pos to end of tab, to pos + count until new end of tab
-					for (pointer new_tab_end = tab_end + count; new_tab_end != _first_element + index + count; --new_tab_end)
+					for (pointer new_tab_end = tab_end + count; new_tab_end != _first_element + index + count - 1; --new_tab_end)
 					{
+						// std::cout << "*tab_end: " << *tab_end << std::endl;
 						_memory_handle.construct(new_tab_end, *tab_end);
 						_memory_handle.destroy(tab_end);
 						tab_end--;
@@ -373,14 +378,14 @@ namespace ft
 				}
 				// then add value at
 				pointer tmp = _first_element + index;
-				while (--count)
+				while (count--)
 				{
 					_memory_handle.construct(tmp, value);
 					tmp++;
 					_size++;
 				}
 				
-				return begin();
+				return iterator(_first_element + index);
 			}
 			
 			// template <class InputIt>

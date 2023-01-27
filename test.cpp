@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 21:58:20 by owalsh            #+#    #+#             */
-/*   Updated: 2023/01/27 18:13:13 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/01/27 18:44:37 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,20 +21,6 @@
 	#include "vector.hpp"
 #endif
 
-// template <typename T>
-// typename ft::enable_if<ft::is_integral<T>::value, T>::type add(T a, T b)
-// {
-//     return a + b;
-// }
-
-// template <typename T>
-// typename ft::enable_if<!ft::is_integral<T>::value, T>::type add(T a, T b)
-// {
-// 	(void)a;
-// 	(void)b;
-//     std::cout << "This function is only available for integral types." << std::endl;
-//     return T();
-// }
 
 int main()
 {
@@ -48,8 +34,15 @@ int main()
 		std::cout << "After insert, vec is still empty" << std::endl;
 	
 	ft::vector<int>::iterator it;
+	
 
-	for (it = vec.begin(); it != vec.end(); it++)
+	for (it = vec.begin(); it != vec.end(); ++it)
+		std::cout << *it << " ";
+	std::cout << std::endl;
+
+	vec.insert(vec.begin(), 2, 6);
+
+	for (it = vec.begin(); it != vec.end(); ++it)
 		std::cout << *it << " ";
 
 	return 0;

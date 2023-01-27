@@ -20,6 +20,10 @@ HEADERS		=	$(addprefix $(UTILS_DIR), type_traits.hpp) \
 
 INC			=	-I./$(UTILS_DIR) -I./$(VECTOR_DIR)
 
+ifeq ($(DMEM),1)
+CXX 			+= -fsanitize=address -fno-omit-frame-pointer -g3
+endif
+
 ifeq ($(REAL),1)
 CXXFLAGS	+= -DREAL=1
 endif
