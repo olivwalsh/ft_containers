@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:03:35 by owalsh            #+#    #+#             */
-/*   Updated: 2023/01/27 18:56:56 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/01/30 16:28:54 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -323,22 +323,59 @@ namespace ft
 			{
 				return _size == 0;
 			}
-			// size_type				size() const;
-			// size_type				max_size() const;
+			size_type				size() const
+			{
+				return _size;
+			}
 			
-			// void					reserve(size_type new_cap)
-			// {
-			// 	if (new_cap > _capacity)
-			// 		_capacity.allocate(new_cap);
-			// }
-			// size_type				capacity() const;
+			size_type				max_size() const
+			{
+				return _memory_handle.max_size();
+			}
+			
+			pointer allocate_and_copy(size_type new_capacity)
+			{
+				pointer tmp = _memory_handle.allocate(new_capacity);
+				for (size_type i = 0; i < _size; i++)
+					_memory_handle.construct(tmp + i, _first_element[i]);
+				return tmp;
+			}
 
-			// /* ------------- modifiers ------------- */
-			// void					clear();
-			// iterator insert(const_iterator pos, const T& value)
-			// {
+			void					reserve(size_type new_capacity)
+			{
+				if (new_capacity > max_size())
+					throw std::length_error("vector::reserve");
+				if (_capacity < new_capacity)
+				{
+					pointer tmp = allocate_and_copy(new_capacity);
+					for (size_type i = 0; i < _size; i++)
+						_memory_handle.destroy(_first_element + i);
+					_memory_handle.deallocate(_first_element, _capacity);
+					_first_element = tmp;
+					_capacity = new_capacity;
+				}
 				
-			// }
+			}
+			
+			size_type				capacity() const
+			{
+				return _capacity; // in source code, capacity is end of storage - start
+			}
+			
+
+			/* ------------- modifiers ------------- */
+			
+			void					clear()
+			{
+				for (size_type i = 0; i < _size; ++i)
+					_memory_handle.destroy(_first_element + i);
+				_size = 0;
+			}
+			
+			iterator insert(iterator pos, const T& value)
+			{
+				insert(pos, 1, value);	
+			}
 			
 			size_t	getPosition(iterator pos)
 			{
@@ -350,26 +387,39 @@ namespace ft
 				}
 				return (index);
 			}
+
+			int	getNewCapacity(size_t count)
+			{
+				if (_size + count <= _capacity)
+					return _capacity;
+				else if (_size + count <= _size * 2)
+					return _size * 2;
+				else
+					return _size + count;
+				return 0;
+			}
+
+			pointer	castIteratorToPointer(iterator position)
+			{
+				size_type index = 0;
+				
+				for (iterator it = begin(); it != end() && it != position; ++it)
+					index++;
+				return _first_element + index;	
+			}
 			
 			iterator insert(iterator pos, size_type count, const T& value)
 			{
-				// in case we have the right capacity
 				size_t index = getPosition(pos);
 				if (empty())
-				{
 					_first_element = _memory_handle.allocate(count);
-					
-				}
 				else
 				{
-					
+					size_type new_capacity = getNewCapacity(count);
+					this->reserve(new_capacity);
 					pointer tab_end = _first_element + _size - 1;
-					// std::cout << "old tab end is " << _size - 1 << std::endl;
-					// std::cout << "starting new tab end at " << index + count << std::endl;
-					// copy the content of the tab from pos to end of tab, to pos + count until new end of tab
 					for (pointer new_tab_end = tab_end + count; new_tab_end != _first_element + index + count - 1; --new_tab_end)
 					{
-						// std::cout << "*tab_end: " << *tab_end << std::endl;
 						_memory_handle.construct(new_tab_end, *tab_end);
 						_memory_handle.destroy(tab_end);
 						tab_end--;

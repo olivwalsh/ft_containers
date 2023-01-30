@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 21:58:20 by owalsh            #+#    #+#             */
-/*   Updated: 2023/01/27 18:44:37 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/01/30 16:22:57 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ int main()
 
 	for (it = vec.begin(); it != vec.end(); ++it)
 		std::cout << *it << " ";
+
+	vec.clear();
 
 	return 0;
 }
