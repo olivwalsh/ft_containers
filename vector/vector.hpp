@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:03:35 by owalsh            #+#    #+#             */
-/*   Updated: 2023/01/30 16:28:54 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/01/30 16:37:11 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ namespace ft
 			{
 				return normal_iterator(current++);
 			}
-						
+
 			reference operator[](const difference_type& n) const
 			{
 				return current[n];
@@ -405,12 +405,13 @@ namespace ft
 				
 				for (iterator it = begin(); it != end() && it != position; ++it)
 					index++;
-				return _first_element + index;	
+				return _first_element + index;
 			}
 			
 			iterator insert(iterator pos, size_type count, const T& value)
 			{
 				size_t index = getPosition(pos);
+				// pointer	position = castIteratorToPointer(pos);
 				if (empty())
 					_first_element = _memory_handle.allocate(count);
 				else
@@ -426,7 +427,7 @@ namespace ft
 					}
 					
 				}
-				// then add value at
+				// pointer tmp = castIteratorToPointer(pos);
 				pointer tmp = _first_element + index;
 				while (count--)
 				{
@@ -434,7 +435,6 @@ namespace ft
 					tmp++;
 					_size++;
 				}
-				
 				return iterator(_first_element + index);
 			}
 			
