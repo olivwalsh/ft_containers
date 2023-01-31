@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:03:35 by owalsh            #+#    #+#             */
-/*   Updated: 2023/01/31 19:14:45 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/01/31 19:26:24 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -249,7 +249,9 @@ namespace ft
 			typedef ft::reverse_iterator<iterator>				reverse_iterator;
 			
 			
+			
 			/* ------------- constructors ------------- */
+			
 			explicit vector(const Allocator& alloc = allocator_type())
 				:	_size(0), _capacity(0), _first_element(NULL), _memory_handle(alloc) { }
 			
@@ -263,7 +265,7 @@ namespace ft
 			vector(InputIt first, InputIt last,
 				typename ft::enable_if<!ft::is_integral<InputIt>::value>::type * = 0, 
 				const Allocator& alloc = allocator_type())
-			:	_size(0), _capacity(0), _first_element(NULL), _memory_handle(alloc)
+				:	_size(0), _capacity(0), _first_element(NULL), _memory_handle(alloc)
 			{
 				insert(begin(), first, last);
 			}
@@ -276,7 +278,8 @@ namespace ft
 			
 			~vector()
 			{
-				_memory_handle.deallocate(_first_element, _size);
+				this->clear();
+				_memory_handle.deallocate(_first_element, _capacity);
 			}
 			
 			vector& operator=(const vector& other)
@@ -306,23 +309,54 @@ namespace ft
 				return _memory_handle;
 			}
 			
+			
 			/* ------------- element access ------------- */
-			// reference				at(size_type pos);
-			// const_reference			at(size_type pos);
-			// reference				operator[](size_type pos);
-			// const_reference 		operator[](size_type pos) const;
-			reference				front()
+			
+			reference at(size_type pos)
+			{
+				if (pos < 0 || pos > _size)
+					throw std::out_of_range("at(index) -> wrond index provided");
+				else
+					return *(_first_element + pos);
+			}
+			
+			const_reference at(size_type pos) const
+			{
+				if (pos < 0 || pos > _size)
+					throw std::out_of_range("at(index) -> wrond index provided");
+				else
+					return *(_first_element + pos);
+			}
+			
+			reference operator[](size_type pos)
+			{
+				return *(_first_element + pos);
+			}
+			
+			const_reference operator[](size_type pos) const
+			{
+				return *(_first_element + pos);
+			}
+			
+			reference front()
 			{
 				return *_first_element;	
 			}
 			
-			const_reference			front() const
+			const_reference front() const
 			{
 				return *_first_element;
 			}
 			
-			// reference				back();
-			// const_reference			back() const;
+			reference back()
+			{
+				return *(_first_element + _size - 1);
+			}
+			
+			const_reference back() const
+			{
+				return *(_first_element + _size - 1);
+			}
 			
 			pointer data()
 			{
@@ -333,6 +367,7 @@ namespace ft
 			{
 				return _first_element;
 			}
+			
 
 			/* ------------- iterators ------------- */
 			
@@ -376,7 +411,9 @@ namespace ft
 				return const_reverse_iterator(_first_element);
 			}
 
+
 			/* ------------- capacity ------------- */
+			
 			bool					empty() const
 			{
 				return _size == 0;
@@ -417,7 +454,7 @@ namespace ft
 			
 			size_type				capacity() const
 			{
-				return _capacity; // in source code, capacity is end of storage - start
+				return _capacity;
 			}
 			
 
