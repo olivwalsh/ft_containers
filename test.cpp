@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 21:58:20 by owalsh            #+#    #+#             */
-/*   Updated: 2023/01/30 19:02:15 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/01/31 19:16:30 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int main()
 
     ft::vector<int>    vec2;
 
-    vec2.insert(vec2.begin(), vec.begin(), vec.begin() + 4);
+    vec2.insert(vec2.begin(), vec.begin()+3, vec.end());
 
     ft::vector<int>::iterator    it2;
     
@@ -56,6 +56,35 @@ int main()
     
     std::cout << std::endl;
 
+	std::cout << "testing push back" << std::endl;
+	
 
+	vec2.push_back(7);
+	vec2.push_back(882);
+	vec2.erase(vec2.end() -1);
+	std::cout << "printing vec2" << std::endl;
+    for(it2 = vec2.begin(); it2 != vec2.end(); ++it2)
+            std::cout << *it2 << " ";
+    
+    std::cout << std::endl;
+
+	std::cout << "testing erase range with vec" << std::endl;
+
+	vec.erase(vec.begin() + 1, vec.end() - 2);
+	std::cout << "printing vec" << std::endl;
+    for(it = vec.begin(); it != vec.end(); ++it)
+    	std::cout << *it << " ";
+    
+    std::cout << std::endl;
+
+	std::cout << "testing swap function" << std::endl;
+	vec.swap(vec2);
+	std::cout << "printing vec" << std::endl;
+	 for(it = vec.begin(); it != vec.end(); ++it)
+    	std::cout << *it << " ";
+    std::cout << std::endl;
+	std::cout << "printing vec2" << std::endl;
+    for(it2 = vec2.begin(); it2 != vec2.end(); ++it2)
+            std::cout << *it2 << " ";
 	return 0;
 }

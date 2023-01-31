@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:03:35 by owalsh            #+#    #+#             */
-/*   Updated: 2023/01/31 10:18:54 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/01/31 19:14:45 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,17 @@ namespace ft
 				return normal_iterator(current++);
 			}
 
+			normal_iterator& operator--()
+			{
+				--current;
+				return *this;
+			}
+
+			normal_iterator operator--(int)
+			{
+				return normal_iterator(current--);
+			}
+
 			reference operator[](const difference_type& n) const
 			{
 				return current[n];
@@ -69,6 +80,12 @@ namespace ft
 			normal_iterator& operator+=(const difference_type& n)
 			{
 				current += n;
+				return *this;
+			}
+
+			normal_iterator& operator-=(const difference_type& n)
+			{
+				current -= n;
 				return *this;
 			}
 
@@ -251,34 +268,71 @@ namespace ft
 				insert(begin(), first, last);
 			}
 			
-			// vector(const vector& other);
+			vector(const vector& other)
+				: _size(0), _capacity(0), _first_element(NULL), _memory_handle(other.get_allocator())
+			{
+				*this = other;
+			}
 			
 			~vector()
 			{
 				_memory_handle.deallocate(_first_element, _size);
 			}
 			
-			// vector& 				operator=(const vector& other);
-			// void					assign(size_type count, const T& value);
-			// template <class InputIt>
-			// void					assign(InputIt first, InputIt last);
+			vector& operator=(const vector& other)
+			{
+				this->reserve(other.size());
+				this->assign(other.begin(), other.last());
+				return *this;
+			}
+			
+			void assign(size_type count, const T& value)
+			{
+				if (_size)
+					erase(begin(), end());
+				insert(begin(), count, value);
+			}
+			
+			template <class InputIt>
+			void assign(InputIt first, InputIt last)
+			{
+				if (_size)
+					erase(begin(), end());
+				insert(begin(), first, last);
+			}
 			
 			allocator_type 			get_allocator() const
 			{
 				return _memory_handle;
 			}
 			
-			// /* ------------- element access ------------- */
+			/* ------------- element access ------------- */
 			// reference				at(size_type pos);
 			// const_reference			at(size_type pos);
 			// reference				operator[](size_type pos);
 			// const_reference 		operator[](size_type pos) const;
-			// reference				front();
-			// const_reference			front() const;
+			reference				front()
+			{
+				return *_first_element;	
+			}
+			
+			const_reference			front() const
+			{
+				return *_first_element;
+			}
+			
 			// reference				back();
 			// const_reference			back() const;
-			// T*						data();
-			// const T*				data() const;
+			
+			pointer data()
+			{
+				return _first_element;
+			}
+			
+			const pointer data() const
+			{
+				return _first_element;
+			}
 
 			/* ------------- iterators ------------- */
 			
@@ -322,7 +376,7 @@ namespace ft
 				return const_reverse_iterator(_first_element);
 			}
 
-			// /* ------------- capacity ------------- */
+			/* ------------- capacity ------------- */
 			bool					empty() const
 			{
 				return _size == 0;
@@ -419,14 +473,62 @@ namespace ft
 				return pos;
 			}
 			
-			// iterator				erase(iterator pos);
-			// iterator				erase(iterator first, iterator last);
-			// void					push_back(const T& value);
-			// void					pop_back();
-			// void					resize(size_type count, T value = T());
-			// void					swap(vector& other);
+			iterator erase(iterator pos)
+			{
+				if (pos != end() - 1)
+					return erase(pos, pos + 1);
+				else
+				{
+					_memory_handle.destroy(_first_element + _size - 1);
+					_size--;
+					return end();
+				}
+			}
 			
-			// /* ------------- operators cmp ------------- */
+			iterator erase(iterator first, iterator last)
+			{
+				size_type dist = std::distance(first, last);
+				for (iterator it = first; it != last; ++it)
+					_memory_handle.destroy(it.base());
+				for (iterator it = first; it != end() - dist; ++it)
+				{
+					_memory_handle.construct(it.base(), *(it + dist));
+					_memory_handle.destroy(it.base() + dist);
+				}
+				_size -= dist;
+				return first;
+			}
+			
+			void push_back(const T& value)
+			{
+				insert(end(), 1, value);
+			}
+			
+			void pop_back()
+			{
+				erase(end() - 1);
+			}
+			
+			// void					resize(size_type count, T value = T());
+			
+			void swap(vector& other)
+			{
+				size_type		tmp_size = _size;
+				size_type		tmp_capacity = _capacity;
+				pointer			tmp_first_element = _first_element;
+				allocator_type	tmp_memory_handle = _memory_handle;
+				
+				_size = other.size();
+				_capacity = other.capacity();
+				_first_element = other.data();
+				_memory_handle = other.get_allocator();
+				other._size = tmp_size;
+				other._capacity = tmp_capacity;
+				other._first_element = tmp_first_element;
+				other._memory_handle = tmp_memory_handle;
+			}
+			
+			/* ------------- operators cmp ------------- */
 			// template<class T, class Alloc>
 			// bool					operator==(const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs);
 			// template<class T, class Alloc>
