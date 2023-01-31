@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:03:35 by owalsh            #+#    #+#             */
-/*   Updated: 2023/01/31 09:28:08 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/01/31 10:09:44 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,7 @@ namespace ft
 			
 			normal_iterator() : current(_Iterator()) { }
 			
-			explicit normal_iterator(const _Iterator& i) : current(i) { 
-				std::cout << "do I go through here?" << std::endl;
-			}
+			explicit normal_iterator(const _Iterator& i) : current(i) { }
 			
 			~normal_iterator(void) { }
 
@@ -74,12 +72,12 @@ namespace ft
 				return *this;
 			}
 
-			normal_iterator& operator+(const difference_type& n) const
+			normal_iterator operator+(const difference_type& n) const
 			{
 				return normal_iterator(current + n);
 			}
 
-			normal_iterator& operator+(const difference_type& n)
+			normal_iterator operator+(const difference_type& n)
 			{
 				return normal_iterator(current + n);
 			}
