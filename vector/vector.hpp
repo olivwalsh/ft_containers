@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:03:35 by owalsh            #+#    #+#             */
-/*   Updated: 2023/01/31 19:26:24 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/01/31 22:04:01 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -315,7 +315,7 @@ namespace ft
 			reference at(size_type pos)
 			{
 				if (pos < 0 || pos > _size)
-					throw std::out_of_range("at(index) -> wrond index provided");
+					throw std::out_of_range("vector::at(index) -> wrond index provided");
 				else
 					return *(_first_element + pos);
 			}
@@ -323,7 +323,7 @@ namespace ft
 			const_reference at(size_type pos) const
 			{
 				if (pos < 0 || pos > _size)
-					throw std::out_of_range("at(index) -> wrond index provided");
+					throw std::out_of_range("vector::at(index) -> wrond index provided");
 				else
 					return *(_first_element + pos);
 			}
@@ -506,7 +506,7 @@ namespace ft
 				typename enable_if< !is_integral<InputIt>::value, int>::type = 0)
 			{
 				for (; first != last; first++)
-					insert(pos, 1, *first);
+					pos = insert(pos, 1, *first) + 1;
 				return pos;
 			}
 			
@@ -546,7 +546,17 @@ namespace ft
 				erase(end() - 1);
 			}
 			
-			// void					resize(size_type count, T value = T());
+			void resize(size_type count, T value = T())
+			{
+				if (count >= max_size())
+					throw std::length_error("ft::vector::resize provided count exceeds max_size()");
+				if (count && count < _size)
+					erase(iterator(_first_element + count), end());
+				else if (count && count > _size)
+					insert(end(), count - _size, value);
+				else if (!count)
+					clear();
+			}
 			
 			void swap(vector& other)
 			{
@@ -564,23 +574,6 @@ namespace ft
 				other._first_element = tmp_first_element;
 				other._memory_handle = tmp_memory_handle;
 			}
-			
-			/* ------------- operators cmp ------------- */
-			// template<class T, class Alloc>
-			// bool					operator==(const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs);
-			// template<class T, class Alloc>
-			// bool					operator!=(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs);
-			// template<class T, class Alloc>
-			// bool					operator<(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs);
-			// template<class T, class Alloc>
-			// bool					operator<=(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs);
-			// template<class T, class Alloc>
-			// bool					operator>(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs);
-			// template<class T, class Alloc>
-			// bool					operator>=(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs);
-
-			// template<class T, class Alloc>
-			// void					swap(ft::vector<T, Alloc>& lhs, ft::vector<T, Alloc>& rhs);
 			
 		private:
 		
@@ -622,6 +615,24 @@ namespace ft
 			
 			
 	};
+	
+	/* ------------- vector - non member functions ------------- */
+	// template<class T, class Alloc>
+	// bool					operator==(const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs);
+	// template<class T, class Alloc>
+	// bool					operator!=(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs);
+	// template<class T, class Alloc>
+	// bool					operator<(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs);
+	// template<class T, class Alloc>
+	// bool					operator<=(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs);
+	// template<class T, class Alloc>
+	// bool					operator>(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs);
+	// template<class T, class Alloc>
+	// bool					operator>=(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs);
+
+	// template<class T, class Alloc>
+	// void					swap(ft::vector<T, Alloc>& lhs, ft::vector<T, Alloc>& rhs);
+	
 }
 
 #endif
