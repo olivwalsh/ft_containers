@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:03:35 by owalsh            #+#    #+#             */
-/*   Updated: 2023/01/30 16:37:11 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/01/31 09:28:08 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,11 @@ namespace ft
 			typedef typename	__traits_type::pointer				pointer;
 			
 			normal_iterator() : current(_Iterator()) { }
-			explicit
-			normal_iterator(const _Iterator& i) : current(i) { }
+			
+			explicit normal_iterator(const _Iterator& i) : current(i) { 
+				std::cout << "do I go through here?" << std::endl;
+			}
+			
 			~normal_iterator(void) { }
 
 			reference operator*() const
@@ -72,6 +75,11 @@ namespace ft
 			}
 
 			normal_iterator& operator+(const difference_type& n) const
+			{
+				return normal_iterator(current + n);
+			}
+
+			normal_iterator& operator+(const difference_type& n)
 			{
 				return normal_iterator(current + n);
 			}
@@ -199,6 +207,9 @@ namespace ft
 			return normal_iterator<_Iterator>(__i.base() + __n);
 		}
 	
+	
+	/* ------------- vector ------------- */
+	
 	template <typename T, typename Allocator = std::allocator<T> >
 	class vector
 	{
@@ -223,28 +234,18 @@ namespace ft
 				:	_size(0), _capacity(0), _first_element(NULL), _memory_handle(alloc) { }
 			
 			explicit vector(size_type count, const T& value = T(), const Allocator& alloc = allocator_type())
-				:	_size(count), _capacity(count), _first_element(NULL), _memory_handle(alloc)
-				{
-					(void)value;
-					// insert value up to nth elements when insert is ready
-				}
+				:	_size(0), _capacity(0), _first_element(NULL), _memory_handle(alloc)
+			{
+				insert(begin(), count, value);
+			}
 			
 			template <class InputIt>
 			vector(InputIt first, InputIt last,
 				typename ft::enable_if<!ft::is_integral<InputIt>::value>::type * = 0, 
 				const Allocator& alloc = allocator_type())
+			:	_size(0), _capacity(0), _first_element(NULL), _memory_handle(alloc)
 			{
-				// Check whether it's an integral type.  If so, it's not an iterator
-				_memory_handle = alloc;
-				_size = std::distance(first, last);
-				_capacity = _size * 2;
-				_first_element = _memory_handle.allocate(_size);
-				// while (first != last)
-				// {
-				// 	_first_elem = first;
-				// 	_first_elem++;
-				// 	first++;
-				// }
+				insert(begin(), first, last);
 			}
 			
 			// vector(const vector& other);
@@ -365,7 +366,7 @@ namespace ft
 
 			/* ------------- modifiers ------------- */
 			
-			void					clear()
+			void clear()
 			{
 				for (size_type i = 0; i < _size; ++i)
 					_memory_handle.destroy(_first_element + i);
@@ -377,41 +378,10 @@ namespace ft
 				insert(pos, 1, value);	
 			}
 			
-			size_t	getPosition(iterator pos)
-			{
-				size_t index = 0;
-				
-				for (iterator it = this->begin(); it != this->end() && it != pos; ++it)
-				{
-					index++;
-				}
-				return (index);
-			}
-
-			int	getNewCapacity(size_t count)
-			{
-				if (_size + count <= _capacity)
-					return _capacity;
-				else if (_size + count <= _size * 2)
-					return _size * 2;
-				else
-					return _size + count;
-				return 0;
-			}
-
-			pointer	castIteratorToPointer(iterator position)
-			{
-				size_type index = 0;
-				
-				for (iterator it = begin(); it != end() && it != position; ++it)
-					index++;
-				return _first_element + index;
-			}
-			
 			iterator insert(iterator pos, size_type count, const T& value)
 			{
-				size_t index = getPosition(pos);
-				// pointer	position = castIteratorToPointer(pos);
+				size_t index = getIteratorPosition(pos);
+				
 				if (empty())
 					_first_element = _memory_handle.allocate(count);
 				else
@@ -427,7 +397,6 @@ namespace ft
 					}
 					
 				}
-				// pointer tmp = castIteratorToPointer(pos);
 				pointer tmp = _first_element + index;
 				while (count--)
 				{
@@ -438,8 +407,15 @@ namespace ft
 				return iterator(_first_element + index);
 			}
 			
-			// template <class InputIt>
-			// iterator				insert(const_iterator pos, InputIt first, InputIt last);
+			template <class InputIt>
+			iterator insert(iterator pos, InputIt first, InputIt last,
+				typename enable_if< !is_integral<InputIt>::value, int>::type = 0)
+			{
+				for (; first != last; first++)
+					insert(pos, 1, *first);
+				return pos;
+			}
+			
 			// iterator				erase(iterator pos);
 			// iterator				erase(iterator first, iterator last);
 			// void					push_back(const T& value);
@@ -463,6 +439,37 @@ namespace ft
 
 			// template<class T, class Alloc>
 			// void					swap(ft::vector<T, Alloc>& lhs, ft::vector<T, Alloc>& rhs);
+			
+		private:
+		
+			int	getNewCapacity(size_t count)
+			{
+				if (_size + count <= _capacity)
+					return _capacity;
+				else if (_size + count <= _size * 2)
+					return _size * 2;
+				else
+					return _size + count;
+				return 0;
+			}
+
+			size_t	getIteratorPosition(iterator pos)
+			{
+				size_t index = 0;
+				
+				for (iterator it = this->begin(); it != this->end() && it != pos; ++it)
+					index++;
+				return (index);
+			}
+
+			pointer	castIteratorToPointer(iterator position)
+			{
+				size_type index = 0;
+				
+				for (iterator it = begin(); it != end() && it != position; ++it)
+					index++;
+				return _first_element + index;
+			}
 			
 			
 		private:
