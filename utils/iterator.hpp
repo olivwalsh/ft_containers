@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 15:18:10 by owalsh            #+#    #+#             */
-/*   Updated: 2023/01/26 15:44:35 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/01 15:29:10 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@ namespace ft
 	template <typename Tp>
 	struct iterator_traits <Tp*>
 	{
-		typedef std::random_access_iterator_tag iterator_category;
-		typedef Tp								value_type;
-		typedef std::ptrdiff_t					difference_type;
-		typedef Tp*								pointer;
-		typedef Tp&								reference;
+		typedef			std::random_access_iterator_tag iterator_category;
+		typedef 		Tp								value_type;
+		typedef 		std::ptrdiff_t					difference_type;
+		typedef 		Tp*								pointer;
+		typedef 		Tp&								reference;
 	};
 
 	template <typename Tp>
