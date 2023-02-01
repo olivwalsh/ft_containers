@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:03:35 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/01 17:08:59 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/01 18:06:23 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include "iterator.hpp"
 # include "algorithm.hpp"
 # include "normal_iterator.hpp"
+# include <stdlib.h>
 
 namespace ft
 {	
@@ -79,7 +80,7 @@ namespace ft
 			vector& operator=(const vector& other)
 			{
 				this->reserve(other.size());
-				this->assign(other.begin(), other.last());
+				this->assign(other.begin(), other.end());
 				return *this;
 			}
 			
@@ -263,7 +264,7 @@ namespace ft
 			
 			iterator insert(iterator pos, const T& value)
 			{
-				insert(pos, 1, value);	
+				return insert(pos, 1, value);
 			}
 			
 			iterator insert(iterator pos, size_type count, const T& value)
@@ -325,7 +326,6 @@ namespace ft
 					_size -= dist;
 					return first;
 				}
-				
 				for (iterator it = first; it != end() - dist; ++it)
 				{
 					_memory_handle.construct(it.base(), *(it + dist));
@@ -334,7 +334,6 @@ namespace ft
 				_size -= dist;
 				return first;
 			}
-			
 			
 			void push_back(const T& value)
 			{
