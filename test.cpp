@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 21:58:20 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/01 16:18:39 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/01 17:09:51 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,20 +78,21 @@ int main()
     
     std::cout << std::endl;
 
-	// std::cout << "testing swap function" << std::endl;
-	// vec.swap(vec2);
-	// std::cout << "printing vec" << std::endl;
-	//  for(it = vec.begin(); it != vec.end(); ++it)
-    // 	std::cout << *it << " ";
-    // std::cout << std::endl;
-	// std::cout << "printing vec2" << std::endl;
-    // for(it2 = vec2.begin(); it2 != vec2.end(); ++it2)
-    //         std::cout << *it2 << " ";
+	std::cout << "testing swap function" << std::endl;
+	vec.swap(vec2);
+	std::cout << "printing vec" << std::endl;
+	 for(it = vec.begin(); it != vec.end(); ++it)
+    	std::cout << *it << " ";
+    std::cout << std::endl;
+	std::cout << "printing vec2" << std::endl;
+    for(it2 = vec2.begin(); it2 != vec2.end(); ++it2)
+            std::cout << *it2 << " ";
 
-	//  std::cout << std::endl;
-	// std::cout << "printing vec2" << std::endl;
-    // for(rit = vec2.rbegin(); rit != vec2.rend(); ++rit)
-    //         std::cout << *rit << " ";
+	std::cout << std::endl;
+	std::cout << "printing vec2 with reverse iterator" << std::endl;
+    for(rit = vec2.rbegin(); rit != vec2.rend(); ++rit)
+            std::cout << *rit << " ";
+    std::cout << std::endl;
 	
 	ft::vector<int> vec_test;
 	(void)vec_test;

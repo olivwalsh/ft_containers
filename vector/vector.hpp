@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:03:35 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/01 17:04:08 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/01 17:08:59 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,22 +187,22 @@ namespace ft
 			
 			reverse_iterator		rbegin()
 			{
-				return reverse_iterator(_first_element + _size);
+				return reverse_iterator(iterator(_first_element + _size));
 			}
 			
 			const_reverse_iterator	rbegin() const
 			{
-				return const_reverse_iterator(_first_element + _size);
+				return const_reverse_iterator(const_iterator(_first_element + _size));
 			}
 
 			reverse_iterator		rend()
 			{
-				return reverse_iterator(_first_element);
+				return reverse_iterator(iterator(_first_element));
 			}
 			
 			const_reverse_iterator	rend() const
 			{
-				return const_reverse_iterator(_first_element);
+				return const_reverse_iterator(const_iterator(_first_element));
 			}
 
 
@@ -319,14 +319,10 @@ namespace ft
 			{
 				size_type dist = std::distance(first, last);
 				for (iterator it = first; it != last; ++it)
-				{
-					std::cout << "destroying: " << *it << std::endl;
 					_memory_handle.destroy(it.base());
-				}
 				if (first + dist == end())
 				{
 					_size -= dist;
-					std::cout << "now size is: " << _size << std::endl;
 					return first;
 				}
 				
