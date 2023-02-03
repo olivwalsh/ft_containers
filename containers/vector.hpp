@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:03:35 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/03 14:27:23 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/03 15:13:20 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include "algorithm.hpp"
 # include "normal_iterator.hpp"
 # include <stdlib.h>
+# include <iostream>
 
 namespace ft
 {	

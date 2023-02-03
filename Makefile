@@ -14,10 +14,10 @@ UTILS_DIR		= 	utils/
 SRC_DIR			= 	tests/
 
 OBJ				=	$(addprefix $(OBJ_DIR), $(SRC:.cpp=.o))
-SRC				=	vector.cpp
+SRC				=	stack.cpp
 
 HEADERS			=	$(addprefix $(UTILS_DIR), type_traits.hpp) \
-					$(addprefix $(CONTAINERS_DIR), vector.hpp)
+					$(addprefix $(CONTAINERS_DIR), vector.hpp, stack.hpp)
 
 INC				=	-I./$(UTILS_DIR) -I./$(CONTAINERS_DIR)
 
@@ -36,7 +36,7 @@ $(OBJ_DIR)%.o : $(SRC_DIR)%.cpp
 	mkdir -p ${@D}
 	$(CXX) $(CXXFLAGS) $(INC) -c $< -o $@
 
-$(NAME): $(OBJ) $(HEADERS)
+$(NAME): $(OBJ)
 	@echo -n "Compiling " $(NAME)
 	@$(CXX) $(CXXFLAGS) $(OBJ) -o $@
 	@echo ${GREEN}"\tOK"${RESET}
