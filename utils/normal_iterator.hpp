@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 18:44:31 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/03 11:02:58 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/03 17:15:14 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,16 @@ namespace ft
 			{
 				return normal_iterator(current - n);
 			}
+
+			difference_type	operator-(const normal_iterator& n) const
+			{
+				return (current - n.current);
+			}
+
+			difference_type	operator+(const normal_iterator& n) const
+			{
+				return (current + n.current);
+			}
 			
 			const _Iterator& base() const
 			{
@@ -223,12 +233,12 @@ namespace ft
 
 	template<typename _Iterator>
 		inline typename normal_iterator<_Iterator>::difference_type
-		operator-(const normal_iterator<_Iterator>& __lhs,
-			const normal_iterator<_Iterator>& __rhs)
+		operator-(const normal_iterator<typename remove_cv<_Iterator>::type>& __lhs,
+			const normal_iterator<typename remove_cv<_Iterator>::type>& __rhs)
 		{
 			return __lhs.base() - __rhs.base();
 		}
-	
+		
 	template<typename _Iterator>
 		inline normal_iterator<_Iterator>
 		operator+(typename normal_iterator<_Iterator>::difference_type

@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:03:35 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/03 15:13:20 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/03 19:05:28 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,14 @@ namespace ft
 			typedef typename	Allocator::pointer				pointer;
 			typedef typename	Allocator::const_pointer		const_pointer;
 			typedef typename	Allocator::reference			reference;
-			typedef typename	Allocator::reference			const_reference;
+			typedef typename	Allocator::const_reference		const_reference;
 			typedef typename	Allocator::size_type			size_type;
 			typedef typename	Allocator::difference_type		difference_type;
 	
 			typedef ft::normal_iterator<pointer>				iterator;
 			typedef ft::normal_iterator<const_pointer>			const_iterator;
-			typedef ft::reverse_iterator<const_iterator>		const_reverse_iterator;
 			typedef ft::reverse_iterator<iterator>				reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator>		const_reverse_iterator;
 			
 			
 			
@@ -57,13 +57,34 @@ namespace ft
 				insert(begin(), count, value);
 			}
 			
-			template <class InputIt>
-			vector(InputIt first, InputIt last,
-				typename ft::enable_if<!ft::is_integral<InputIt>::value>::type * = 0, 
-				const Allocator& alloc = allocator_type())
-				:	_size(0), _capacity(0), _first_element(NULL), _memory_handle(alloc)
+			// template <class InputIt>
+			// vector(InputIt first, InputIt last,
+			// 	typename ft::enable_if<!ft::is_integral<InputIt>::value>::type * = 0, 
+			// 	const Allocator& alloc = allocator_type())
+			// 	:	_size(0), _capacity(0), _first_element(NULL), _memory_handle(alloc)
+			// {
+			// 	insert(begin(), first, last);
+			// }
+
+			template <class InputIterator>
+			vector(InputIterator first, InputIterator last, typename enable_if< !is_integral<InputIterator>::value, int>::type = 0, 
+				const allocator_type& alloc = allocator_type())
+				: _size(0), _capacity(0), _first_element(NULL), _memory_handle(alloc)
 			{
-				insert(begin(), first, last);
+
+				_memory_handle = alloc;
+				InputIterator temp = first;
+				size_t	i = 0;
+				while (temp++ != last)
+					_size++;
+				_capacity = _size;
+				_first_element = _memory_handle.allocate(_size);
+				while (first != last)
+				{
+					_memory_handle.construct(_first_element + i, *first);
+					first++;
+					i++;
+				}
 			}
 			
 			vector(const vector& other)
@@ -93,7 +114,7 @@ namespace ft
 			}
 			
 			template <class InputIt>
-			void assign(InputIt first, InputIt last)
+			void assign(InputIt first, InputIt last,  typename ft::enable_if<!is_integral<InputIt>::value, int>::type = 0)
 			{
 				if (_size)
 					erase(begin(), end());
@@ -298,17 +319,10 @@ namespace ft
 			}
 			
 			template <class InputIt>
-			iterator insert(iterator pos, InputIt first, InputIt last, typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type* = 0)
+			void insert(iterator pos, InputIt first, InputIt last, typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type* = 0)
 			{
-				size_type	start = std::distance(begin(), pos);
-				size_type	count = std::distance(first, last);
-
-				reserve(getNewCapacity(count));
-
-				for(; last != first; last--)
-					insert(iterator(_first_element + start), 1, *(last - 1));
-
-				return iterator(_first_element + start);
+				for (; first != last; ++first)
+					pos = (insert(pos, 1, *first) + 1);
 			}
 			
 			

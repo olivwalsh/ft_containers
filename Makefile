@@ -14,7 +14,7 @@ UTILS_DIR		= 	utils/
 SRC_DIR			= 	tests/
 
 OBJ				=	$(addprefix $(OBJ_DIR), $(SRC:.cpp=.o))
-SRC				=	stack.cpp
+SRC				=	vector.cpp
 
 HEADERS			=	$(addprefix $(UTILS_DIR), type_traits.hpp) \
 					$(addprefix $(CONTAINERS_DIR), vector.hpp, stack.hpp)
