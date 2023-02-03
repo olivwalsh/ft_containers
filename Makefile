@@ -1,37 +1,38 @@
 # Colors
-RED			= "\033[1;31m"
-GREEN		= "\033[1;32m"
-RESET		= "\033[m"
+RED				= "\033[1;31m"
+GREEN			= "\033[1;32m"
+RESET			= "\033[m"
 
 # Variables
-NAME		=	ft_container
-CXX			=	c++ -std=c++98
-CXXFLAGS	=	-Wall -Wextra -Werror
+NAME			=	ft_container
+CXX				=	c++ -std=c++98
+CXXFLAGS		=	-Wall -Wextra -Werror
 
-SRC			=	test.cpp
-OBJ			=	$(addprefix $(OBJDIR), $(SRC:.cpp=.o))
-OBJDIR		=	obj/
+OBJ_DIR			=	obj/
+CONTAINERS_DIR	= 	containers/
+UTILS_DIR		= 	utils/
+SRC_DIR			= 	tests/
 
-VECTOR_DIR	= vector/
-UTILS_DIR	= utils/
+OBJ				=	$(addprefix $(OBJ_DIR), $(SRC:.cpp=.o))
+SRC				=	vector.cpp
 
-HEADERS		=	$(addprefix $(UTILS_DIR), type_traits.hpp) \
-				$(addprefix $(VECTOR_DIR), vector.hpp)
+HEADERS			=	$(addprefix $(UTILS_DIR), type_traits.hpp) \
+					$(addprefix $(CONTAINERS_DIR), vector.hpp)
 
-INC			=	-I./$(UTILS_DIR) -I./$(VECTOR_DIR)
+INC				=	-I./$(UTILS_DIR) -I./$(CONTAINERS_DIR)
 
 ifeq ($(DMEM),1)
-CXX 			+= -fsanitize=address -fno-omit-frame-pointer -g3
+CXXFLAGS 		+= -fsanitize=address -fno-omit-frame-pointer -g3
 endif
 
 ifeq ($(REAL),1)
-CXXFLAGS	+= -DREAL=1
+CXXFLAGS		+= -DREAL=1
 endif
 
 all: $(NAME)
 	./$(NAME)
 
-$(OBJDIR)%.o : %.cpp
+$(OBJ_DIR)%.o : $(SRC_DIR)%.cpp
 	mkdir -p ${@D}
 	$(CXX) $(CXXFLAGS) $(INC) -c $< -o $@
 
@@ -41,7 +42,7 @@ $(NAME): $(OBJ) $(HEADERS)
 	@echo ${GREEN}"\tOK"${RESET}
 
 clean:
-	rm -rf $(OBJ)
+	rm -rf $(OBJ_DIR)
 
 fclean: clean
 	rm -rf $(NAME)
