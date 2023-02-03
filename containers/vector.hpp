@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:03:35 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/01 18:06:23 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/03 14:27:23 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -269,11 +269,12 @@ namespace ft
 			
 			iterator insert(iterator pos, size_type count, const T& value)
 			{
+				if (!count)
+					return pos;
+					
 				size_type index = getIteratorPosition(pos);
 				size_type new_capacity = getNewCapacity(count);
-		
 				reserve(new_capacity);
-				
 				if (!empty())
 				{
 					pointer tab_end = _first_element + _size - 1;
@@ -296,13 +297,19 @@ namespace ft
 			}
 			
 			template <class InputIt>
-			iterator insert(iterator pos, InputIt first, InputIt last,
-				typename enable_if< !is_integral<InputIt>::value, int>::type = 0)
+			iterator insert(iterator pos, InputIt first, InputIt last, typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type* = 0)
 			{
-				for (; first != last; first++)
-					pos = insert(pos, 1, *first) + 1;
-				return pos;
+				size_type	start = std::distance(begin(), pos);
+				size_type	count = std::distance(first, last);
+
+				reserve(getNewCapacity(count));
+
+				for(; last != first; last--)
+					insert(iterator(_first_element + start), 1, *(last - 1));
+
+				return iterator(_first_element + start);
 			}
+			
 			
 			iterator erase(iterator pos)
 			{
@@ -384,9 +391,7 @@ namespace ft
 					return _capacity;
 				else if (_size + count <= _size * 2)
 					return _size * 2;
-				else
-					return _size + count;
-				return 0;
+				return _size + count;
 			}
 
 			size_t	getIteratorPosition(iterator pos)
