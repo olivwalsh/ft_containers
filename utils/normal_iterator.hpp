@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 18:44:31 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/01 15:30:33 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/03 11:02:58 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,21 @@ namespace ft
 			
 			explicit normal_iterator(const _Iterator& i) : current(i) {	}
 			
+			template <typename Iter>
+			normal_iterator(const normal_iterator<Iter> &rhs)
+			{
+				*this = rhs;
+			}
+			
 			~normal_iterator(void) { }
 
+			template <typename Iter>
+			normal_iterator & operator=(const normal_iterator<Iter>& rhs)
+			{
+				current = rhs.base();
+				return *this;
+			}
+			
 			reference operator*() const
 			{
 				return *current;
