@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:03:35 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/03 19:05:28 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/07 15:21:45 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ namespace ft
 	
 	/* ------------- vector ------------- */
 	
-	template <typename T, typename Allocator = std::allocator<T> >
+	template < typename T, typename Allocator = std::allocator<T> >
 	class vector
 	{
 		public:
@@ -54,37 +54,26 @@ namespace ft
 			explicit vector(size_type count, const T& value = T(), const Allocator& alloc = allocator_type())
 				:	_size(0), _capacity(0), _first_element(NULL), _memory_handle(alloc)
 			{
+				// std::cout << "hihi";
+
 				insert(begin(), count, value);
 			}
-			
-			// template <class InputIt>
-			// vector(InputIt first, InputIt last,
-			// 	typename ft::enable_if<!ft::is_integral<InputIt>::value>::type * = 0, 
-			// 	const Allocator& alloc = allocator_type())
-			// 	:	_size(0), _capacity(0), _first_element(NULL), _memory_handle(alloc)
-			// {
-			// 	insert(begin(), first, last);
-			// }
 
 			template <class InputIterator>
-			vector(InputIterator first, InputIterator last, typename enable_if< !is_integral<InputIterator>::value, int>::type = 0, 
+			vector(InputIterator first, InputIterator last, typename enable_if<!is_integral<InputIterator>::value, int>::type = 0, 
 				const allocator_type& alloc = allocator_type())
 				: _size(0), _capacity(0), _first_element(NULL), _memory_handle(alloc)
 			{
-
+				_size = std::distance(first, last);
+				if (_size > max_size())
+					throw std::length_error("vector");
+					
 				_memory_handle = alloc;
-				InputIterator temp = first;
-				size_t	i = 0;
-				while (temp++ != last)
-					_size++;
-				_capacity = _size;
 				_first_element = _memory_handle.allocate(_size);
-				while (first != last)
-				{
-					_memory_handle.construct(_first_element + i, *first);
-					first++;
-					i++;
-				}
+				_capacity = _size;
+				
+				for (size_type i = 0; i < _size; i++)
+					_memory_handle.construct(_first_element + i, *(first++));
 			}
 			
 			vector(const vector& other)

@@ -2,9 +2,12 @@
 RED				= "\033[1;31m"
 GREEN			= "\033[1;32m"
 RESET			= "\033[m"
+BLUE			= \033[1;34m
+END				= \e[0m
 
 # Variables
 NAME			=	ft_container
+REAL_BIN		=	std_container
 CXX				=	c++ -std=c++98
 CXXFLAGS		=	-Wall -Wextra -Werror
 
@@ -13,8 +16,8 @@ CONTAINERS_DIR	= 	containers/
 UTILS_DIR		= 	utils/
 SRC_DIR			= 	tests/
 
+SRC				=	vector.cpp utils.cpp
 OBJ				=	$(addprefix $(OBJ_DIR), $(SRC:.cpp=.o))
-SRC				=	vector.cpp
 
 HEADERS			=	$(addprefix $(UTILS_DIR), type_traits.hpp) \
 					$(addprefix $(CONTAINERS_DIR), vector.hpp, stack.hpp)
@@ -30,22 +33,44 @@ CXXFLAGS		+= -DREAL=1
 endif
 
 all: $(NAME)
-	./$(NAME)
+
+diff:
+	make re
+	make re NAME=std_container REAL=1
+	@echo "Checking diff between ft and std"
+	@./$(NAME) 2>/dev/null 1>ft
+	@./$(REAL_BIN) 2>/dev/null 1>std
+	@DIFF=$$(diff ft std >/dev/null 2>&1; echo $$?) ; \
+	export DIFF ; \
+	$(MAKE) check_diff
+
+check_diff:
+ifeq ($(DIFF),0)
+	@echo ${GREEN}"OK - ft and std output are the same"${RESET}
+else
+	@echo ${RED}"KO - ft and std differ"${RESET}
+endif
 
 $(OBJ_DIR)%.o : $(SRC_DIR)%.cpp
-	mkdir -p ${@D}
-	$(CXX) $(CXXFLAGS) $(INC) -c $< -o $@
+	@mkdir -p ${@D}
+	@$(CXX) $(CXXFLAGS) $(INC) -c $< -o $@
+	@printf	"\033[2K\r${BLUE}[Building - '$<'] $(END)\n"
 
 $(NAME): $(OBJ)
-	@echo -n "Compiling " $(NAME)
-	@$(CXX) $(CXXFLAGS) $(OBJ) -o $@
-	@echo ${GREEN}"\tOK"${RESET}
+	@printf "Compiling $(NAME)"; \
+	$(CXX) $(CXXFLAGS) $(OBJ) -o $@; \
+	echo $(GREEN) " OK" $(RESET)
 
 clean:
-	rm -rf $(OBJ_DIR)
+	@echo " ... Deleting obj folder"
+	@rm -rf $(OBJ_DIR)
 
 fclean: clean
-	rm -rf $(NAME)
+	@echo " ... Deleting binary and output files"
+	@rm -f $(NAME)
+	@rm -f $(REAL_BIN)
+	@rm -f ft
+	@rm -f std
 
 re: clean fclean all
 

@@ -6,115 +6,55 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 21:58:20 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/03 19:08:36 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/07 11:24:46 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
 
 #if REAL
-	#include <map>
-	#include <stack>
 	#include <vector>
 	namespace ft = std;
 #else
 	#include "vector.hpp"
 #endif
 
+#include "utils.cpp"
 
-// int main()
-// {
-// 	ft::vector<int>    vec(3, 2);
-    
-//     if (vec.empty())
-//         std::cout << "is empty" << std::endl;
-        
-//     ft::vector<int>::iterator    it;
-//     ft::vector<int>::reverse_iterator    rit;
-
-// 	std::cout << "printing vec" << std::endl;
-//     for(it = vec.begin(); it != vec.end(); ++it)
-//             std::cout << *it << " ";
-        
-//     std::cout << std::endl;
-
-//     vec.insert(vec.begin(), 3, 6);
-// 	std::cout << "printing vec" << std::endl;
-//     for(it = vec.begin(); it != vec.end(); ++it)
-//             std::cout << *it << " ";
-        
-//     std::cout << std::endl;
-
-//     ft::vector<int>    vec2;
-
-//     vec2.insert(vec2.begin(), vec.begin()+3, vec.end());
-
-//     ft::vector<int>::iterator    it2;
-    
-// 	std::cout << "printing vec2" << std::endl;
-//     for(it2 = vec2.begin(); it2 != vec2.end(); ++it2)
-//             std::cout << *it2 << " ";
-    
-//     std::cout << std::endl;
-
-// 	std::cout << "testing push back" << std::endl;
+int main()
+{
+	std::cout << GREEN("Testing container: vector") << std::endl;
+	nl();
+	std::cout << TITLE("vector: constructor") << std::endl;
+	ft::vector<int> test;
+	std::cout << TITLE("- default constructor") << std::endl;
+	print(test);
+	std::cout << GREEN("OK") << std::endl;
+	std::cout << TITLE("- constructs an empty container with the given allocator alloc") << std::endl;
+	std::cout << RED("KO") << std::endl;
+	std::cout << TITLE("- constructs the container with count copies of elements with value value") << std::endl;
+	ft::vector<int> test2(4, 12);
+	print(test2);
+	std::cout << GREEN("OK") << std::endl;
+	std::cout << TITLE("- constructs the container with the contents of the range [first, last)") << std::endl;
+	// for this test we need to use iterator.
+	ft::vector<int>::iterator it = test2.begin();
+	ft::vector<int> test3(it, it + 2);
+	print(test3);
+	std::cout << GREEN("OK - correct iterator range") << std::endl;
+	try
+	{
+		ft::vector<int> test4(it, test.begin());
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << e.what() << std::endl;
+		std::cout << GREEN("OK - wrong iterator range") << std::endl;
+	}
+	std::cout << TITLE("- copy constructor. Constructs the container with the copy of the contents of other.") << std::endl;
+	ft::vector<int> test5(test2);
+	print(test5);
+	std::cout << GREEN("OK") << std::endl;
 	
-
-// 	vec2.push_back(7);
-// 	vec2.push_back(882);
-// 	vec2.erase(vec2.end() -1);
-// 	std::cout << "printing vec2" << std::endl;
-//     for(it2 = vec2.begin(); it2 != vec2.end(); ++it2)
-//             std::cout << *it2 << " ";
-    
-//     std::cout << std::endl;
-
-// 	std::cout << "testing erase range with vec" << std::endl;
-
-// 	vec.erase(vec.begin() + 1, vec.end() - 2);
-// 	std::cout << "printing vec" << std::endl;
-//     for(it = vec.begin(); it != vec.end(); ++it)
-//     	std::cout << *it << " ";
-    
-//     std::cout << std::endl;
-
-// 	std::cout << "testing swap function" << std::endl;
-// 	vec.swap(vec2);
-// 	std::cout << "printing vec" << std::endl;
-// 	 for(it = vec.begin(); it != vec.end(); ++it)
-//     	std::cout << *it << " ";
-//     std::cout << std::endl;
-// 	std::cout << "printing vec2" << std::endl;
-//     for(it2 = vec2.begin(); it2 != vec2.end(); ++it2)
-//             std::cout << *it2 << " ";
-
-// 	std::cout << std::endl;
-// 	std::cout << "printing vec2 with reverse iterator" << std::endl;
-//     for(rit = vec2.rbegin(); rit != vec2.rend(); ++rit)
-//             std::cout << *rit << " ";
-//     std::cout << std::endl;
-	
-// 	ft::vector<int> vec_test;
-// 	(void)vec_test;
-	
-// 	std::cout << "testing assign function" << std::endl;
-// 	vec.assign(vec2.begin(), vec2.end());
-// 	std::cout << "printing vec" << std::endl;
-// 	 for(it = vec.begin(); it != vec.end(); ++it)
-//     	std::cout << *it << " ";
-//     std::cout << std::endl;
-// 	std::cout << "printing vec2" << std::endl;
-//     for(it2 = vec2.begin(); it2 != vec2.end(); ++it2)
-//             std::cout << *it2 << " ";
-//     std::cout << std::endl;
-			
-// 	std::cout << "testing if vec == vec2" << std::endl;
-// 	if (vec == vec2)
-// 		std::cout << "vec and vec2 are the same" << std::endl;
-// 	else
-// 		std::cout << "vec and vec2 are different bitch" << std::endl;
-	
-
-			
-// 	return 0;
-// }
+	return 0;
+}
