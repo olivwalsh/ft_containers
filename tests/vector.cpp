@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 21:58:20 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/07 11:24:46 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/07 15:31:27 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 
 #include "utils.cpp"
 
-int main()
+void test_constructors()
 {
 	std::cout << GREEN("Testing container: vector") << std::endl;
 	nl();
@@ -55,6 +55,11 @@ int main()
 	ft::vector<int> test5(test2);
 	print(test5);
 	std::cout << GREEN("OK") << std::endl;
+}
+
+int main()
+{
+	test_constructors();
 	
 	return 0;
 }

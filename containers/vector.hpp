@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:03:35 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/07 15:21:45 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/07 16:16:54 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,11 @@
 
 # include <memory>
 # include "type_traits.hpp"
-# include "iterator.hpp"
+# include "iterator_traits.hpp"
 # include "algorithm.hpp"
-# include "normal_iterator.hpp"
+# include "random_access_iterator.hpp"
+# include "reverse_iterator.hpp"
+
 # include <stdlib.h>
 # include <iostream>
 
@@ -30,19 +32,19 @@ namespace ft
 	class vector
 	{
 		public:
-			typedef 			T								value_type;
-			typedef				Allocator						allocator_type;
-			typedef typename	Allocator::pointer				pointer;
-			typedef typename	Allocator::const_pointer		const_pointer;
-			typedef typename	Allocator::reference			reference;
-			typedef typename	Allocator::const_reference		const_reference;
-			typedef typename	Allocator::size_type			size_type;
-			typedef typename	Allocator::difference_type		difference_type;
+			typedef 			T											value_type;
+			typedef				Allocator									allocator_type;
+			typedef typename	Allocator::pointer							pointer;
+			typedef typename	Allocator::const_pointer					const_pointer;
+			typedef typename	Allocator::reference						reference;
+			typedef typename	Allocator::const_reference					const_reference;
+			typedef typename	Allocator::size_type						size_type;
+			typedef typename	Allocator::difference_type					difference_type;
 	
-			typedef ft::normal_iterator<pointer>				iterator;
-			typedef ft::normal_iterator<const_pointer>			const_iterator;
-			typedef ft::reverse_iterator<iterator>				reverse_iterator;
-			typedef ft::reverse_iterator<const_iterator>		const_reverse_iterator;
+			typedef				ft::random_access_iterator<pointer>			iterator;
+			typedef				ft::random_access_iterator<const_pointer>	const_iterator;
+			typedef				ft::reverse_iterator<iterator>				reverse_iterator;
+			typedef				ft::reverse_iterator<const_iterator>		const_reverse_iterator;
 			
 			
 			
@@ -55,7 +57,6 @@ namespace ft
 				:	_size(0), _capacity(0), _first_element(NULL), _memory_handle(alloc)
 			{
 				// std::cout << "hihi";
-
 				insert(begin(), count, value);
 			}
 

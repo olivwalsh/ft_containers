@@ -14,15 +14,16 @@ CXXFLAGS		=	-Wall -Wextra -Werror
 OBJ_DIR			=	obj/
 CONTAINERS_DIR	= 	containers/
 UTILS_DIR		= 	utils/
+ITERATOR_DIR	=	$(addprefix $(UTILS_DIR), iterator/)
 SRC_DIR			= 	tests/
 
-SRC				=	vector.cpp utils.cpp
+SRC				=	map.cpp utils.cpp
 OBJ				=	$(addprefix $(OBJ_DIR), $(SRC:.cpp=.o))
 
 HEADERS			=	$(addprefix $(UTILS_DIR), type_traits.hpp) \
 					$(addprefix $(CONTAINERS_DIR), vector.hpp, stack.hpp)
 
-INC				=	-I./$(UTILS_DIR) -I./$(CONTAINERS_DIR)
+INC				=	-I./$(UTILS_DIR) -I./$(ITERATOR_DIR) -I./$(CONTAINERS_DIR)
 
 ifeq ($(DMEM),1)
 CXXFLAGS 		+= -fsanitize=address -fno-omit-frame-pointer -g3
@@ -54,7 +55,7 @@ endif
 $(OBJ_DIR)%.o : $(SRC_DIR)%.cpp
 	@mkdir -p ${@D}
 	@$(CXX) $(CXXFLAGS) $(INC) -c $< -o $@
-	@printf	"\033[2K\r${BLUE}[Building - '$<'] $(END)\n"
+	@printf	"\033[2K\r${BLUE}[Building - $<] $(END)\n"
 
 $(NAME): $(OBJ)
 	@printf "Compiling $(NAME)"; \
