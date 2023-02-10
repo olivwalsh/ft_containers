@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 13:54:52 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/09 17:55:19 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/10 15:09:16 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,53 +145,149 @@ namespace ft
 			}
 
 		private:
-			void add(ft::node<Key, Value> parent, ft::node<Key, Value> new_node)
+			void add(node_pointer parent, node_pointer new_node)
 			{
-				if (_compare(new_node.key, parent.key) > 0)
+				if (_compare(new_node->key, parent->key) > 0)
 				{
 					// add right
-					if (!parent.right)
+					if (!parent->right)
 					{	
-						parent.right = new_node;
-						new_node.parent = parent;
+						parent->right = new_node;
+						new_node->parent = parent;
 						return ;
 					}
-					return add(parent.right, new_node);
+					return add(parent->right, new_node);
 				}
-				if (!parent.left)
+				if (!parent->left)
 				{	
-					parent.left = new_node;
-					new_node.parent = parent;
-					new_node.is_left_child = true;
+					parent->left = new_node;
+					new_node->parent = parent;
+					new_node->is_left_child = true;
 				}
-				return add(parent.left, new_node);
+				return add(parent->left, new_node);
 				check_color(new_node);
 			}
 
-			void check_color(ft::node<Key, Value> node)
+			void check_color(node_pointer node)
 			{
 				if (node == _root)
 					return ;
-				if (node.color == red && node.parent.color == red)
+				if (node->color == red && node->parent->color == red)
 					correct_tree(node);
-				check_color(node.parent);
+				check_color(node->parent);
 			}
 
-			void correct_tree(ft::node<Key, Value> node)
+			void correct_tree(node_pointer node)
 			{
-				if (node.parent.is_left_child)
+				if (node->parent->is_left_child)
 				{
 					// aunt is node parent parent right 
-					if (!node.parent.parent.right || node.parent.parent.right.color == black)
+					if (!node->parent->parent->right || node->parent->parent->right->color == black)
 						return rotate(node);
-					if (node.parent.parent.right)
-						node.parent.parent.right.color = black;
-					node.parent.parent.color = red;
-					node.parent.color = black;
+					if (node->parent->parent->right)
+						node->parent->parent->right->color = black;
+					node->parent->parent->color = red;
+					node->parent->color = black;
 					return ;
 				}
-				// aunt is grandparent.left
-				// -> add code if aunt is grandparents left, by changing above code with reversed rights and lefts		
+				else // aunt is grandparent's left child
+				{
+					if (!node->parent->parent->left || node->parent->parent->left->color == black)
+						return rotate(node);
+					if (node->parent->parent->left)
+						node->parent->parent->left->color = black;
+					node->parent->parent->color = red;
+					node->parent->color = black;
+					return ;	
+				}
+			}
+
+			void rotate(node_pointer node)
+			{
+				if (node->is_left_child)
+				{
+					if (node->parent->is_left_child)
+					{
+						right_rotate(node->parent->parent);
+						node->color = red;
+						node->parent->color = black;
+						if (node->parent->right)
+							node->parent->right->color = red;
+						return ;
+					}
+					right_left_rotate(node->parent->parent);
+					node->color = black;
+					node->right->color = red;
+					node->left->color = red;
+					return ;
+				}
+				else // if right child
+				{
+					if (!node->parent->is_left_child)
+					{
+						left_rotate(node->parent->parent);
+						node->color = red;
+						node->parent->color = black;
+						if (node->parent->left)
+							node->parent->left->color = red;
+						return ;
+					}
+					left_right_rotate(node->parent->parent);
+					node->color = black;
+					node->right->color = red;
+					node->left->color = red;
+					return ;
+				}
+			}
+
+			void right_rotate(node_pointer node)
+			{
+				(void)node;	
+			}
+
+			void left_rotate(node_pointer node)
+			{
+				node_pointer tmp = node->right;
+				node->right = tmp->left;
+				if (node->right)
+				{
+					node->right->parent = node;
+					node->right->is_left_child = false;
+				}
+				if (!node->parent)
+				{	
+					_root = tmp;
+					tmp->parent = NULL;
+				}
+				else
+				{
+					tmp->parent = node->parent;
+					if (node->is_left_child)
+					{	
+						tmp->is_left_child = true;
+						tmp->parent->left = tmp;
+					}
+					else
+					{
+						tmp->is_left_child = false;
+						tmp->parent->right = tmp;
+					}
+				}
+				tmp->left - node;
+				node->is_left_child = true;
+				node->parent = tmp;
+			}
+
+			void left_right_rotate(node_pointer node)
+			{
+				left_rotate(node->left);
+				right_rotate(node);
+			}
+
+			void right_left_rotate(node_pointer node)
+			{
+				right_rotate(node->right);
+				left_rotate(node);
 			}
 		
 		private:
