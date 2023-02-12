@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 13:54:52 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/10 15:09:16 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/12 19:09:50 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,6 @@
 		if red aunt: color flip
 		if black aunt: rotate
 	
-	
-		
-	
 */
 
 # define black	true
@@ -35,15 +32,18 @@
 
 namespace ft
 {
-	template <typename Key, typename Value>
+
+	/* ------------- NODE (RED BLACK TREE) CLASS ------------- */
+
+	template <typename Value>
 	class node
 	{
 		public:
-			typedef Key					key_type;
+			// typedef Key					key_type;
 			typedef Value				value_type;
-			typedef node<Key, Value>	*node_pointer;
+			typedef node<Value>			*node_pointer;
 			
-			key_type					key;
+			// key_type					key;
 			value_type					value;
 			node_pointer				left;
 			node_pointer				right;
@@ -53,9 +53,9 @@ namespace ft
 
 
 			node()
-				: key(0), value(0), left(NULL), right(NULL), parent(NULL), is_left_child(false), color(red) { }
-			node(const key_type &key, const value_type &value)
-				: key(key), value(value), left(NULL), right(NULL), parent(NULL), is_left_child(false), color(red) { }
+				: value(0), left(NULL), right(NULL), parent(NULL), is_left_child(false), color(red) { }
+			node(const value_type &value)
+				: value(value), left(NULL), right(NULL), parent(NULL), is_left_child(false), color(red) { }
 			node( const node & lhs)
 			{
 				*this = lhs;
@@ -64,7 +64,7 @@ namespace ft
 
 			node & operator=(const node &rhs)
 			{
-				key = rhs.key;
+				// key = rhs.key;
 				value = rhs.value;
 				left = rhs.left;
 				right = rhs.right;
@@ -76,10 +76,100 @@ namespace ft
 			
 	};
 	
+	template <typename T>
+	class rbt_iterator
+	{
+		typedef	T 									value_type;
+		typedef T&									reference;
+		typedef const T&							const_reference;
+		typedef T*									pointer;
+		typedef const T*							const_pointer;
+		typedef std::bidirectional_iterator_tag		iterator_category;
+		typedef std::ptrdiff_t 							difference_type;
+
+		typedef node<T>								node_type;
+		typedef node<const T>						const_node_type;
+		typedef node<T>								*node_pointer;
+		typedef node<const T>						*const_node_pointer;
+		
+		typedef rbt_iterator<T>						iterator;
+		typedef rbt_iterator<const T>				const_iterator;
+
+
+		rbt_iterator() : node() { }
+		
+		explicit rbt_iterator(const node_pointer n) : node(n) { }
+
+		template <typename _T>
+		rbt_iterator(const rbt_iterator<_T> &src) : node(NULL)
+		{
+			*this = src;
+		}
+
+		~rbt_iterator() { }
+
+		rbt_iterator &operator=(const rbt_iterator<T> &rhs)
+		{
+			node = rhs.node;
+			return *this;
+		}
+
+		node_pointer base() const
+		{
+			return node;
+		}
+
+		reference operator*() const
+		{
+			return node->value;	
+		}
+
+		pointer operator->() const
+		{
+			return &node->value;
+		}
+
+		// rbt_iterator &operator++()
+		// {
+				
+		// }
+
+		// rbt_iterator operator++(int)
+		// {
+
+		// }
+
+		// rbt_iterator &operator--()
+		// {
+
+		// }
+
+		// rbt_iterator operator--(int)
+		// {
+
+		// }
+
+		bool operator==(const rbt_iterator& x) const
+		{
+			return node == x.node;
+		}
+
+		bool operator!=(const rbt_iterator& x) const
+		{
+			return node != x.node;
+		}
+
+		node_pointer								node;
+		
+	};
+
+	/* ------------- RED BLACK TREE CLASS ------------- */
+
+
 	template <typename Key,
 				typename Value,
 				typename Compare = std::less<Key>,
-				typename Allocator = std::allocator<node<Key, Value> >
+				typename Allocator = std::allocator<node<Value> >
 				>
 	class red_black_tree
 	{
@@ -97,14 +187,14 @@ namespace ft
 			typedef typename	Allocator::pointer								pointer;
 			typedef typename	Allocator::const_pointer						const_pointer;
 
-			typedef 			node<Key, Value>								node_type;
-			typedef				node<Key, Value>								*node_pointer;
+			typedef 			node<Value>										node_type;
+			typedef				node<Value>										*node_pointer;
 			
-			// typedef				ft::bidirectional_iterator<pointer>				iterator;
-			// typedef				ft::const_bidirectional_iterator<pointer>		const_iterator;
+			typedef				ft::rbt_iterator<value_type>					iterator;
+			typedef				ft::rbt_iterator<const value_type>				const_iterator;
 
-			// typedef				ft::reverse_iterator< iterator >				reverse_iterator;
-			// typedef				ft::reverse_iterator< const iterator >			const_reverse_iterator;
+			typedef				ft::reverse_iterator< iterator >				reverse_iterator;
+			typedef				ft::reverse_iterator< const iterator >			const_reverse_iterator;
 
 			typedef typename 	Allocator::template rebind< node_type >::other	node_allocator;
 
@@ -128,20 +218,46 @@ namespace ft
 				_size = rhs._size;
 				return *this;
 			}
-			
-			void add(Key key, Value value)
+
+			ft::pair<iterator, bool> insert(const value_type& value)
 			{
-				node<Key, Value> node = new ft::node<Key, Value>(key, value);
+				node_pointer node;
+				(void)value;
+				
+				return ft::make_pair(iterator(node), true);
+			}
+			
+			void add(Value value)
+			{
+				node_pointer node = new node_pointer(value);
 
 				if (!_root)
 				{
 					_root = node;
-					node.color = black;
+					node->color = black;
 					_size++;
 					return ;
 				}
 				add(_root, node);
 				_size++;
+			}
+
+			size_type get_height()
+			{
+				if (_root == NULL)
+					return 0;
+				return get_height(_root) - 1;
+			}
+			
+			size_type get_height(node_pointer node)
+			{
+				if (!node)
+					return 0;
+				int left_height = get_height(node->left) + 1;
+				int right_height = get_height(node->right) + 1;
+				if (left_height > right_height)
+					return left_height;
+				return right_height;
 			}
 
 		private:
@@ -242,7 +358,35 @@ namespace ft
 
 			void right_rotate(node_pointer node)
 			{
-				(void)node;	
+				node_pointer tmp = node->left;
+				node->left = tmp->right;
+				if (node->left)
+				{
+					node->left->parent = node;
+					node->left->is_left_child = false;
+				}
+				if (!node->parent)
+				{	
+					_root = tmp;
+					tmp->parent = NULL;
+				}
+				else
+				{
+					tmp->parent = node->parent;
+					if (node->is_left_child)
+					{	
+						tmp->is_left_child = true;
+						tmp->parent->left = tmp;
+					}
+					else
+					{
+						tmp->is_left_child = false;
+						tmp->parent->right = tmp;
+					}
+				}
+				tmp->right = node;
+				node->is_left_child = false;
+				node->parent = tmp;
 			}
 
 			void left_rotate(node_pointer node)
@@ -273,7 +417,7 @@ namespace ft
 						tmp->parent->right = tmp;
 					}
 				}
-				tmp->left - node;
+				tmp->left = node;
 				node->is_left_child = true;
 				node->parent = tmp;
 			}
@@ -288,6 +432,22 @@ namespace ft
 			{
 				right_rotate(node->right);
 				left_rotate(node);
+			}
+
+			int black_nodes(node_pointer node)
+			{
+				if (!node)
+					return 1;
+				int rhs_black_nodes = black_nodes(node->right);
+				int lhs_black_nodes = black_nodes(node->left);
+				if (rhs_black_nodes != lhs_black_nodes)
+				{
+					// throw an error or fix the tree
+					return -1;
+				}
+				if (node->color == black)
+					lhs_black_nodes++;
+				return lhs_black_nodes;
 			}
 		
 		private:
