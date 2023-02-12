@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 13:54:52 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/12 19:09:50 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/12 22:45:14 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,25 +129,65 @@ namespace ft
 			return &node->value;
 		}
 
-		// rbt_iterator &operator++()
-		// {
-				
-		// }
+		rbt_iterator &operator++()
+		{
+			if (node->right)
+			{
+				node = node->right;
+				while (node->left)
+					node = node->left;
+			}
+			else
+			{
+				node_pointer tmp = node->parent;
+				while (node == tmp->right)
+				{
+					node = tmp;
+					tmp = tmp->parent;
+				}
+				if (node->right != tmp)
+					node = tmp;
+			}
+			return *this;
+		}
 
-		// rbt_iterator operator++(int)
-		// {
+		rbt_iterator operator++(int)
+		{
+			rbt_iterator tmp = *this;
+			++(*this);
+			return tmp;
+		}
 
-		// }
+		rbt_iterator &operator--()
+		{
+			if (node->color == red && node->parent->parent == node)
+				node = node->right;
+			else if (node->left)
+			{
+				node_pointer tmp = node->left;
+				while (tmp->right)
+					tmp = tmp->right;
+				node = tmp;
+			}
+			else
+			{
+				node_pointer tmp = node->parent;
+				while (node == tmp->left)
+				{
+					node = tmp;
+					tmp = tmp->parent;
+				}
+				node = tmp;
+			}
+			return *this;
+		}
 
-		// rbt_iterator &operator--()
-		// {
-
-		// }
-
-		// rbt_iterator operator--(int)
-		// {
-
-		// }
+		rbt_iterator operator--(int)
+		{
+			rbt_iterator tmp = *this;
+			--(*this);
+			return tmp;
+		}
 
 		bool operator==(const rbt_iterator& x) const
 		{
