@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 13:54:52 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/14 14:42:05 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/14 17:11:58 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,7 @@ namespace ft
 		public:
 			typedef	T 									value_type;
 			typedef T&									reference;
-			typedef const T&							const_reference;
 			typedef T*									pointer;
-			typedef const T*							const_pointer;
 			typedef std::bidirectional_iterator_tag		iterator_category;
 			typedef std::ptrdiff_t 						difference_type;
 
@@ -208,6 +206,128 @@ namespace ft
 		
 	};
 
+	template <typename T>
+	class rbt_const_iterator
+	{
+		public:
+			typedef	T 									value_type;
+			typedef const T&							reference;
+			typedef const T*							pointer;
+			typedef std::bidirectional_iterator_tag		iterator_category;
+			typedef std::ptrdiff_t 						difference_type;
+
+			typedef node<T>								node_type;
+			typedef node<const T>						const_node_type;
+			typedef node<T>								*node_pointer;
+			typedef node<const T>						*const_node_pointer;
+			
+			typedef rbt_iterator<T>						iterator;
+			typedef rbt_const_iterator<T>				const_iterator;
+
+
+			rbt_const_iterator() : node(NULL) { }
+			
+			explicit rbt_const_iterator(const node_pointer n) : node(n) { }
+
+			rbt_const_iterator(const iterator &src) : node(src.node) { }
+
+			~rbt_const_iterator() { }
+
+			// rbt_const_iterator &operator=(const rbt_const_iterator<T> &rhs)
+			// {
+			// 	node = rhs.base();
+			// 	return *this;
+			// }
+
+			node_pointer base() const
+			{
+				return node;
+			}
+
+			reference operator*() const
+			{
+				return node->value;	
+			}
+
+			pointer operator->() const
+			{
+				return &node->value;
+			}
+
+			rbt_const_iterator &operator++()
+			{
+				if (node->right)
+				{
+					node = node->right;
+					while (node->left)
+						node = node->left;
+				}
+				else
+				{
+					node_pointer tmp = node->parent;
+					while (node == tmp->right)
+					{
+						node = tmp;
+						tmp = tmp->parent;
+					}
+					if (node->right != tmp)
+						node = tmp;
+				}
+				return *this;
+			}
+
+			rbt_const_iterator operator++(int)
+			{
+				rbt_const_iterator tmp = *this;
+				++(*this);
+				return tmp;
+			}
+
+			rbt_const_iterator &operator--()
+			{
+				if (node->color == red && node->parent->parent == node)
+					node = node->right;
+				else if (node->left)
+				{
+					node_pointer tmp = node->left;
+					while (tmp->right)
+						tmp = tmp->right;
+					node = tmp;
+				}
+				else
+				{
+					node_pointer tmp = node->parent;
+					while (node == tmp->left)
+					{
+						node = tmp;
+						tmp = tmp->parent;
+					}
+					node = tmp;
+				}
+				return *this;
+			}
+
+			rbt_const_iterator operator--(int)
+			{
+				rbt_const_iterator tmp = *this;
+				--(*this);
+				return tmp;
+			}
+
+			bool operator==(const rbt_const_iterator& x) const
+			{
+				return node == x.node;
+			}
+
+			bool operator!=(const rbt_const_iterator& x) const
+			{
+				return node != x.node;
+			}
+
+			node_pointer								node;
+		
+	};
+
 	/* ------------- RED BLACK TREE CLASS ------------- */
 
 
@@ -236,10 +356,10 @@ namespace ft
 			typedef				node<Value>										*node_pointer;
 			
 			typedef				ft::rbt_iterator<value_type>					iterator;
-			typedef				ft::rbt_iterator<const value_type>				const_iterator;
+			typedef				ft::rbt_const_iterator<value_type>				const_iterator;
 
 			typedef				ft::reverse_iterator< iterator >				reverse_iterator;
-			typedef				ft::reverse_iterator< const iterator >			const_reverse_iterator;
+			typedef				ft::reverse_iterator< const_iterator >			const_reverse_iterator;
 
 			typedef typename 	Allocator::template rebind< node_type >::other	node_allocator;
 
@@ -247,7 +367,7 @@ namespace ft
 			red_black_tree(const Compare &comp, const allocator_type &alloc = allocator_type())
 				: _root(NULL), _size(0), _compare(comp), _node_allocator(alloc)
 			{
-				_nil_node = init_nil_node();
+				_root = init_nil_node();
 			}
 
 			red_black_tree(const red_black_tree &rhs)
@@ -270,14 +390,26 @@ namespace ft
 				return *this;
 			}
 
+			/* ------------- iterators ------------- */
+
 			iterator begin()
 			{
 				return iterator(get_minimum_value());
 			}
 
+			const_iterator begin() const
+			{
+				return const_iterator(get_minimum_value());
+			}
+			
 			iterator end()
 			{
 				return iterator(_nil_node);
+			}
+
+			const_iterator end() const
+			{
+				return const_iterator(_nil_node);
 			}
 
 			bool empty( void ) const
@@ -293,7 +425,7 @@ namespace ft
 					return ft::make_pair(iterator(duplicate), false);
 
 				node_pointer new_node = create_node(value);
-				if (!_root)
+				if (_root == _nil_node)
 				{
 					_root = new_node;
 					_root->color = black;
@@ -326,6 +458,55 @@ namespace ft
 				if (left_height > right_height)
 					return left_height;
 				return right_height;
+			}
+
+			// node_pointer find(const value_type& value)
+			// {
+				
+			// }
+
+			/**
+			 *  @return  node pointer pointing to first element equal to or greater
+			 *           than value, or end().
+			 **/
+			node_pointer lower_bound(const value_type& value)
+			{
+				node_pointer tmp = _root;
+				node_pointer lower = _nil_node;
+
+				while (tmp && tmp != _nil_node)
+				{
+					if (!_compare(tmp->value, value))
+					{
+						lower = tmp;
+						tmp = tmp->left;
+					}
+					else
+						tmp = tmp->right;
+				}
+				return lower;
+			}
+
+			/**
+			 *  @return  node pointer pointing to first element greater
+			 *           than value, or end().
+			 **/
+			node_pointer upper_bound(const value_type& value)
+			{
+				node_pointer tmp = _root;
+				node_pointer upper = _nil_node;
+				
+				while (tmp && tmp != _nil_node)
+				{
+					if (_compare(value, tmp->value))
+					{
+						upper = tmp;
+						tmp = tmp->left;
+					}
+					else
+						tmp = tmp->right;
+				}
+				return upper;
 			}
 
 		private:

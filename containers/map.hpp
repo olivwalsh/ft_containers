@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 10:36:24 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/13 15:48:33 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/14 16:00:37 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ namespace ft
 		
 		public:
 			typedef	typename	tree_type::iterator							iterator;
-			typedef	typename	tree_type::const_pointer					const_iterator;
+			typedef	typename	tree_type::const_iterator					const_iterator;
 			
 			typedef				ft::reverse_iterator<iterator>				reverse_iterator;
 			typedef				ft::reverse_iterator<const_iterator>		const_reverse_iterator;
@@ -123,10 +123,10 @@ namespace ft
 				
 			// }
 
-			// mapped_type& operator[](const key_type& key)
-			// {
-				
-			// }
+			mapped_type& operator[](const key_type& key)
+			{
+				return 	(*(insert(get_value(key)).first)).second; 
+			}
 			
 			/* ------------- iterators ------------- */
 
@@ -262,7 +262,7 @@ namespace ft
 			
 			// iterator lower_bound(const Key& key)
 			// {
-				
+			// 	return 
 			// }
 
 			// const_iterator lower_bound(const Key& key) const
@@ -296,6 +296,11 @@ namespace ft
 			tree_type		tree;
 			key_compare		compare;
 			allocator_type	allocator;
+
+			value_type get_value(const key_type &key)
+			{
+				return ft::make_pair(key, mapped_type());	
+			}
 		
 	};
 

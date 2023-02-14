@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 15:16:05 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/14 14:40:28 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/14 16:01:42 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,21 +31,51 @@ void print(ft::map<Key, T>& lst)
 int main ()
 {
 	ft::map<char,int> mymap;
-	// first insert function version (single parameter):
-	if (mymap.empty())
-		std::cout << "Map is still empty"<< std::endl;
-	else
-		std::cout << "Map is not empty"<< std::endl;
+
+
+	if (mymap.begin() != mymap.end())
+		std::cout << "This should not happen\n";
 		
-	mymap.insert ( ft::pair<char,int>('a',100) );
-	mymap.insert ( ft::pair<char,int>('z',200) );
-	mymap.insert ( ft::pair<char,int>('b',300) );
-	print(mymap);
-	if (mymap.empty())
-		std::cout << "Map is still empty"<< std::endl;
-	else
-		std::cout << "Map is not empty"<< std::endl;
-		
+	mymap['b'] = 100;
+	mymap['a'] = 200;
+	mymap['c'] = 300;
+
+	if (mymap.begin() == mymap.end())
+		std::cout << "This is wrong\n";
+  // show content:
+  	for (ft::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); it++)
+    	std::cout << it->first << " => " << it->second << '\n';
+
+	std::cout << "Hello there\n";
+	for (ft::map<char,int>::const_iterator it = mymap.begin(); it != mymap.end(); it++)
+    	std::cout << it->first << " => " << it->second << '\n';
+	std::cout << "General Kenobi\n";
+
+	ft::map<char, int>::const_iterator it = mymap.begin();
+	ft::map<char, int>::const_iterator ti = mymap.end();
+	std::cout << "Wupwup\n";
+
+	it++;
+	++it;
+	it--;
+	--it;
+	std::cout << "marker1\n";
+
+	ti--;
+	--ti;
+	++ti;
+	ti++;
+
+	ti = it;
+
+	std::cout << "Trump is a kiddo\n";
+	ft::map<char, int>::iterator end = mymap.end();
+	while(it != end)
+	{
+    	std::cout << it->first << " => " << it->second << '\n';
+		it++;
+	}
+
 	return 0;
 }
 
