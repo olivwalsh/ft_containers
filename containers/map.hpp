@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 10:36:24 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/12 18:18:40 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/13 15:48:33 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ namespace ft
 			
 			typedef				Key 										key_type;
 			typedef				T											mapped_type;
-			typedef				ft::pair<const Key, T>						value_type;	
+			typedef				ft::pair<const Key, T>							value_type;	
 			typedef				Compare										key_compare;
 			typedef				Allocator									allocator_type;
 			
@@ -49,7 +49,7 @@ namespace ft
 		private:
 			typedef 			ft::red_black_tree<key_type,
 													value_type,
-													key_compare,
+													value_compare,
 													allocator_type>
 																			tree_type;
 		

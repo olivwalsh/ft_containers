@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 13:54:52 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/12 22:45:14 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/13 16:14:32 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,127 +79,128 @@ namespace ft
 	template <typename T>
 	class rbt_iterator
 	{
-		typedef	T 									value_type;
-		typedef T&									reference;
-		typedef const T&							const_reference;
-		typedef T*									pointer;
-		typedef const T*							const_pointer;
-		typedef std::bidirectional_iterator_tag		iterator_category;
-		typedef std::ptrdiff_t 							difference_type;
+		public:
+			typedef	T 									value_type;
+			typedef T&									reference;
+			typedef const T&							const_reference;
+			typedef T*									pointer;
+			typedef const T*							const_pointer;
+			typedef std::bidirectional_iterator_tag		iterator_category;
+			typedef std::ptrdiff_t 						difference_type;
 
-		typedef node<T>								node_type;
-		typedef node<const T>						const_node_type;
-		typedef node<T>								*node_pointer;
-		typedef node<const T>						*const_node_pointer;
-		
-		typedef rbt_iterator<T>						iterator;
-		typedef rbt_iterator<const T>				const_iterator;
+			typedef node<T>								node_type;
+			typedef node<const T>						const_node_type;
+			typedef node<T>								*node_pointer;
+			typedef node<const T>						*const_node_pointer;
+			
+			typedef rbt_iterator<T>						iterator;
+			typedef rbt_iterator<const T>				const_iterator;
 
 
-		rbt_iterator() : node() { }
-		
-		explicit rbt_iterator(const node_pointer n) : node(n) { }
+			rbt_iterator() : node() { }
+			
+			explicit rbt_iterator(const node_pointer n) : node(n) { }
 
-		template <typename _T>
-		rbt_iterator(const rbt_iterator<_T> &src) : node(NULL)
-		{
-			*this = src;
-		}
-
-		~rbt_iterator() { }
-
-		rbt_iterator &operator=(const rbt_iterator<T> &rhs)
-		{
-			node = rhs.node;
-			return *this;
-		}
-
-		node_pointer base() const
-		{
-			return node;
-		}
-
-		reference operator*() const
-		{
-			return node->value;	
-		}
-
-		pointer operator->() const
-		{
-			return &node->value;
-		}
-
-		rbt_iterator &operator++()
-		{
-			if (node->right)
+			template <typename _T>
+			rbt_iterator(const rbt_iterator<_T> &src) : node(NULL)
 			{
-				node = node->right;
-				while (node->left)
-					node = node->left;
+				*this = src;
 			}
-			else
+
+			~rbt_iterator() { }
+
+			rbt_iterator &operator=(const rbt_iterator<T> &rhs)
 			{
-				node_pointer tmp = node->parent;
-				while (node == tmp->right)
+				node = rhs.node;
+				return *this;
+			}
+
+			node_pointer base() const
+			{
+				return node;
+			}
+
+			reference operator*() const
+			{
+				return node->value;	
+			}
+
+			pointer operator->() const
+			{
+				return &node->value;
+			}
+
+			rbt_iterator &operator++()
+			{
+				if (node->right)
 				{
-					node = tmp;
-					tmp = tmp->parent;
+					node = node->right;
+					while (node->left)
+						node = node->left;
 				}
-				if (node->right != tmp)
-					node = tmp;
-			}
-			return *this;
-		}
-
-		rbt_iterator operator++(int)
-		{
-			rbt_iterator tmp = *this;
-			++(*this);
-			return tmp;
-		}
-
-		rbt_iterator &operator--()
-		{
-			if (node->color == red && node->parent->parent == node)
-				node = node->right;
-			else if (node->left)
-			{
-				node_pointer tmp = node->left;
-				while (tmp->right)
-					tmp = tmp->right;
-				node = tmp;
-			}
-			else
-			{
-				node_pointer tmp = node->parent;
-				while (node == tmp->left)
+				else
 				{
-					node = tmp;
-					tmp = tmp->parent;
+					node_pointer tmp = node->parent;
+					while (node == tmp->right)
+					{
+						node = tmp;
+						tmp = tmp->parent;
+					}
+					if (node->right != tmp)
+						node = tmp;
 				}
-				node = tmp;
+				return *this;
 			}
-			return *this;
-		}
 
-		rbt_iterator operator--(int)
-		{
-			rbt_iterator tmp = *this;
-			--(*this);
-			return tmp;
-		}
+			rbt_iterator operator++(int)
+			{
+				rbt_iterator tmp = *this;
+				++(*this);
+				return tmp;
+			}
 
-		bool operator==(const rbt_iterator& x) const
-		{
-			return node == x.node;
-		}
+			rbt_iterator &operator--()
+			{
+				if (node->color == red && node->parent->parent == node)
+					node = node->right;
+				else if (node->left)
+				{
+					node_pointer tmp = node->left;
+					while (tmp->right)
+						tmp = tmp->right;
+					node = tmp;
+				}
+				else
+				{
+					node_pointer tmp = node->parent;
+					while (node == tmp->left)
+					{
+						node = tmp;
+						tmp = tmp->parent;
+					}
+					node = tmp;
+				}
+				return *this;
+			}
 
-		bool operator!=(const rbt_iterator& x) const
-		{
-			return node != x.node;
-		}
+			rbt_iterator operator--(int)
+			{
+				rbt_iterator tmp = *this;
+				--(*this);
+				return tmp;
+			}
 
-		node_pointer								node;
+			bool operator==(const rbt_iterator& x) const
+			{
+				return node == x.node;
+			}
+
+			bool operator!=(const rbt_iterator& x) const
+			{
+				return node != x.node;
+			}
+
+			node_pointer								node;
 		
 	};
 
@@ -216,7 +217,7 @@ namespace ft
 		public:
 			typedef				Key												key_type;
 			typedef 			Value											value_type;
-			typedef 			Compare											key_compare;
+			typedef 			Compare											value_compare;
 			typedef				Allocator 										allocator_type;
 			
 			typedef typename	Allocator::size_type							size_type;
@@ -259,27 +260,31 @@ namespace ft
 				return *this;
 			}
 
+			bool empty( void ) const
+			{ 
+				return this->_size == 0; 
+			}
+
 			ft::pair<iterator, bool> insert(const value_type& value)
 			{
-				node_pointer node;
-				(void)value;
+				node_pointer duplicate = tree_contains_value(value);
 				
-				return ft::make_pair(iterator(node), true);
-			}
-			
-			void add(Value value)
-			{
-				node_pointer node = new node_pointer(value);
+				if (duplicate)
+					return ft::make_pair(iterator(duplicate), false);
 
+				node_pointer new_node = create_node(value);
 				if (!_root)
 				{
-					_root = node;
-					node->color = black;
+					_root = new_node;
+					_root->color = black;
 					_size++;
-					return ;
 				}
-				add(_root, node);
-				_size++;
+				else
+				{
+					add(_root, new_node);
+					_size++;
+				}
+				return ft::make_pair(iterator(new_node), true);
 			}
 
 			size_type get_height()
@@ -301,26 +306,54 @@ namespace ft
 			}
 
 		private:
+			node_pointer create_node(const value_type &value)
+			{
+				node_pointer tmp = _node_allocator.allocate(1);
+		
+				_node_allocator.construct(tmp, value);
+				return tmp;
+			}
+			
+			node_pointer tree_contains_value(const value_type& value)
+			{
+				node_pointer tmp = _root;
+				
+				while (tmp)
+				{
+					if (_compare(value, tmp->value))
+						tmp = tmp->left;
+					else if (_compare(tmp->value, value))
+						tmp = tmp->right;
+					else
+						return tmp;
+				}
+				return NULL;
+			}
+			
 			void add(node_pointer parent, node_pointer new_node)
 			{
-				if (_compare(new_node->key, parent->key) > 0)
+				if (_compare(parent->value, new_node->value))
 				{
 					// add right
 					if (!parent->right)
 					{	
 						parent->right = new_node;
 						new_node->parent = parent;
-						return ;
 					}
-					return add(parent->right, new_node);
+					else
+						add(parent->right, new_node);
 				}
-				if (!parent->left)
-				{	
-					parent->left = new_node;
-					new_node->parent = parent;
-					new_node->is_left_child = true;
+				else
+				{
+					if (!parent->left)
+					{	
+						parent->left = new_node;
+						new_node->parent = parent;
+						new_node->is_left_child = true;
+					}
+					else
+						add(parent->left, new_node);
 				}
-				return add(parent->left, new_node);
 				check_color(new_node);
 			}
 
@@ -493,7 +526,7 @@ namespace ft
 		private:
 			node_pointer	_root;
 			size_type		_size;
-			key_compare		_compare;
+			value_compare	_compare;
 			node_allocator	_node_allocator;
 
 			

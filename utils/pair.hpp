@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 16:41:18 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/07 17:02:33 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/13 14:38:18 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,26 +17,29 @@ namespace ft
 {
 	
 	template <class T1, class T2>
-	struct pair
+	class pair
 	{
-		typedef	T1	first_type;
-		typedef	T2	second_type;
+		public:
+			typedef	T1	first_type;
+			typedef	T2	second_type;
 
-		T1 first;
-		T2 second;
+			first_type first;
+			second_type second;
 
-		pair() : first(), second() { }
-		pair( const T1& x, const T2& y ) : first(x), second(y) { }
-		
-		template <class U1, class U2>
-		pair(const pair<U1, U2>& p) : first(p.first), second(p.second) { }
-		
-		pair& operator=( const pair& other )
-		{
-			first = other.first;
-			second = other.second;
-			return *this;
-		}
+			pair() : first(), second() { }
+			pair( const T1& x, const T2& y ) : first(x), second(y) { }
+			
+			template <class U1, class U2>
+			pair(const pair<U1, U2>& p) : first(p.first), second(p.second) { }
+
+			
+			
+			pair& operator=( const pair& other )
+			{
+				first = other.first;
+				second = other.second;
+				return *this;
+			}
 		
 	};
 
