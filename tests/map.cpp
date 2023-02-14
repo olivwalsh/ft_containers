@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 15:16:05 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/13 16:12:52 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/14 14:40:28 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ int main ()
 		
 	mymap.insert ( ft::pair<char,int>('a',100) );
 	mymap.insert ( ft::pair<char,int>('z',200) );
-	// print(mymap);
+	mymap.insert ( ft::pair<char,int>('b',300) );
+	print(mymap);
 	if (mymap.empty())
 		std::cout << "Map is still empty"<< std::endl;
 	else

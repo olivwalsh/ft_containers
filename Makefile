@@ -8,7 +8,7 @@ END				= \e[0m
 # Variables
 NAME			=	ft_container
 REAL_BIN		=	std_container
-CXX				=	c++ -std=c++98
+CXX				=	c++ -std=c++98 -g3
 CXXFLAGS		=	-Wall -Wextra -Werror
 
 OBJ_DIR			=	obj/

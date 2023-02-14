@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 16:41:18 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/13 14:38:18 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/14 11:11:50 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,19 +27,18 @@ namespace ft
 			second_type second;
 
 			pair() : first(), second() { }
-			pair( const T1& x, const T2& y ) : first(x), second(y) { }
+			pair( const first_type& x, const second_type& y ) : first(x), second(y) { }
 			
 			template <class U1, class U2>
 			pair(const pair<U1, U2>& p) : first(p.first), second(p.second) { }
 
 			
-			
-			pair& operator=( const pair& other )
-			{
-				first = other.first;
-				second = other.second;
-				return *this;
-			}
+			// pair& operator=( const pair& other )
+			// {
+			// 	first = other.first;
+			// 	second = other.second;
+			// 	return *this;
+			// }
 		
 	};
 

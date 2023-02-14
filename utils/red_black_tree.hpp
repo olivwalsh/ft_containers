@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 13:54:52 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/13 16:14:32 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/14 14:42:05 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,23 +56,27 @@ namespace ft
 				: value(0), left(NULL), right(NULL), parent(NULL), is_left_child(false), color(red) { }
 			node(const value_type &value)
 				: value(value), left(NULL), right(NULL), parent(NULL), is_left_child(false), color(red) { }
-			node( const node & lhs)
-			{
-				*this = lhs;
-			}
-			~node();
+			node(value_type val, node_pointer l, node_pointer r, node_pointer p, bool is_l, bool c)
+				: value(val), left(l), right(r), parent(p), is_left_child(is_l), color(c) { }
+			
+			// node( const node & lhs)
+			// {
+			// 	*this = lhs;
+			// }
+			
+			~node() { }
 
-			node & operator=(const node &rhs)
-			{
-				// key = rhs.key;
-				value = rhs.value;
-				left = rhs.left;
-				right = rhs.right;
-				parent = rhs.parent;
-				is_left_child = rhs.is_left_child;
-				color = rhs.color;
-				return *this;
-			}
+			// node & operator=(const node &rhs)
+			// {
+			// 	// key = rhs.key;
+			// 	value = rhs.value;
+			// 	left = rhs.left;
+			// 	right = rhs.right;
+			// 	parent = rhs.parent;
+			// 	is_left_child = rhs.is_left_child;
+			// 	color = rhs.color;
+			// 	return *this;
+			// }
 			
 	};
 	
@@ -241,15 +245,21 @@ namespace ft
 
 			/* ------------- constructors ------------- */
 			red_black_tree(const Compare &comp, const allocator_type &alloc = allocator_type())
-				: _root(NULL), _size(0), _compare(comp), _node_allocator(alloc) { }
+				: _root(NULL), _size(0), _compare(comp), _node_allocator(alloc)
+			{
+				_nil_node = init_nil_node();
+			}
 
 			red_black_tree(const red_black_tree &rhs)
-				: _root(NULL), _size(0), _compare(rhs._compare), _node_allocator(rhs._node_allocator)
+				: _nil_node(NULL), _root(NULL), _size(0), _compare(rhs._compare), _node_allocator(rhs._node_allocator)
 			{
 				*this = rhs;
 			}
 
-			~red_black_tree() { }
+			~red_black_tree()
+			{
+				clear(_root);
+			}
 
 			red_black_tree & operator=(const red_black_tree &rhs)
 			{
@@ -258,6 +268,16 @@ namespace ft
 				_node_allocator = rhs._node_allocator;
 				_size = rhs._size;
 				return *this;
+			}
+
+			iterator begin()
+			{
+				return iterator(get_minimum_value());
+			}
+
+			iterator end()
+			{
+				return iterator(_nil_node);
 			}
 
 			bool empty( void ) const
@@ -269,7 +289,7 @@ namespace ft
 			{
 				node_pointer duplicate = tree_contains_value(value);
 				
-				if (duplicate)
+				if (duplicate && duplicate != _nil_node)
 					return ft::make_pair(iterator(duplicate), false);
 
 				node_pointer new_node = create_node(value);
@@ -278,10 +298,13 @@ namespace ft
 					_root = new_node;
 					_root->color = black;
 					_size++;
+					attach_nil_node();
 				}
 				else
 				{
+					detach_nil_node();
 					add(_root, new_node);
+					attach_nil_node();
 					_size++;
 				}
 				return ft::make_pair(iterator(new_node), true);
@@ -306,6 +329,23 @@ namespace ft
 			}
 
 		private:
+			node_pointer	_nil_node;
+			node_pointer	_root;
+			size_type		_size;
+			value_compare	_compare;
+			node_allocator	_node_allocator;
+		
+			node_pointer init_nil_node()
+			{
+				_nil_node = create_node(value_type());
+				_nil_node->parent = _root;
+				_nil_node->right = NULL;
+				_nil_node->left = NULL;
+				_nil_node->is_left_child = false;
+				_nil_node->color = black;
+				return _nil_node;
+			}
+
 			node_pointer create_node(const value_type &value)
 			{
 				node_pointer tmp = _node_allocator.allocate(1);
@@ -359,9 +399,11 @@ namespace ft
 
 			void check_color(node_pointer node)
 			{
+				if (!node)
+					return ;
 				if (node == _root)
 					return ;
-				if (node->color == red && node->parent->color == red)
+				if (node && node->color == red && node->parent->color == red)
 					correct_tree(node);
 				check_color(node->parent);
 			}
@@ -522,14 +564,59 @@ namespace ft
 					lhs_black_nodes++;
 				return lhs_black_nodes;
 			}
-		
-		private:
-			node_pointer	_root;
-			size_type		_size;
-			value_compare	_compare;
-			node_allocator	_node_allocator;
 
+			node_pointer get_minimum_value()
+			{
+				node_pointer tmp = _root;
+				
+				while (tmp && tmp->left)
+					tmp = tmp->left;
+				return tmp;
+			}
+
+			node_pointer get_maximum_value()
+			{
+				node_pointer tmp = _root;
+				
+				while (tmp && tmp->right && tmp->right != _nil_node)
+					tmp = tmp->right;
+				return tmp;
+			}
+		
+			void attach_nil_node()
+			{
+				node_pointer tmp = get_maximum_value();
+
+				if (tmp && tmp != _nil_node)
+				{
+					tmp->right = _nil_node;
+					_nil_node->parent = tmp;
+				}
+			}
+
+			void detach_nil_node()
+			{
+				node_pointer tmp = get_maximum_value();
+
+				if (tmp && tmp != _nil_node)
+				{
+					tmp->right = NULL;
+					_nil_node->parent = NULL;
+				}
+			}
 			
+			void clear(node_pointer current)
+			{
+				if (!current)
+					return ;
+				if (current->left)
+					clear(current->left);
+				if (current->right)
+					clear(current->right);
+				_node_allocator.destroy(current);
+				_node_allocator.deallocate(current, 1);
+				current = NULL;
+			}
 	};
 
 	
