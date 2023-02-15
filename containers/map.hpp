@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 10:36:24 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/15 16:35:45 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/15 18:26:18 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,13 +83,14 @@ namespace ft
 
 			/* ------------- constructors ------------- */
 			explicit map(const Compare& comp = key_compare(), const Allocator& alloc = allocator_type())
-				: tree(comp, alloc), compare(comp), allocator(alloc) { }
+				: tree(value_compare(comp), alloc), compare(comp), allocator(alloc) { }
 
-			// template <class InputIt>
-			// map(InputIt first, InputIt last, const Compare& comp = Compare(), const Allocator& alloc = Allocator())
-			// {
-				
-			// }
+			template <class InputIt>
+			map(InputIt first, InputIt last, const Compare& comp = Compare(), const Allocator& alloc = Allocator())
+				: tree(value_compare(comp), alloc), compare(comp), allocator(alloc)
+			{
+				tree.insert(first, last);
+			}
 
 			map(const map& rhs)
 			{
@@ -114,15 +115,23 @@ namespace ft
 			
 			/* ------------- element access ------------- */
 
-			// mapped_type& at(const key_type& key)
-			// {
-
-			// }
-			
-			// const mapped_type& at(const key_type& key) const
-			// {
+			mapped_type& at(const key_type& key)
+			{
+				iterator node = find(key);
 				
-			// }
+				if (node == end())
+					throw std::out_of_range("map:at");
+				return (*node).second;
+			}
+			
+			const mapped_type& at(const key_type& key) const
+			{
+				const_iterator node = find(key);
+				
+				if (node == end())
+					throw std::out_of_range("map:at");
+				return (*node).second;
+			}
 
 			mapped_type& operator[](const key_type& key)
 			{

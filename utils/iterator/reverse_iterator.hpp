@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 15:18:10 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/07 16:16:03 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/15 16:46:53 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ namespace ft
 			reverse_iterator(const reverse_iterator& __x) : current(__x.current) { }
 			
 			template <class _Iter>
-				reverse_iterator(const reverse_iterator<_Iter>& __x)
+			reverse_iterator(const reverse_iterator<_Iter>& __x)
 				: current(__x.base()) { }
 
 			~reverse_iterator() { }
