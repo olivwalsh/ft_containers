@@ -6,12 +6,14 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 13:54:52 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/15 15:28:37 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/15 16:03:35 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RED_BLACK_TREE_HPP
 # define RED_BLACK_TREE_HPP
+
+# include "type_traits.hpp"
 
 /*
 	The rules:
@@ -386,10 +388,13 @@ namespace ft
 
 			red_black_tree & operator=(const red_black_tree &rhs)
 			{
+				clear();
 				_compare = rhs._compare;
-				_root = rhs._root;
 				_node_allocator = rhs._node_allocator;
-				_size = rhs._size;
+				if (!_nil_node)
+					_root = init_nil_node();
+				if (!rhs.empty())
+					insert(rhs.begin(), rhs.end());
 				return *this;
 			}
 
@@ -468,6 +473,13 @@ namespace ft
 					_size++;
 				}
 				return ft::make_pair(iterator(new_node), true);
+			}
+
+			template <class InputIt>
+			void insert(InputIt first, InputIt last, typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type* = 0)
+			{
+				for (; first != last; ++first)
+					insert(*first);
 			}
 
 			size_type get_height()
@@ -788,7 +800,7 @@ namespace ft
 				return lhs_black_nodes;
 			}
 
-			node_pointer get_minimum_value()
+			node_pointer get_minimum_value() const
 			{
 				node_pointer tmp = _root;
 				

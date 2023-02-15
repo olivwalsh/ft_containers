@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 10:36:24 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/15 15:33:03 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/15 15:57:21 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include "bidirectional_iterator.hpp"
 # include "red_black_tree.hpp"
 # include "algorithm.hpp"
+# include "type_traits.hpp"
 
 namespace ft
 {
@@ -207,11 +208,11 @@ namespace ft
 				return insert(value).first;
 			}
 
-			// template <class InputIt>
-			// void insert(InputIt first, InputIt last)
-			// {
-				
-			// }
+			template <class InputIt>
+			void insert(InputIt first, InputIt last, typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type* = 0)
+			{
+				tree.insert(first, last);
+			}
 
 			// iterator erase(iterator pos)
 			// {
@@ -238,7 +239,10 @@ namespace ft
 
 			size_type count(const Key& key) const
 			{
-				if 
+				ft::pair<const_iterator, const_iterator> tmp = equal_range(key);
+
+				size_type count = std::distance(tmp.first, tmp.second); 
+				return count;
 			}
 			
 			iterator find(const Key& key)
@@ -251,35 +255,51 @@ namespace ft
 				
 			// }
 
-			// ft::pair<iterator, iterator> equal_range(const Key& key)
-			// {
+			ft::pair<iterator, iterator> equal_range(const Key& key)
+			{
+				return ft::make_pair(lower_bound(key), upper_bound(key));
+			}
 
-			// }
-
-			// ft::pair<const_iterator, const_iterator> equal_range(const Key& key) const
-			// {
-				
-			// }
+			ft::pair<const_iterator, const_iterator> equal_range(const Key& key) const
+			{
+				return ft::make_pair(lower_bound(key), upper_bound(key));
+			}
 			
 			iterator lower_bound(const Key& key)
 			{
-				return tree.lower_bound(get_value(key));
+				iterator it = begin();
+				
+				while (it != end() && it->first < key)
+					it++;
+				return it;
 			}
 
-			// const_iterator lower_bound(const Key& key) const
-			// {
+			const_iterator lower_bound(const Key& key) const
+			{
+				const_iterator it = begin();
 				
-			// }
+				while (it != end() && it->first < key)
+					it++;
+				return it;
+			}
 
-			// iterator upper_bound(const Key& key)
-			// {
+			iterator upper_bound(const Key& key)
+			{
+				iterator it = begin();
 				
-			// }
+				while (it != end() && it->first <= key)
+					it++;
+				return it;
+			}
 
-			// const_iterator upper_bound(const Key& key) const
-			// {
+			const_iterator upper_bound(const Key& key) const
+			{
+				const_iterator it = begin();
 				
-			// }
+				while (it != end() && it->first <= key)
+					it++;
+				return it;				
+			}
 
 			/* ------------- observers ------------- */
 
