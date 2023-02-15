@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 13:54:52 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/15 11:53:46 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/15 15:28:37 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -334,7 +334,7 @@ namespace ft
 	template <typename Key,
 				typename Value,
 				typename Compare = std::less<Key>,
-				typename Allocator = std::allocator<node<Value> >
+				typename Allocator = std::allocator<Value>
 				>
 	class red_black_tree
 	{
@@ -379,6 +379,9 @@ namespace ft
 			~red_black_tree()
 			{
 				clear(_root);
+				_node_allocator.destroy(_nil_node);
+				_node_allocator.deallocate(_nil_node, 1);
+				_nil_node = NULL;
 			}
 
 			red_black_tree & operator=(const red_black_tree &rhs)
@@ -393,6 +396,12 @@ namespace ft
 			void clear()
 			{
 				clear(_root);
+				_nil_node->parent = _root;
+				_nil_node->right = NULL;
+				_nil_node->left = NULL;
+				_nil_node->is_left_child = false;
+				_nil_node->color = black;
+				_root = _nil_node;
 				_size = 0;
 			}
 
@@ -440,10 +449,9 @@ namespace ft
 			ft::pair<iterator, bool> insert(const value_type& value)
 			{
 				node_pointer duplicate = find(value);
-				
 				if (duplicate != _nil_node)
 					return ft::make_pair(iterator(duplicate), false);
-
+			
 				node_pointer new_node = create_node(value);
 				if (_root == _nil_node)
 				{
@@ -482,10 +490,11 @@ namespace ft
 
 			node_pointer find(const value_type& value)
 			{
-				node_pointer tmp = lower_bound(value);
-				
+				node_pointer	tmp = lower_bound(value);
+
 				if (tmp == _nil_node || _compare(value, tmp->value))
 					return _nil_node;
+
 				return tmp;
 			}
 
@@ -821,6 +830,8 @@ namespace ft
 			
 			void clear(node_pointer current)
 			{
+				if (current == _nil_node)
+					return ;
 				if (!current)
 					return ;
 				if (current->left)

@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 10:36:24 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/15 11:09:31 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/15 15:33:03 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ namespace ft
 			
 			typedef				Key 										key_type;
 			typedef				T											mapped_type;
-			typedef				ft::pair<const Key, T>							value_type;	
+			typedef				ft::pair<const Key, T>						value_type;	
 			typedef				Compare										key_compare;
 			typedef				Allocator									allocator_type;
 			
@@ -125,7 +125,7 @@ namespace ft
 
 			mapped_type& operator[](const key_type& key)
 			{
-				return 	(*(insert(get_value(key)).first)).second; 
+				return (*(insert(get_value(key)).first)).second; 
 			}
 			
 			/* ------------- iterators ------------- */
@@ -201,10 +201,11 @@ namespace ft
 				return tree.insert(value);
 			}
 
-			// iterator insert(iterator pos, const value_type& value)
-			// {
-				
-			// }
+			iterator insert(iterator pos, const value_type& value)
+			{
+				(void)pos;
+				return insert(value).first;
+			}
 
 			// template <class InputIt>
 			// void insert(InputIt first, InputIt last)
@@ -235,15 +236,15 @@ namespace ft
 			
 			/* ------------- lookup ------------- */
 
-			// size_type count(const Key& key) const
-			// {
-				
-			// }
+			size_type count(const Key& key) const
+			{
+				if 
+			}
 			
-			// iterator find(const Key& key)
-			// {
-				
-			// }
+			iterator find(const Key& key)
+			{
+				return tree.find(get_value(key));	
+			}
 
 			// const_iterator find(const Key& key) const
 			// {
@@ -260,10 +261,10 @@ namespace ft
 				
 			// }
 			
-			// iterator lower_bound(const Key& key)
-			// {
-			// 	return 
-			// }
+			iterator lower_bound(const Key& key)
+			{
+				return tree.lower_bound(get_value(key));
+			}
 
 			// const_iterator lower_bound(const Key& key) const
 			// {
