@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 10:36:24 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/14 16:00:37 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/15 11:09:31 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,9 @@ namespace ft
 				friend class map<Key, T, Compare, Allocator>;
 				
 				protected:
-					Compare comp;
+					key_compare comp;
 
-					value_compare(Compare c) : comp(c) { }
+					value_compare(key_compare c) : comp(c) { }
 				
 				public:
 					bool operator()(const value_type & x, const value_type & y) const
@@ -171,7 +171,7 @@ namespace ft
 			}
 		
 			
-			/* ------------- cpacity ------------- */
+			/* ------------- capacity ------------- */
 
 			bool empty() const
 			{
