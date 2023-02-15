@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 13:54:52 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/15 16:03:35 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/15 16:12:07 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -450,6 +450,26 @@ namespace ft
 				return _node_allocator.max_size();
 			}
 			
+			void swap(red_black_tree &other)
+			{
+				node_pointer	tmp_nil_node = _nil_node;
+				node_pointer	tmp_root = _root;
+				size_type		tmp_size = _size;
+				value_compare	tmp_compare = _compare;
+				node_allocator	tmp_node_allocator = _node_allocator;
+
+				_nil_node = other._nil_node;
+				_root = other._root;
+				_size = other._size;
+				_compare = other._compare;
+				_node_allocator = other._node_allocator;
+				
+				other._nil_node = tmp_nil_node;
+				other._root = tmp_root;
+				other._size = tmp_size;
+				other._compare = tmp_compare;
+				other._node_allocator = tmp_node_allocator;
+			}
 
 			ft::pair<iterator, bool> insert(const value_type& value)
 			{

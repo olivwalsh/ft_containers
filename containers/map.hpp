@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 10:36:24 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/15 15:57:21 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/15 16:35:45 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,22 +153,26 @@ namespace ft
 
 			reverse_iterator rbegin()
 			{
-				return tree.rbegin();
+				if (empty())
+					return rend();
+				return reverse_iterator(end());
 			}
 
 			const_reverse_iterator rbegin() const
 			{
-				return tree.rbegin();
+				if (empty())
+					return rend();
+				return reverse_iterator(end());
 			}
 
 			reverse_iterator rend()
 			{
-				return tree.rend();
+				return reverse_iterator(begin());
 			}
 
 			const_reverse_iterator rend() const
 			{
-				return tree.rend();
+				return reverse_iterator(begin());
 			}
 		
 			
@@ -247,13 +251,13 @@ namespace ft
 			
 			iterator find(const Key& key)
 			{
-				return tree.find(get_value(key));	
+				return iterator(tree.find(get_value(key)));
 			}
 
-			// const_iterator find(const Key& key) const
-			// {
-				
-			// }
+			const_iterator find(const Key& key) const
+			{
+				return const_iterator(tree.find(get_value(key)));
+			}
 
 			ft::pair<iterator, iterator> equal_range(const Key& key)
 			{
@@ -305,12 +309,12 @@ namespace ft
 
 			key_compare key_comp() const
 			{
-				return compare;
+				return key_compare();
 			}
 
 			value_compare value_comp() const
 			{
-				return value_compare(tree.key_comp());
+				return value_compare(key_comp());
 			}
 		
 		private:
@@ -338,25 +342,25 @@ namespace ft
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
-	bool operator>(const ft::map<Key, T, Compare, Alloc>& lhs, const ft::map<Key, T, Compare, Alloc>& rhs)
+	bool operator<(const ft::map<Key, T, Compare, Alloc>& lhs, const ft::map<Key, T, Compare, Alloc>& rhs)
 	{
 		return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
-	bool operator>=(const ft::map<Key, T, Compare, Alloc>& lhs, const ft::map<Key, T, Compare, Alloc>& rhs)
-	{
-		return !(lhs < rhs);
-	}
-
-	template <class Key, class T, class Compare, class Alloc>
-	bool operator<(const ft::map<Key, T, Compare, Alloc>& lhs, const ft::map<Key, T, Compare, Alloc>& rhs)
-	{
-		return rhs > lhs;
-	}
-
-	template <class Key, class T, class Compare, class Alloc>
 	bool operator<=(const ft::map<Key, T, Compare, Alloc>& lhs, const ft::map<Key, T, Compare, Alloc>& rhs)
+	{
+		return !(rhs < lhs);
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	bool operator>(const ft::map<Key, T, Compare, Alloc>& lhs, const ft::map<Key, T, Compare, Alloc>& rhs)
+	{
+		return rhs < lhs;
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	bool operator>=(const ft::map<Key, T, Compare, Alloc>& lhs, const ft::map<Key, T, Compare, Alloc>& rhs)
 	{
 		return !(lhs < rhs);
 	}
