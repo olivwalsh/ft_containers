@@ -48,13 +48,13 @@ int main ()
 
 	it=mymap.find('b');
 	std::cout << "found b\n";
-	// mymap.erase (it);                   // erasing by iterator
-	// std::cout << "erase iterator to b\n";
+	mymap.erase (it);                   // erasing by iterator
+	std::cout << "erase iterator to b\n";
 	mymap.erase ('c');                  // erasing by key
 	std::cout << "erase by key 'c'\n";
-	// it=mymap.find ('e');
-	// std::cout << "erase by range 'e' to end\n";
-	// mymap.erase ( it, mymap.end() );    // erasing by range
+	it=mymap.find ('e');
+	std::cout << "erase by range 'e' to end\n";
+	mymap.erase ( it, mymap.end() );    // erasing by range
 
 	std::cout << " display :\n";
 	// show content:

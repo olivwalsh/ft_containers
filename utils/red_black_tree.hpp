@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 13:54:52 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/17 15:03:05 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/17 15:28:45 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -589,9 +589,6 @@ namespace ft
 					_erase(tmp);
 					attach_nil_node();
 					_size--;
-					_node_allocator.destroy(tmp);
-					_node_allocator.deallocate(tmp, 1);
-					tmp = NULL;
 				}
 				return 1;
 			}
@@ -607,7 +604,7 @@ namespace ft
 			{
 				node_pointer successor = to_delete->right;
 
-				while (successor)
+				while (successor && successor->left)
 					successor = successor->left;
 				return successor;
 			}
@@ -745,11 +742,13 @@ namespace ft
 					successor->color = original_color;
 					if (original_color == black)
 						delete_fix(successor_of_successor);
+					destroy_node(to_delete);
 					return ;
 				}
 				transplant(to_delete, successor);
 				if (original_color == black)
 					delete_fix(successor);
+				destroy_node(to_delete);
 				
 			}
 		
@@ -771,7 +770,14 @@ namespace ft
 				_node_allocator.construct(tmp, value);
 				return tmp;
 			}
-			
+
+			void destroy_node(node_pointer node)
+			{
+				_node_allocator.destroy(node);
+				_node_allocator.deallocate(node, 1);
+				node = NULL;
+			}
+				
 			node_pointer tree_contains_value(const value_type& value)
 			{
 				node_pointer tmp = _root;
