@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 10:36:24 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/17 15:26:07 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/17 16:09:00 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ namespace ft
 			}
 
 			map(const map& rhs)
+				: tree(value_compare(rhs.compare), rhs.allocator), compare(rhs.compare), allocator(rhs.allocator)
 			{
 				*this = rhs;
 			}
@@ -278,7 +279,7 @@ namespace ft
 
 			const_iterator find(const Key& key) const
 			{
-				return const_iterator(tree.find(get_value(key)));
+				return iterator(tree.find(get_value(key)));
 			}
 
 			ft::pair<iterator, iterator> equal_range(const Key& key)
@@ -344,7 +345,7 @@ namespace ft
 			key_compare		compare;
 			allocator_type	allocator;
 
-			value_type get_value(const key_type &key)
+			value_type get_value(const key_type &key) const
 			{
 				return ft::make_pair(key, mapped_type());	
 			}

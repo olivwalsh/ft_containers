@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 13:54:52 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/17 15:28:45 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/17 16:14:10 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -520,7 +520,7 @@ namespace ft
 				return right_height;
 			}
 
-			node_pointer find(const value_type& value)
+			node_pointer find(value_type value) const
 			{
 				node_pointer	tmp = lower_bound(value);
 
@@ -534,7 +534,7 @@ namespace ft
 			 *  @return  node pointer pointing to first element equal to or greater
 			 *           than value, or end().
 			 **/
-			node_pointer lower_bound(const value_type& value)
+			node_pointer lower_bound( value_type value) const
 			{
 				node_pointer tmp = _root;
 				node_pointer lower = _nil_node;
@@ -556,7 +556,7 @@ namespace ft
 			 *  @return  node pointer pointing to first element greater
 			 *           than value, or end().
 			 **/
-			node_pointer upper_bound(const value_type& value)
+			node_pointer upper_bound( value_type value) const
 			{
 				node_pointer tmp = _root;
 				node_pointer upper = _nil_node;
@@ -734,7 +734,7 @@ namespace ft
 					successor = get_successor(to_delete);
 					node_pointer successor_of_successor = successor->right;
 					original_color = successor->color;
-					if (successor == to_delete->right || successor == to_delete->left)
+					if (successor_of_successor && (successor == to_delete->right || successor == to_delete->left))
 						successor_of_successor->parent = successor;
 					else
 						transplant(successor, successor->right);
