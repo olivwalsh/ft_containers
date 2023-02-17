@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 10:36:24 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/17 16:09:00 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/17 18:35:47 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <functional>
 # include <memory>
+# include <iostream>
 # include "reverse_iterator.hpp"
 # include "pair.hpp"
 # include "bidirectional_iterator.hpp"

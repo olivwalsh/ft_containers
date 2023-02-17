@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 10:36:26 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/03 15:14:14 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/17 18:33:49 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ namespace ft
 				return c.back();
 			}
 
-			const reference top() const
+			const_reference top() const
 			{
 				return c.back();
 			}
