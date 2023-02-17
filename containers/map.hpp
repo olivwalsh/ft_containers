@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 10:36:24 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/15 18:26:18 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/17 11:40:43 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -237,10 +237,10 @@ namespace ft
 
 			// }
 
-			// size_type erase(const Key& key)
-			// {
-				
-			// }
+			size_type erase(const Key& key)
+			{
+				return tree.erase(get_value(key));
+			}
 			
 			void swap(map& other)
 			{
