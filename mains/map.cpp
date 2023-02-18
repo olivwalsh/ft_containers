@@ -31,19 +31,19 @@ void print(ft::map<Key, T>& lst)
 
 int main ()
 {
-	ft::map<char,int> mymap;
-	ft::map<char,int>::iterator it;
+	ft::map<int,int> mymap;
+	ft::map<int,int>::iterator it;
 
 	// insert some values:
-	mymap['a']=10;
-	mymap['b']=20;
-	mymap['c']=30;
-	mymap['d']=40;
-	mymap['e']=50;
-	mymap['f']=60;
+	mymap[3]=10;
+	mymap[1]=20;
+	mymap[5]=30;
+	mymap[7]=40;
+	// mymap['e']=50;
+	// mymap['f']=60;
 
 	mymap.print();
-	it=mymap.find('b');
+	// it=mymap.find('b');
 	// mymap.erase (it);                   // erasing by iterator
 	// std::cout << "erase iterator to b\n";
 	// mymap.print();

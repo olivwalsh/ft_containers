@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 13:54:52 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/18 16:23:42 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/18 16:34:25 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -323,7 +323,7 @@ namespace ft
 					}
 					return true;
 				}
-				if (node->color == black)
+				if (node != _nil_node && node->color == black)
 					black_count++;
 				return check_black_nodes(node->left, black_count, path_black_count) && check_black_nodes(node->right, black_count, path_black_count);
 			}
@@ -648,8 +648,10 @@ namespace ft
 				
 				if (aunt)
 					aunt->color = black;
-				node->parent->parent->color = red;
-				node->parent->color = black;
+				if (node->parent && node->parent->parent && node->parent->parent != _root)
+					node->parent->parent->color = red;
+				if (node->parent)
+					node->parent->color = black;
 			}
 			
 			void correct_tree(node_pointer node)
