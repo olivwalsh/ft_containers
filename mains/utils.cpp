@@ -6,13 +6,13 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:47:07 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/06 18:34:40 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/18 16:11:34 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#define RED(s) "\033[1;31m" s "\033[m"
+// #define RED(s) "\033[1;31m" s "\033[m"
 #define GREEN(s) "\033[1;32m" s "\033[m"
-#define TITLE(s) "\033[3;32m" s "\033[m"
+// #define TITLE(s) "\033[3;32m" s "\033[m"
 
 #define nl() std::cout << std::endl;
 

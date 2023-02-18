@@ -6,14 +6,25 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 13:54:52 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/18 12:27:46 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/18 16:23:42 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RED_BLACK_TREE_HPP
 # define RED_BLACK_TREE_HPP
 
+# include "rbt_iterator.hpp"
 # include "type_traits.hpp"
+# include <iostream>
+# include <string>
+# define RED "\033[1;31m"
+# define BLACK "\033[1;30m"
+# define RESET "\033[m"
+#define GREEN(s) "\033[1;32m" s "\033[m"
+# include <queue>
+# include <iomanip>
+# include <cmath>
+# include "stack.hpp"
 
 /*
 	The rules:
@@ -29,306 +40,12 @@
 	
 */
 
-# define black	true
-# define red	false
-
 namespace ft
 {
 
 	/* ------------- NODE (RED BLACK TREE) CLASS ------------- */
 
-	template <typename Value>
-	class node
-	{
-		public:
-			// typedef Key					key_type;
-			typedef Value				value_type;
-			typedef node<Value>			*node_pointer;
-			
-			// key_type					key;
-			value_type					value;
-			node_pointer				left;
-			node_pointer				right;
-			node_pointer				parent;
-			bool						is_left_child;
-			bool						color;
-
-
-			node()
-				: value(0), left(NULL), right(NULL), parent(NULL), is_left_child(false), color(red) { }
-			node(const value_type &value)
-				: value(value), left(NULL), right(NULL), parent(NULL), is_left_child(false), color(red) { }
-			node(value_type val, node_pointer l, node_pointer r, node_pointer p, bool is_l, bool c)
-				: value(val), left(l), right(r), parent(p), is_left_child(is_l), color(c) { }
-			
-			// node( const node & lhs)
-			// {
-			// 	*this = lhs;
-			// }
-			
-			~node() { }
-
-			// node & operator=(const node &rhs)
-			// {
-			// 	// key = rhs.key;
-			// 	value = rhs.value;
-			// 	left = rhs.left;
-			// 	right = rhs.right;
-			// 	parent = rhs.parent;
-			// 	is_left_child = rhs.is_left_child;
-			// 	color = rhs.color;
-			// 	return *this;
-			// }
-			
-	};
 	
-	template <typename T>
-	class rbt_iterator
-	{
-		public:
-			typedef	T 									value_type;
-			typedef T&									reference;
-			typedef T*									pointer;
-			typedef std::bidirectional_iterator_tag		iterator_category;
-			typedef std::ptrdiff_t 						difference_type;
-
-			typedef node<T>								node_type;
-			typedef node<const T>						const_node_type;
-			typedef node<T>								*node_pointer;
-			typedef node<const T>						*const_node_pointer;
-			
-			typedef rbt_iterator<T>						iterator;
-			typedef rbt_iterator<const T>				const_iterator;
-
-
-			rbt_iterator() : node() { }
-			
-			explicit rbt_iterator(const node_pointer n) : node(n) { }
-
-			template <typename _T>
-			rbt_iterator(const rbt_iterator<_T> &src) : node(NULL)
-			{
-				*this = src;
-			}
-
-			~rbt_iterator() { }
-
-			rbt_iterator &operator=(const rbt_iterator<T> &rhs)
-			{
-				node = rhs.node;
-				return *this;
-			}
-
-			node_pointer base() const
-			{
-				return node;
-			}
-
-			reference operator*() const
-			{
-				return node->value;	
-			}
-
-			pointer operator->() const
-			{
-				return &node->value;
-			}
-
-			rbt_iterator &operator++()
-			{
-				if (node && node->right)
-				{
-					node = node->right;
-					while (node && node->left)
-						node = node->left;
-				}
-				else
-				{
-					node_pointer tmp = node->parent;
-					while (tmp && node == tmp->right)
-					{
-						node = tmp;
-						tmp = tmp->parent;
-					}
-					if (node && node->right != tmp)
-						node = tmp;
-				}
-				return *this;
-			}
-
-			rbt_iterator operator++(int)
-			{
-				rbt_iterator tmp = *this;
-				++(*this);
-				return tmp;
-			}
-
-			rbt_iterator &operator--()
-			{
-				if (node && node->color == red && node->parent && node->parent->parent == node)
-					node = node->right;
-				else if (node && node->left)
-				{
-					node_pointer tmp = node->left;
-					while (tmp && tmp->right)
-						tmp = tmp->right;
-					node = tmp;
-				}
-				else
-				{
-					node_pointer tmp = node->parent;
-					while (tmp && node == tmp->left)
-					{
-						node = tmp;
-						tmp = tmp->parent;
-					}
-					node = tmp;
-				}
-				return *this;
-			}
-
-			rbt_iterator operator--(int)
-			{
-				rbt_iterator tmp = *this;
-				--(*this);
-				return tmp;
-			}
-
-			bool operator==(const rbt_iterator& x) const
-			{
-				return node == x.node;
-			}
-
-			bool operator!=(const rbt_iterator& x) const
-			{
-				return node != x.node;
-			}
-
-			node_pointer								node;
-		
-	};
-
-	template <typename T>
-	class rbt_const_iterator
-	{
-		public:
-			typedef	T 									value_type;
-			typedef const T&							reference;
-			typedef const T*							pointer;
-			typedef std::bidirectional_iterator_tag		iterator_category;
-			typedef std::ptrdiff_t 						difference_type;
-
-			typedef node<T>								node_type;
-			typedef node<const T>						const_node_type;
-			typedef node<T>								*node_pointer;
-			typedef node<const T>						*const_node_pointer;
-			
-			typedef rbt_iterator<T>						iterator;
-			typedef rbt_const_iterator<T>				const_iterator;
-
-
-			rbt_const_iterator() : node(NULL) { }
-			
-			explicit rbt_const_iterator(const node_pointer n) : node(n) { }
-
-			rbt_const_iterator(const iterator &src) : node(src.node) { }
-
-			~rbt_const_iterator() { }
-
-			// rbt_const_iterator &operator=(const rbt_const_iterator<T> &rhs)
-			// {
-			// 	node = rhs.base();
-			// 	return *this;
-			// }
-
-			node_pointer base() const
-			{
-				return node;
-			}
-
-			reference operator*() const
-			{
-				return node->value;	
-			}
-
-			pointer operator->() const
-			{
-				return &node->value;
-			}
-
-			rbt_const_iterator &operator++()
-			{
-				if (node && node->right)
-				{
-					node = node->right;
-					while (node && node->left)
-						node = node->left;
-				}
-				else
-				{
-					node_pointer tmp = node->parent;
-					while (tmp && node == tmp->right)
-					{
-						node = tmp;
-						tmp = tmp->parent;
-					}
-					if (node && node->right != tmp)
-						node = tmp;
-				}
-				return *this;
-			}
-
-			rbt_const_iterator operator++(int)
-			{
-				rbt_const_iterator tmp = *this;
-				++(*this);
-				return tmp;
-			}
-
-			rbt_const_iterator &operator--()
-			{
-				if (node && node->color == red && node->parent && node->parent->parent == node)
-					node = node->right;
-				else if (node && node->left)
-				{
-					node_pointer tmp = node->left;
-					while (tmp && tmp->right)
-						tmp = tmp->right;
-					node = tmp;
-				}
-				else
-				{
-					node_pointer tmp = node->parent;
-					while (tmp && node == tmp->left)
-					{
-						node = tmp;
-						tmp = tmp->parent;
-					}
-					node = tmp;
-				}
-				return *this;
-			}
-
-			rbt_const_iterator operator--(int)
-			{
-				rbt_const_iterator tmp = *this;
-				--(*this);
-				return tmp;
-			}
-
-			bool operator==(const rbt_const_iterator& x) const
-			{
-				return node == x.node;
-			}
-
-			bool operator!=(const rbt_const_iterator& x) const
-			{
-				return node != x.node;
-			}
-
-			node_pointer								node;
-		
-	};
 
 	/* ------------- RED BLACK TREE CLASS ------------- */
 
@@ -593,12 +310,96 @@ namespace ft
 				return 1;
 			}
 
+			bool check_black_nodes(node_pointer node, int black_count, int& path_black_count)
+			{
+				if (!node)
+				{
+					if (path_black_count == -1)
+						path_black_count = black_count;
+					else if (path_black_count != black_count)
+					{
+						std::cout << "There isn't the same amount of black nodes in each path from root to null!" << std::endl;
+						return false;
+					}
+					return true;
+				}
+				if (node->color == black)
+					black_count++;
+				return check_black_nodes(node->left, black_count, path_black_count) && check_black_nodes(node->right, black_count, path_black_count);
+			}
+
+			bool check_consecutive_red(node_pointer node)
+			{
+				if (!node)
+					return true;
+				if (node->color == red && node->parent && node->parent->color == red)
+				{
+					std::cout << "There are two consecutive red nodes in the tree!" << std::endl;
+					return false;
+				}
+				return check_consecutive_red(node->left) && check_consecutive_red(node->right);
+			}
+			
+			void check_rules_violation()
+			{
+				bool violation = false;
+				
+				// null nodes are black + insertions are red. 
+				if (_root->color == red)
+				{
+					violation = true;
+					std::cout << "Root is not black as supposed to!" << std::endl;
+				}
+				int path_black_count = -1;
+				if (!check_black_nodes(_root, 0, path_black_count))
+					violation = true;
+				if (!check_consecutive_red(_root))
+					violation = true;
+				if (violation)
+					std::cout << RED << "One of the red-black tree rules has been violated" << RESET << std::endl;
+				else
+					std::cout << GREEN("Tree is balanced!") << std::endl;
+			}
+			
+			void printTree()
+			{
+				if (_root) 
+				{
+					printHelper("", _root, true);
+					std::cout << std::endl;
+				}
+				check_rules_violation();
+			}
+
+			void printHelper(std::string prefix, node_pointer node, bool is_left)
+			{
+				if (node)
+				{
+					printHelper( prefix + "    " , node->right, false);
+					std::cout << prefix;
+					std::cout << (is_left ? "└──" : "┌──" );
+					if (node != _nil_node)
+					{
+						if (node->color == red)
+							std::cout << RED;
+						else
+							std::cout << BLACK;
+						std::cout << " " << node->value.first << RESET << std::endl;
+					}
+					else
+						std::cout << " #" << std::endl;
+					printHelper( prefix + (is_left ? "    " : "│   "), node->left, true);
+				}
+			}
+
+			
 		private:
 			node_pointer	_nil_node;
 			node_pointer	_root;
 			size_type		_size;
 			value_compare	_compare;
 			node_allocator	_node_allocator;
+
 
 			node_pointer get_successor(node_pointer to_delete)
 			{
@@ -718,8 +519,6 @@ namespace ft
 					node->right->parent = new_node;
 			}
 
-			// x = successor of successor
-			// y = successor
 			void _erase(node_pointer to_delete)
 			{
 				bool original_color = to_delete->color;

@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 10:36:24 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/18 12:39:24 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/18 13:41:42 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 # include <iostream>
 # include "reverse_iterator.hpp"
 # include "pair.hpp"
-# include "bidirectional_iterator.hpp"
 # include "red_black_tree.hpp"
 # include "algorithm.hpp"
 # include "type_traits.hpp"
@@ -107,6 +106,11 @@ namespace ft
 				allocator = other.allocator;
 				compare = other.compare;
 				return *this;
+			}
+
+			void print()
+			{
+				tree.printTree();
 			}
 
 			allocator_type get_allocator() const
