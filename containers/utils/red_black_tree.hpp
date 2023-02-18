@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 13:54:52 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/17 16:14:10 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/18 12:27:46 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,21 +136,21 @@ namespace ft
 
 			rbt_iterator &operator++()
 			{
-				if (node->right)
+				if (node && node->right)
 				{
 					node = node->right;
-					while (node->left)
+					while (node && node->left)
 						node = node->left;
 				}
 				else
 				{
 					node_pointer tmp = node->parent;
-					while (node == tmp->right)
+					while (tmp && node == tmp->right)
 					{
 						node = tmp;
 						tmp = tmp->parent;
 					}
-					if (node->right != tmp)
+					if (node && node->right != tmp)
 						node = tmp;
 				}
 				return *this;
@@ -165,19 +165,19 @@ namespace ft
 
 			rbt_iterator &operator--()
 			{
-				if (node->color == red && node->parent->parent == node)
+				if (node && node->color == red && node->parent && node->parent->parent == node)
 					node = node->right;
-				else if (node->left)
+				else if (node && node->left)
 				{
 					node_pointer tmp = node->left;
-					while (tmp->right)
+					while (tmp && tmp->right)
 						tmp = tmp->right;
 					node = tmp;
 				}
 				else
 				{
 					node_pointer tmp = node->parent;
-					while (node == tmp->left)
+					while (tmp && node == tmp->left)
 					{
 						node = tmp;
 						tmp = tmp->parent;
@@ -258,21 +258,21 @@ namespace ft
 
 			rbt_const_iterator &operator++()
 			{
-				if (node->right)
+				if (node && node->right)
 				{
 					node = node->right;
-					while (node->left)
+					while (node && node->left)
 						node = node->left;
 				}
 				else
 				{
 					node_pointer tmp = node->parent;
-					while (node == tmp->right)
+					while (tmp && node == tmp->right)
 					{
 						node = tmp;
 						tmp = tmp->parent;
 					}
-					if (node->right != tmp)
+					if (node && node->right != tmp)
 						node = tmp;
 				}
 				return *this;
@@ -287,19 +287,19 @@ namespace ft
 
 			rbt_const_iterator &operator--()
 			{
-				if (node->color == red && node->parent->parent == node)
+				if (node && node->color == red && node->parent && node->parent->parent == node)
 					node = node->right;
-				else if (node->left)
+				else if (node && node->left)
 				{
 					node_pointer tmp = node->left;
-					while (tmp->right)
+					while (tmp && tmp->right)
 						tmp = tmp->right;
 					node = tmp;
 				}
 				else
 				{
 					node_pointer tmp = node->parent;
-					while (node == tmp->left)
+					while (tmp && node == tmp->left)
 					{
 						node = tmp;
 						tmp = tmp->parent;
@@ -625,21 +625,22 @@ namespace ft
 					if (node->is_left_child)
 					{
 						node_pointer sibling = node->parent->right;
-						if (sibling->color == red)
+						if (sibling && sibling->color == red)
 						{
 							sibling->color = black;
 							node->parent->color = red;
 							left_rotate(node->parent);
 							sibling = node->parent->right;
 						}
-						if (sibling->left->color == black && sibling->right->color == black)
+						if (sibling && sibling->left && sibling->left->color == black 
+							&& sibling->right && sibling->right->color == black)
 						{
 							sibling->color = red;
 							node = node->parent;
 						}
 						else
 						{
-							if (sibling->right->color == black)
+							if (sibling && sibling->right && sibling->right->color == black)
 							{
 								sibling->left->color = black;
 								sibling->color = red;
@@ -656,21 +657,22 @@ namespace ft
 					else
 					{
 						node_pointer sibling = node->parent->left;
-						if (sibling->color == red)
+						if (sibling && sibling->color == red)
 						{
 							sibling->color = black;
 							node->parent->color = red;
 							right_rotate(node->parent);
 							sibling = node->parent->left;
 						}
-						if (sibling->left->color == black && sibling->right->color == black)
+						if (sibling && sibling->left && sibling->left->color == black
+							&& sibling->right && sibling->right->color == black)
 						{
 							sibling->color = red;
 							node = node->parent;
 						}
 						else
 						{
-							if (sibling->left->color == black)
+							if (sibling && sibling->left && sibling->left->color == black)
 							{
 								sibling->right->color = black;
 								sibling->color = red;

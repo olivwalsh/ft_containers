@@ -13,11 +13,11 @@ CXXFLAGS		=	-Wall -Wextra -Werror
 
 OBJ_DIR			=	obj/
 CONTAINERS_DIR	= 	containers/
-UTILS_DIR		= 	utils/
+UTILS_DIR		= 	$(addprefix $(CONTAINERS_DIR), utils/)
 ITERATOR_DIR	=	$(addprefix $(UTILS_DIR), iterator/)
-SRC_DIR			= 	tests/
+SRC_DIR			= 	mains/
 
-SRC				=	map.cpp utils.cpp
+SRC				=	tricky_erase.cpp utils.cpp
 OBJ				=	$(addprefix $(OBJ_DIR), $(SRC:.cpp=.o))
 
 HEADERS			=	$(addprefix $(UTILS_DIR), type_traits.hpp) \
