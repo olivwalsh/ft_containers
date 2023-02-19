@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 13:54:52 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/19 18:25:04 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/19 21:46:01 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -304,8 +304,8 @@ namespace ft
 				{
 					detach_nil_node();
 					_erase(tmp);
-					// delete_node(tmp);
 					attach_nil_node();
+					_size--;
 				}
 				return 1;
 			}
@@ -365,7 +365,7 @@ namespace ft
 					printHelper("", _root, true);
 					std::cout << std::endl;
 				}
-				// check_rules_violation();
+				check_rules_violation();
 			}
 
 			void printHelper(std::string prefix, node_pointer node, bool is_left)
@@ -425,92 +425,6 @@ namespace ft
 				return node;
 			}
 
-			node_pointer transplant(node_pointer node, node_pointer substitute)
-			{
-				
-				node_pointer tmp = NULL;
-				
-				std::cout << "in transplant: ";
-				if (node)
-					std::cout << "node->value is " << node->value.first;
-				if (substitute)
-					std::cout << " substitute->value is " << substitute->value.first;
-				std::cout << std::endl;
-
-				if (!node->parent)
-					_root = substitute;
-				else
-				{
-					if (node->is_left_child)
-						node->parent->left = substitute;
-					else
-						node->parent->right = substitute;
-				}
-				if (!substitute)
-					return NULL;
-				if (!substitute->right && !substitute->left)
-					tmp = NULL;
-				else if (substitute->right)
-					tmp = substitute->right;
-				else if (substitute->left)
-					tmp = substitute->left;
-				
-				if (substitute && substitute->parent && substitute->is_left_child)
-					substitute->parent->left = tmp;
-				else if (substitute && substitute->parent && !substitute->is_left_child)
-					substitute->parent->right = tmp;
-				if (tmp)
-					tmp->parent = substitute->parent;
-				
-				substitute->parent = node->parent;
-				substitute->is_left_child = node->is_left_child;
-				// printTree();
-				if (node->left != substitute)
-					substitute->left = node->left;
-				if (node->right != substitute)
-					substitute->right = node->right;
-
-				// // printTree();
-				
-				// if (node->left && node->left != substitute)
-				// 	node->left->parent = substitute;
-				// if (node->right && node->right != substitute)
-				// 	node->right->parent = substitute;
-
-				// if (node->parent && node->is_left_child)
-				// 	node->parent->left = tmp;
-				// else if (node->parent && !node->is_left_child)
-				// 	node->parent->right = tmp;
-				// if (tmp)
-				// 	tmp->parent = node->parent;
-				
-				return tmp;
-			}
-
-			node_pointer get_sibling(node_pointer node, node_pointer parent)
-			{
-				if (!node && parent)
-				{
-					
-					if (parent->left)
-						return parent->left;
-					else if (parent->right)
-						return parent->right;
-					else
-						return NULL;
-				}
-				if (!node)
-					return NULL;
-		
-				if (node && !node->parent)
-					return NULL;
-				
-				if (node && node->is_left_child)
-					return node->parent->right;
-				else
-					return node->parent->left;
-			}
-
 			bool has_red_nephew(node_pointer sibling)
 			{
 				if (!sibling)
@@ -523,121 +437,279 @@ namespace ft
 				return false;
 			}
 
-			void fix_double_black(node_pointer node, node_pointer parent)
-			{
-				if (node == _root)
-					return ;
-				node_pointer sibling = get_sibling(node, parent);
+			// void fix_double_black(node_pointer node, node_pointer parent)
+			// {
+			// 	if (node == _root)
+			// 		return ;
+			// 	node_pointer sibling = get_sibling(node, parent);
 				
-				if (!sibling)
+			// 	if (!sibling)
+			// 	{
+			// 		if (parent && parent->parent)
+			// 			fix_double_black(parent, parent->parent);
+			// 		else
+			// 			return ;
+			// 	}
+			// 	if (sibling && sibling->color == black && has_red_nephew(sibling))
+			// 	{
+			// 		if (sibling->is_left_child && sibling->right && sibling->right->color == red)
+			// 		{
+			// 			parent->left->right->color = parent->color;
+			// 			left_rotate(parent->left);
+			// 			right_rotate(parent);                     
+			// 		}
+			// 		else if (sibling->is_left_child && sibling->left && sibling->left->color == red)
+			// 		{
+			// 			parent->left->left->color = parent->color;
+			// 			right_rotate(parent);
+			// 		}
+			// 		else if (!sibling->is_left_child && sibling->right && sibling->right->color == red)
+			// 		{
+			// 			parent->right->right->color = parent->right->color;
+			// 			parent->right->color = parent->color;
+			// 			left_rotate(parent);
+			// 		}
+			// 		else if (!sibling->is_left_child && sibling->left && sibling->left->color == red)
+			// 		{
+			// 			parent->right->left->color = parent->color;
+			// 			right_rotate(parent->right);
+			// 			left_rotate(parent);
+			// 		}
+			// 		parent->color = black;
+			// 	}
+			// 	else if (sibling && sibling->color == black && !has_red_nephew(sibling))
+			// 	{
+			// 		if (sibling->is_left_child)
+			// 			parent->left->color = red;
+			// 		else if (!sibling->is_left_child)
+			// 			parent->right->color = red;
+			// 		if (parent->color == black)
+			// 			fix_double_black(parent, parent->parent);
+			// 		else
+			// 			parent->color = black;
+			// 	}
+			// 	else if (sibling && sibling->color == red)
+			// 	{
+			// 		parent->color = red;
+			// 		if (!sibling->is_left_child)
+			// 		{
+			// 			parent->right->color = black;
+			// 			left_rotate(parent);
+			// 		}
+			// 		else if (sibling->is_left_child)
+			// 		{
+			// 			parent->left->color = black;
+			// 			right_rotate(parent);
+			// 		}
+			// 		fix_double_black(node, parent);
+			// 	}				
+			// }
+
+			void transplant(node_pointer node, node_pointer replace)
+			{
+				bool				is_left = node->is_left_child;
+				node_pointer		parent = node->parent;
+				node_pointer		left = node->left;
+				node_pointer		right = node->right;
+
+				if (node == _root)
 				{
-					if (parent && parent->parent)
-						fix_double_black(parent, parent->parent);
+					_root = replace;
+					_root->parent = NULL;
+					_root->color = black;
+				}
+				else if (!parent)
+					_root = replace;	
+				else
+				{
+					if (is_left)
+						parent->left = replace;
 					else
-						return ;
+						parent->right = replace;
 				}
-				if (sibling && sibling->color == black && has_red_nephew(sibling))
-				{
-					if (sibling->is_left_child && sibling->right && sibling->right->color == red)
-					{
-						parent->left->right->color = parent->color;
-						left_rotate(parent->left);
-						right_rotate(parent);                     
-					}
-					else if (sibling->is_left_child && sibling->left && sibling->left->color == red)
-					{
-						parent->left->left->color = parent->color;
-						right_rotate(parent);
-					}
-					else if (!sibling->is_left_child && sibling->right && sibling->right->color == red)
-					{
-						parent->right->right->color = parent->right->color;
-						parent->right->color = parent->color;
-						left_rotate(parent);
-					}
-					else if (!sibling->is_left_child && sibling->left && sibling->left->color == red)
-					{
-						parent->right->left->color = parent->color;
-						right_rotate(parent->right);
-						left_rotate(parent);
-					}
-					parent->color = black;
-				}
-				else if (sibling && sibling->color == black && !has_red_nephew(sibling))
-				{
-					if (sibling->is_left_child)
-						parent->left->color = red;
-					else if (!sibling->is_left_child)
-						parent->right->color = red;
-					if (parent->color == black)
-						fix_double_black(parent, parent->parent);
-					else
-						parent->color = black;
-				}
-				else if (sibling && sibling->color == red)
-				{
-					parent->color = red;
-					if (!sibling->is_left_child)
-					{
-						parent->right->color = black;
-						left_rotate(parent);
-					}
-					else if (sibling->is_left_child)
-					{
-						parent->left->color = black;
-						right_rotate(parent);
-					}
-					fix_double_black(node, parent);
-				}				
+				
+				if (replace)
+				{	
+					replace->parent = parent;
+					replace->is_left_child = is_left;
+					if (left != replace)
+						replace->left = left;
+					if (right != replace)
+						replace->right = right;
+					if (left && left != replace)
+						left->parent = replace;
+					if (right && right != replace)
+						right->parent = replace;
+				}	
 			}
 
-			size_type _erase(node_pointer node)
+			node_pointer get_child(node_pointer parent, bool is_left)
+			{	
+				if (is_left)
+					return parent->left;
+				return parent->right;
+			}
+
+			node_pointer get_sibling(node_pointer parent, bool is_left)
+			{	
+				if (is_left)
+					return parent->right;
+				return parent->left;
+			}
+
+			void fix_double_black(node_pointer parent, bool is_left)
 			{
-				node_pointer substitute = NULL;
-				
-				if (_size == 0)
-					return 0;
-				if (node)
+				node_pointer	sibling = get_sibling(parent, is_left);
+				node_pointer	child = get_child(parent, is_left);
+
+				if (child && child->color == red)
 				{
-					substitute = find_substitute(node);
-
-					if (substitute)
-						std::cout << "substitute->value is " << substitute->value.first << std::endl;
-
-
-					node_pointer successor = transplant(node, substitute);
-					(void)successor;
-
-					printTree();
-						
-					if (((substitute && substitute->color == black) || !substitute)
-						&& ((successor && successor->color == black) || !successor))
+					child->color = black;
+					return ;
+				}
+				
+				if (is_left)
+				{	
+					if (sibling && sibling->color == red)
 					{
-						if (!substitute && node->parent == _root)
-							substitute = _root;
-						std::cout << "Before fixing double black" << std::endl;
-						printTree();	
-						fix_double_black(successor, substitute);
-						std::cout << "After fixing double black" << std::endl;
-						printTree();	
-
+						sibling->color = black;
+						parent->color = red;
+						left_rotate(parent);
+						fix_double_black(parent, is_left);
+					}
+					else if (sibling && (!sibling->right || (sibling->right && sibling->right->color == black))
+						&& (!sibling->left || (sibling->left && sibling->left->color == black)))
+					{
+						sibling->color = red;
+						if (parent->color == red)
+							parent->color = black;
+						else if (parent->color == black && parent == _root)
+							return ;
+						else
+							fix_double_black(parent->parent, parent->is_left_child);
 					}
 					else
 					{
-						std::cout << "no need to check black nodes" << std::endl;
-						if (substitute)
-							substitute->color = black;
+						if (sibling && sibling->left && sibling->left->color == red 
+							&& (!sibling->right || (sibling->right && sibling->right->color == black)))
+						{
+							if (sibling->left)
+								sibling->left->color = black;
+							sibling->color = red;
+							right_rotate(sibling);
+							sibling = parent->right;
+						}
+						if (sibling)
+						{
+							sibling->color = parent->color;
+							parent->color = black;
+							if (sibling->right)
+								sibling->right->color = black;
+							left_rotate(parent);
+						}						
 					}
-					
-					if (node == _root)
-						_root = substitute;
-					destroy_node(node);
-					 _size--;
-					printTree();
-					return 1;
 				}
 				else
-					return 0;
+				{
+					if (sibling && sibling->color == red)
+					{
+						sibling->color = black;
+						parent->color = red;
+						right_rotate(parent);
+						fix_double_black(parent, is_left);
+					}
+					else if (sibling && (!sibling->left || (sibling->left && sibling->left->color == black))
+						&& (!sibling->right || (sibling->right && sibling->right->color == black)))
+					{
+						sibling->color = red;
+						if (parent->color == red)
+							parent->color = black;
+						else if (parent->color == black && parent == _root)
+							return ;
+						else
+							fix_double_black(parent->parent, parent->is_left_child);
+					}
+					else
+					{
+						if (sibling && sibling->right && sibling->right->color == red
+							&& (!sibling->left || (sibling->left && sibling->left->color == black)))
+						{
+							if (sibling->right)
+								sibling->right->color = black;
+							sibling->color = red;
+							left_rotate(sibling);
+							sibling = parent->left;
+						}
+						if (sibling)
+						{
+							sibling->color = parent->color;
+							parent->color = black;
+							if (sibling->left)
+								sibling->left->color = black;
+							right_rotate(parent);
+						}
+					}
+				}
+			}
+
+			void check_tree_balanced(node_pointer node, node_pointer replace, node_pointer parent, bool is_left)
+			{		
+				if (node->color == black && replace && replace->color == red)
+					replace->color = black;
+				else if (node->color == red && replace && replace->color == black)
+				{
+					replace->color = red;
+					fix_double_black(parent, is_left);
+				}
+				else if (node->color == black && (!replace || (replace && replace->color == black))
+					&& get_child(parent, is_left) != _root)
+					fix_double_black(parent, is_left);
+			}
+			
+			void _erase(node_pointer node)
+			{
+				node_pointer	replace = NULL;
+				node_pointer	parent = NULL;
+				bool			is_left;
+
+				if (!node->left && !node->right)
+				{
+					transplant(node, NULL);
+					parent = node->parent;
+					is_left = node->is_left_child;
+				}
+				else if (!node->left || !node->right)
+				{
+					if (!node->right)
+						replace = node->left;
+					else
+						replace = node->right;
+					is_left = replace->is_left_child;
+					parent = node->parent;
+					transplant(node, replace);
+				}
+				else
+				{
+					replace = get_successor(node);
+					if (replace == node->right)
+					{
+						is_left = replace->is_left_child;
+						parent = replace;
+						transplant(node, replace);
+					}
+					else
+					{
+						parent = replace->parent;
+						is_left = replace->is_left_child;
+						transplant(replace, replace->right);
+						transplant(node, replace);
+					}
+				}
+				
+				if (parent)
+					check_tree_balanced(node, replace, parent, is_left);
+				
+				destroy_node(node);
 			}
 
 			bool has_red_child(node_pointer node)
@@ -810,7 +882,7 @@ namespace ft
 				if (node->left)
 				{
 					node->left->parent = node;
-					node->left->is_left_child = false;
+					node->left->is_left_child = true;
 				}
 				if (!node->parent)
 				{	
@@ -838,6 +910,8 @@ namespace ft
 
 			void left_rotate(node_pointer node)
 			{
+				if (!node)
+					return ;
 				node_pointer tmp = node->right;
 				node->right = tmp->left;
 				if (node->right)
@@ -868,7 +942,7 @@ namespace ft
 				node->is_left_child = true;
 				node->parent = tmp;
 			}
-
+			
 			void left_right_rotate(node_pointer node)
 			{
 				left_rotate(node->left);

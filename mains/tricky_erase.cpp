@@ -11,7 +11,7 @@ void	ft_erase(MAP &mp, const T1 param)
 {
 	std::cout << "\t-- [" << iter++ << "] --" << std::endl;
 	mp.erase(param);
-	// printSize(mp);
+	printSize(mp);
 }
 
 int		main(void)
@@ -56,7 +56,6 @@ int		main(void)
 	mp[90] = "8";
 
 	printSize(mp);
-	mp.print();
 
 	// /* A classic btree should give this:
 	//  *                                      42
@@ -72,36 +71,37 @@ int		main(void)
 	//  * */
 
 	ft_erase(mp, 25); // right != NULL; left != NULL
+
 	ft_erase(mp, 55); // right != NULL; left != NULL
 
-	/* After deleting 25 and 55, I would get:
-	 *                                      42
-	 *                     /                                            \
-	 *                    24                                            50
-	 *           /                 \                         /                      \
-	 *          21                 30                       46                      54
-	 *      /       \           /      \                /       \             /           \
-	 *     18       23        28        35            44         48         53             80
-	 *   /   \    /         /    \     /   \        /   \       /   \     /              /     \
-	 *  12   20  22        27    29  33    38     43    45    47    49   51             60      90
-	 *
-	 * */
+	// /* After deleting 25 and 55, I would get:
+	//  *                                      42
+	//  *                     /                                            \
+	//  *                    24                                            50
+	//  *           /                 \                         /                      \
+	//  *          21                 30                       46                      54
+	//  *      /       \           /      \                /       \             /           \
+	//  *     18       23        28        35            44         48         53             80
+	//  *   /   \    /         /    \     /   \        /   \       /   \     /              /     \
+	//  *  12   20  22        27    29  33    38     43    45    47    49   51             60      90
+	//  *
+	//  * */
 
 	ft_erase(mp, 24); // right != NULL; left != NULL
 	ft_erase(mp, 54); // right != NULL; left != NULL
 
-	/* After deleting 24 and 54, I would get:
-	 *                                      42
-	 *                     /                                            \
-	 *                    23                                            50
-	 *           /                 \                         /                      \
-	 *          21                 30                       46                      53
-	 *      /       \           /      \                /       \             /           \
-	 *     18       22        28        35            44         48         51             80
-	 *   /   \              /    \     /   \        /   \       /   \                    /     \
-	 *  12   20            27    29  33    38     43    45    47    49                  60      90
-	 *
-	 * */
+	// /* After deleting 24 and 54, I would get:
+	//  *                                      42
+	//  *                     /                                            \
+	//  *                    23                                            50
+	//  *           /                 \                         /                      \
+	//  *          21                 30                       46                      53
+	//  *      /       \           /      \                /       \             /           \
+	//  *     18       22        28        35            44         48         51             80
+	//  *   /   \              /    \     /   \        /   \       /   \                    /     \
+	//  *  12   20            27    29  33    38     43    45    47    49                  60      90
+	//  *
+	//  * */
 
 	ft_erase(mp, 22); // right == NULL; left == NULL
 	ft_erase(mp, 51); // right == NULL; left == NULL
@@ -109,18 +109,18 @@ int		main(void)
 	ft_erase(mp, 21); // right == NULL; left != NULL
 	ft_erase(mp, 53); // right != NULL; left == NULL
 
-	/* After deleting 22, 51 and then 21, 53, I would get:
-	 *                                      42
-	 *                     /                                            \
-	 *                    23                                            50
-	 *           /                 \                         /                      \
-	 *          20                 30                       46                      80
-	 *      /                   /      \                /       \                /        \
-	 *     18                 28        35            44         48             60         90
-	 *   /                  /    \     /   \        /   \       /   \
-	 *  12                 27    29  33    38     43    45    47    49
-	 *
-	 * */
+	// /* After deleting 22, 51 and then 21, 53, I would get:
+	//  *                                      42
+	//  *                     /                                            \
+	//  *                    23                                            50
+	//  *           /                 \                         /                      \
+	//  *          20                 30                       46                      80
+	//  *      /                   /      \                /       \                /        \
+	//  *     18                 28        35            44         48             60         90
+	//  *   /                  /    \     /   \        /   \       /   \
+	//  *  12                 27    29  33    38     43    45    47    49
+	//  *
+	//  * */
 
 	ft_erase(mp, 20); // right == NULL; left != NULL
 
