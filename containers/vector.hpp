@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:03:35 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/07 16:16:54 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/19 16:17:38 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ namespace ft
 			explicit vector(size_type count, const T& value = T(), const Allocator& alloc = allocator_type())
 				:	_size(0), _capacity(0), _first_element(NULL), _memory_handle(alloc)
 			{
-				// std::cout << "hihi";
 				insert(begin(), count, value);
 			}
 

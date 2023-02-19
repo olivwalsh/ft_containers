@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 13:13:12 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/18 13:30:55 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/18 20:45:10 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ namespace ft
 		public:
 			// typedef Key					key_type;
 			typedef Value				value_type;
-			typedef ft::node<Value>		*node_pointer;
+			typedef ft::node<Value>*	node_pointer;
 			
 			// key_type					key;
 			value_type					value;
@@ -46,6 +46,20 @@ namespace ft
 				: value(val), left(l), right(r), parent(p), is_left_child(is_l), color(c) { }
 			
 			~node() { }
+
+			node_pointer get_sibling()
+			{
+				if (!_node)
+					return NULL;
+				if (!_node->parent)
+					return NULL;
+				if (_node->is_left_child)
+					return _node->right;
+				return _node->left;
+			}
+		
+		private:
+			node_pointer _node;
 	};
 	
 	template <typename T>

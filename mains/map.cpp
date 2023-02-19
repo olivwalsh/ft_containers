@@ -29,38 +29,39 @@ void print(ft::map<Key, T>& lst)
 		std::cout << it->first << " => " << it->second << '\n';
 }
 
-int main ()
-{
-	ft::map<int,int> mymap;
-	ft::map<int,int>::iterator it;
+// int main ()
+// {
+// 	ft::map<char,int> mymap;
+// 	ft::map<char,int>::iterator it;
 
-	// insert some values:
-	mymap[3]=10;
-	mymap[1]=20;
-	mymap[5]=30;
-	mymap[7]=40;
-	// mymap['e']=50;
-	// mymap['f']=60;
+// 	// insert some values:
+// 	mymap['a']=10;
+// 	mymap['b']=20;
+// 	mymap['c']=30;
+// 	mymap['d']=40;
+// 	mymap['e']=50;
+// 	mymap['f']=60;
 
-	mymap.print();
-	// it=mymap.find('b');
-	// mymap.erase (it);                   // erasing by iterator
-	// std::cout << "erase iterator to b\n";
-	// mymap.print();
+// 	mymap.print();
+// 	it=mymap.find('b');
+// 	mymap.erase (it);                   // erasing by iterator
+// 	std::cout << "erase iterator to b\n";
+// 	mymap.print();
 
-	// mymap.erase ('c');                  // erasing by key
-	// std::cout << "erase by key 'c'\n";
-	// mymap.print();
 
-	// it=mymap.find ('e');
-	// std::cout << "erase by range 'e' to end\n";
-	// mymap.erase ( it, mymap.end() );    // erasing by range
-	// mymap.print();
+// 	// mymap.erase ('c');                  // erasing by key
+// 	// std::cout << "erase by key 'c'\n";
+// 	// it=mymap.find ('e');
+// 	// std::cout << "erase by range 'e' to end\n";
+// 	// mymap.erase ( it, mymap.end() );    // erasing by range
 
-	// std::cout << " display :\n";
-	// // show content:
-	// for (it=mymap.begin(); it!=mymap.end(); ++it)
-	// 	std::cout << it->first << " => " << it->second << '\n';
+// 	// std::cout << " display :\n";
+// 	// // show content:
+// 	// for (it=mymap.begin(); it!=mymap.end(); ++it)
+// 	// 	std::cout << it->first << " => " << it->second << '\n';
 
-  return 0;
-}
+//   return 0;
+// }
+
+
+

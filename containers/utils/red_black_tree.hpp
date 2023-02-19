@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 13:54:52 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/18 16:34:25 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/19 16:18:36 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ namespace ft
 
 			~red_black_tree()
 			{
-				clear(_root);
+				// clear(_root);
 				_node_allocator.destroy(_nil_node);
 				_node_allocator.deallocate(_nil_node, 1);
 				_nil_node = NULL;
@@ -302,10 +302,12 @@ namespace ft
 					clear();
 				else
 				{
+					std::cout << "Lets erase " << value.first << std::endl;
 					detach_nil_node();
 					_erase(tmp);
+					// delete_node(tmp);
 					attach_nil_node();
-					_size--;
+					// _size--;
 				}
 				return 1;
 			}
@@ -317,10 +319,7 @@ namespace ft
 					if (path_black_count == -1)
 						path_black_count = black_count;
 					else if (path_black_count != black_count)
-					{
-						std::cout << "There isn't the same amount of black nodes in each path from root to null!" << std::endl;
 						return false;
-					}
 					return true;
 				}
 				if (node != _nil_node && node->color == black)
@@ -345,7 +344,7 @@ namespace ft
 				bool violation = false;
 				
 				// null nodes are black + insertions are red. 
-				if (_root->color == red)
+				if (_root && _root->color == red)
 				{
 					violation = true;
 					std::cout << "Root is not black as supposed to!" << std::endl;
@@ -373,7 +372,7 @@ namespace ft
 
 			void printHelper(std::string prefix, node_pointer node, bool is_left)
 			{
-				if (node)
+				if (node && node != _nil_node)
 				{
 					printHelper( prefix + "    " , node->right, false);
 					std::cout << prefix;
@@ -410,14 +409,211 @@ namespace ft
 				return successor;
 			}
 
-			node_pointer get_sibling(node_pointer node)
-			{
-				if (!node->parent)
+			node_pointer find_substitute(node_pointer node)
+			{		
+				if (!node->left && !node->right)
 					return NULL;
-				if (node->is_left_child)
-					return node->parent->right;
-				return node->parent->left;
+				if (node->left && !node->right)
+					return node->left;
+				if (!node->left && node->right)
+					return node->right;
+				if (node->left && node->right)
+				{
+					node_pointer tmp = node->left;
+					while (tmp->right)
+						tmp = tmp->right;
+					return tmp;
+				}
+				return node;
 			}
+
+			node_pointer transplant(node_pointer node, node_pointer substitute)
+			{
+				
+				node_pointer tmp = NULL;
+
+				if (!node->parent)
+					_root = substitute;
+				else
+				{
+					if (node->is_left_child)
+						node->parent->left = substitute;
+					else
+						node->parent->right = substitute;
+				}
+				
+				if (!substitute)
+					return NULL;
+
+				if (!substitute->right && !substitute->left)
+					tmp = NULL;
+				else if (substitute->right)
+					tmp = substitute->right;
+				else if (substitute->left)
+					tmp = substitute->left;
+				substitute->parent = node->parent;
+				substitute->is_left_child = node->is_left_child;
+				if (node->left != substitute)
+					substitute->left = node->left;
+				if (node->right != substitute)
+					substitute->right = node->right;
+				
+				if (node->left && node->left != substitute)
+					node->left->parent = substitute;
+				if (node->right && node->right != substitute)
+					node->right->parent = substitute;
+
+				// if (node->parent && node->is_left_child)
+				// 	node->parent->left = tmp;
+				// else if (node->parent && !node->is_left_child)
+				// 	node->parent->right = tmp;
+				// if (tmp)
+				// 	tmp->parent = node->parent;
+				
+				return tmp;
+			}
+
+			node_pointer get_sibling(node_pointer node, node_pointer parent)
+			{
+				if (!node && parent)
+				{
+					
+					if (parent->left)
+						return parent->left;
+					else if (parent->right)
+						return parent->right;
+					else
+						return NULL;
+				}
+				if (!node)
+					return NULL;
+		
+				if (node && !node->parent)
+					return NULL;
+				
+				if (node && node->is_left_child)
+					return node->parent->right;
+				else
+					return node->parent->left;
+			}
+
+			bool has_red_nephew(node_pointer sibling)
+			{
+				if (!sibling)
+					return false;
+
+				if (sibling && sibling->left && sibling->left->color == red)
+					return true;
+				if (sibling && sibling->right && sibling->right->color == red)
+					return true;
+				return false;
+			}
+
+			void fix_double_black(node_pointer node, node_pointer parent)
+			{
+				if (node == _root)
+					return ;
+				node_pointer sibling = get_sibling(node, parent);
+				
+				if (!sibling)
+				{
+					if (parent && parent->parent)
+						fix_double_black(parent, parent->parent);
+					else
+						return ;
+				}
+				if (sibling && sibling->color == black && has_red_nephew(sibling))
+				{
+					if (sibling->is_left_child && sibling->right && sibling->right->color == red)
+					{
+						parent->left->right->color = parent->color;
+						left_rotate(parent->left);
+						right_rotate(parent);                     
+					}
+					else if (sibling->is_left_child && sibling->left && sibling->left->color == red)
+					{
+						parent->left->left->color = parent->color;
+						right_rotate(parent);
+					}
+					else if (!sibling->is_left_child && sibling->right && sibling->right->color == red)
+					{
+						parent->right->right->color = parent->right->color;
+						parent->right->color = parent->color;
+						left_rotate(parent);
+					}
+					else if (!sibling->is_left_child && sibling->left && sibling->left->color == red)
+					{
+						parent->right->left->color = parent->color;
+						right_rotate(parent->right);
+						left_rotate(parent);
+					}
+					parent->color = black;
+				}
+				else if (sibling && sibling->color == black && !has_red_nephew(sibling))
+				{
+					if (sibling->is_left_child)
+						parent->left->color = red;
+					else if (!sibling->is_left_child)
+						parent->right->color = red;
+					if (parent->color == black)
+						fix_double_black(parent, parent->parent);
+					else
+						parent->color = black;
+				}
+				else if (sibling && sibling->color == red)
+				{
+					parent->color = red;
+					if (!sibling->is_left_child)
+					{
+						parent->right->color = black;
+						left_rotate(parent);
+					}
+					else if (sibling->is_left_child)
+					{
+						parent->left->color = black;
+						right_rotate(parent);
+					}
+					fix_double_black(node, parent);
+				}				
+			}
+
+			size_type _erase(node_pointer node)
+			{
+				node_pointer substitute = NULL;
+				
+				if (_size == 0)
+					return 0;
+				if (node)
+				{
+					substitute = find_substitute(node);
+
+					node_pointer successor = transplant(node, substitute);
+					
+					int path_black_count = -1;
+					if (!check_black_nodes(_root, 0, path_black_count))
+					{
+						if (!substitute && node->parent == _root)
+							substitute = _root;					
+						fix_double_black(successor, substitute);
+					}
+					else
+					{
+						if (substitute)
+							substitute->color = black;
+					}
+					
+					if (node == _root)
+						_root = substitute;
+					destroy_node(node);
+					 _size--;
+					printTree();
+					return 1;
+				}
+				else
+					return 0;
+			}
+
+			
 
 			void delete_fix(node_pointer node)
 			{
@@ -433,8 +629,8 @@ namespace ft
 							left_rotate(node->parent);
 							sibling = node->parent->right;
 						}
-						if (sibling && sibling->left && sibling->left->color == black 
-							&& sibling->right && sibling->right->color == black)
+						if (sibling && sibling->left && sibling->left->color == black )
+							//&& sibling->right && sibling->right->color == black)
 						{
 							sibling->color = red;
 							node = node->parent;
@@ -492,66 +688,238 @@ namespace ft
 					node->color = black;
 			}
 
-			void transplant(node_pointer node, node_pointer new_node)
+			// void transplant(node_pointer node, node_pointer new_node)
+			// {
+				
+			// 	if (!node->parent)
+			// 		_root = new_node;
+			// 	else if (node->is_left_child)
+			// 		node->parent->left = new_node;
+			// 	else
+			// 		node->parent->right = new_node;
+			// 	if (new_node)
+			// 		new_node->parent = node->parent;
+			// }
+
+			void swap_values(node_pointer a, node_pointer b)
 			{
-				
-				if (!node->parent)
-					_root = new_node;
-				else
-				{
-					if (node->is_left_child)
-						node->parent->left = new_node;
-					else
-						node->parent->right = new_node;
-				}
-				
-				if (!new_node)
-					return ;
-				new_node->parent = node->parent;
-				new_node->is_left_child = node->is_left_child;
-				if (node->left != new_node)
-					new_node->left = node->left;
-				if (node->right != new_node)
-					new_node->right = node->right;
-				if (node->left && node->left != new_node)
-					node->left->parent = new_node;
-				if (node->right && node->right != new_node)
-					node->right->parent = new_node;
+				value_type tmp = a->value;
+
+				a->value = b->value;
+				b->value = tmp;
 			}
 
-			void _erase(node_pointer to_delete)
-			{
-				bool original_color = to_delete->color;
-				node_pointer successor;
+			/*
+				according to rbt visualizer
+				- found node to delete
+				- node to delete has two children
+				- find largest node in left subtree
+				- copy largest value of left subtree into node to delete
+				- remove node whose value we copied
+				- coloring child of deleted bode black
+				- double black node has red sibling. rotate tree to make sibling black
+				- single rotate left
+				- double black node has black sibling and 2 black nephews. Push up black level
+			*/
 
-				if (!to_delete->left && !to_delete->right)
-					successor = NULL;
-				else if (!to_delete->left)
-					successor = to_delete->right;
-				else if (!to_delete->right)
-					successor = to_delete->left;
+			// void _erase(node_pointer to_delete)
+			// {
+			// 	bool original_color = to_delete->color;
+			// 	node_pointer successor;
+
+			// 	if (!to_delete->left && !to_delete->right)
+			// 	{
+			// 		successor = NULL;
+			// 		transplant(to_delete, successor);
+			// 	}
+			// 	else if (!to_delete->left)
+			// 	{
+			// 		successor = to_delete->right;
+			// 		transplant(to_delete, successor);
+			// 	}
+			// 	else if (!to_delete->right)
+			// 	{
+			// 		successor = to_delete->left;
+			// 		transplant(to_delete, successor);
+			// 	}
+			// 	else
+			// 	{
+			// 		node_pointer successor_of_successor = get_successor(to_delete);
+			// 		original_color = successor_of_successor->color;
+					
+			// 		successor = successor_of_successor->right;
+					
+			// 		if (successor_of_successor && successor_of_successor->parent == to_delete)
+			// 		{
+			// 			if (successor)
+			// 				successor->parent = successor_of_successor;
+			// 		}
+			// 		else
+			// 		{
+			// 			transplant(successor_of_successor, successor_of_successor->right);
+			// 			successor_of_successor->right = to_delete->right;
+			// 			successor_of_successor->right->parent = successor_of_successor;
+			// 		}
+					
+			// 		transplant(to_delete, successor_of_successor);
+			// 		successor_of_successor->left = to_delete->left;
+			// 		successor_of_successor->left->parent = successor_of_successor;
+			// 		successor_of_successor->color = to_delete->color;					
+			// 	}
+			// 	destroy_node(to_delete);
+				
+			// 	if (original_color == black)
+			// 		delete_fix(successor);
+				
+			// }
+			
+			node_pointer find_replace(node_pointer node)
+			{
+				if (node->left && node->right)
+					return get_successor(node);
+				if (!node->left && !node->right)
+					return NULL;
+				if (node->left)
+					return node->left;
 				else
+					return node->right;
+			}
+
+
+			// v in tuto is node in my code (the node that is to be deleted)
+			// u in tuto is replace in my code (the node that will replace node)
+			void delete_node(node_pointer node)
+			{
+				node_pointer replace = find_replace(node);
+
+				bool double_black = ((!replace || replace->color == black) && node->color == black);
+				node_pointer parent = node->parent;
+				
+				if (!replace)
 				{
-					successor = get_successor(to_delete);
-					node_pointer successor_of_successor = successor->right;
-					original_color = successor->color;
-					if (successor_of_successor && (successor == to_delete->right || successor == to_delete->left))
-						successor_of_successor->parent = successor;
+					if (node == _root)
+						_root = NULL;
 					else
-						transplant(successor, successor->right);
-					transplant(to_delete, successor);
-					successor->color = original_color;
-					if (original_color == black)
-						delete_fix(successor_of_successor);
-					destroy_node(to_delete);
+					{
+						if (double_black)
+							fix_double_black(node);
+						else
+						{	
+							if (node->get_sibling())
+								node->get_sibling()->color = red;
+						}
+						if (node->is_left_child)
+							parent->left = NULL;
+						else
+							parent->right = NULL;
+					}
+					destroy_node(node);
 					return ;
 				}
-				transplant(to_delete, successor);
-				if (original_color == black)
-					delete_fix(successor);
-				destroy_node(to_delete);
-				
+				if (!node->left || !node->right)
+				{
+					if (node == _root)
+					{
+						// node->value = replace->value;
+						node->left = node->right = NULL;
+						destroy_node(replace);
+					}
+					else
+					{
+						if (node->is_left_child)
+							parent->left = replace;
+						else
+							parent->right = replace;
+						destroy_node(node);
+						replace->parent = parent;
+						if (double_black)
+							fix_double_black(replace);
+						else
+							replace->color = black;
+					}
+					return ;
+				}
+				swap_values(replace, node);
+				delete_node(node);				
 			}
+
+			bool has_red_child(node_pointer node)
+			{
+				if (node && node->left && node->left->color == red)
+					return true;
+				if (node && node->right && node->right->color == red)
+					return true;
+				return false;
+			}
+
+			// void fix_double_black(node_pointer node)
+			// {
+			// 	if (node == _root)
+			// 		return ;
+				
+			// 	node_pointer sibling = node->get_sibling();
+			// 	node_pointer parent = node->parent;
+			// 	if (!sibling)
+			// 		fix_double_black(parent);
+			// 	else
+			// 	{
+			// 		if (sibling->color == red)
+			// 		{
+			// 			parent->color = red;
+			// 			sibling->color = black;
+			// 			if (sibling->is_left_child)
+			// 				right_rotate(parent);
+			// 			else
+			// 				left_rotate(parent);
+			// 			fix_double_black(node);
+			// 		}
+			// 		else
+			// 		{
+			// 			if (has_red_child(sibling))
+			// 			{
+			// 				if (sibling->left && sibling->left->color == red)
+			// 				{
+			// 					if (sibling->is_left_child)
+			// 					{
+			// 						sibling->left->color = sibling->color;
+			// 						sibling->color = parent->color;
+			// 						right_rotate(parent);
+			// 					}
+			// 					else
+			// 					{
+			// 						sibling->left->color = parent->color;
+			// 						right_rotate(sibling);
+			// 						left_rotate(parent);
+			// 					}
+			// 				}
+			// 				else
+			// 				{
+			// 					if (sibling->is_left_child)
+			// 					{
+			// 						sibling->right->color = parent->color;
+			// 						left_rotate(sibling);
+			// 						right_rotate(parent);
+			// 					}
+			// 					else
+			// 					{
+			// 						sibling->right->color = sibling->color;
+			// 						sibling->color = parent->color;
+			// 						left_rotate(parent);
+			// 					}
+			// 				}
+			// 				parent->color = black;
+			// 			}
+			// 			else
+			// 			{
+			// 				sibling->color = red;
+			// 				if (parent->color == black)
+			// 					fix_double_black(parent);
+			// 				else
+			// 					parent->color = black;
+			// 			}
+			// 		}
+			// 	}
+			// }
 		
 			node_pointer init_nil_node()
 			{
