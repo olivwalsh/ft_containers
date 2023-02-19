@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 13:54:52 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/19 16:18:36 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/19 16:23:23 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -302,12 +302,10 @@ namespace ft
 					clear();
 				else
 				{
-					std::cout << "Lets erase " << value.first << std::endl;
 					detach_nil_node();
 					_erase(tmp);
 					// delete_node(tmp);
 					attach_nil_node();
-					// _size--;
 				}
 				return 1;
 			}
@@ -606,7 +604,6 @@ namespace ft
 						_root = substitute;
 					destroy_node(node);
 					 _size--;
-					printTree();
 					return 1;
 				}
 				else
