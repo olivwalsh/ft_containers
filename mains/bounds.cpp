@@ -46,17 +46,17 @@ int		main(void)
 	TESTED_NAMESPACE::set<T1> st(lst.begin(), lst.end());
 	printSize(st);
 
-	// ft_const_bound(st, -10);
-	// ft_const_bound(st, 1);
-	// ft_const_bound(st, 5);
-	// ft_const_bound(st, 10);
-	// ft_const_bound(st, 50);
+	ft_const_bound(st, -10);
+	ft_const_bound(st, 1);
+	ft_const_bound(st, 5);
+	ft_const_bound(st, 10);
+	ft_const_bound(st, 50);
 
-	// printSize(st);
+	printSize(st);
 
-	// ft_bound(st, 5);
-	// ft_bound(st, 7);
+	ft_bound(st, 5);
+	ft_bound(st, 7);
 
-	// printSize(st);
+	printSize(st);
 	return (0);
 }

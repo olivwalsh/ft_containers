@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 22:53:22 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/20 11:44:00 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/20 11:59:00 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ namespace ft
 
 			class value_compare;
 			
-			typedef		const	Key 										key_type;
-			typedef		const	Key											value_type;
+			typedef				Key 										key_type;
+			typedef				Key											value_type;
 			typedef	typename	std::size_t									size_type;
 			typedef typename 	std::ptrdiff_t								difference_type;
 			typedef				Compare										key_compare;
@@ -49,7 +49,7 @@ namespace ft
 			
 		private:
 			typedef 			ft::red_black_tree<key_type,
-													key_compare
+													key_compare,
 													allocator_type>			tree_type;
 
 		public:
@@ -174,9 +174,9 @@ namespace ft
 				return tree.clear();
 			}
 			
-			std::pair<iterator, bool> insert( const value_type& value )
+			ft::pair<iterator, bool> insert( const value_type& value )
 			{
-				return ft::pair<iterator, bool>(pair.first, pair.second);
+				return tree.insert(value);
 			}
 			
 			iterator insert( iterator pos, const value_type& value )
@@ -229,12 +229,12 @@ namespace ft
 				return tree.find(key);
 			}
 			
-			std::pair<iterator,iterator> equal_range( const Key& key )
+			ft::pair<iterator,iterator> equal_range( const Key& key )
 			{
 				return ft::make_pair(tree.lower_bound(key), tree.upper_bound(key));
 			}
 			
-			std::pair<const_iterator,const_iterator> equal_range( const Key& key ) const
+			ft::pair<const_iterator,const_iterator> equal_range( const Key& key ) const
 			{
 				return ft::make_pair(tree.lower_bound(key), tree.upper_bound(key));
 			}

@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 13:54:52 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/19 21:46:01 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/20 12:04:05 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,13 @@ namespace ft
 	/* ------------- RED BLACK TREE CLASS ------------- */
 
 
-	template <typename Key,
-				typename Value,
-				typename Compare = std::less<Key>,
+	template <	typename Value,
+				typename Compare,
 				typename Allocator = std::allocator<Value>
 				>
 	class red_black_tree
 	{
 		public:
-			typedef				Key												key_type;
 			typedef 			Value											value_type;
 			typedef 			Compare											value_compare;
 			typedef				Allocator 										allocator_type;
@@ -97,7 +95,7 @@ namespace ft
 
 			~red_black_tree()
 			{
-				// clear(_root);
+				clear(_root);
 				_node_allocator.destroy(_nil_node);
 				_node_allocator.deallocate(_nil_node, 1);
 				_nil_node = NULL;
@@ -215,8 +213,13 @@ namespace ft
 			template <class InputIt>
 			void insert(InputIt first, InputIt last, typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type* = 0)
 			{
-				for (; first != last; ++first)
-					insert(*first);
+				size_type distance = std::distance(first, last);
+
+				if (distance && distance < max_size())
+				{
+					for (; first != last; ++first)
+						insert(*first);
+				}
 			}
 
 			size_type get_height()
