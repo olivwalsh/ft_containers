@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 10:36:24 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/18 21:27:28 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/20 13:54:12 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,7 @@ namespace ft
 			typedef typename	Allocator::const_pointer					const_pointer;
 			
 		private:
-			typedef 			ft::red_black_tree<key_type,
-													value_type,
+			typedef 			ft::red_black_tree<	value_type,
 													value_compare,
 													allocator_type>
 																			tree_type;

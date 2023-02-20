@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 13:13:12 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/20 11:38:09 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/20 13:46:31 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,10 @@ namespace ft
 				: value(0), left(NULL), right(NULL), parent(NULL), is_left_child(false), color(red) { }
 			node(const value_type &value)
 				: value(value), left(NULL), right(NULL), parent(NULL), is_left_child(false), color(red) { }
-			node(value_type val, node_pointer l, node_pointer r, node_pointer p, bool is_l, bool c)
-				: value(val), left(l), right(r), parent(p), is_left_child(is_l), color(c) { }
+			
+			
+			node(const node& copy )
+				: value(copy.value), left(copy.left), right(copy.right), parent(copy.parent), is_left_child(copy.is_left_child), color(copy.color) { }
 			
 			~node() { }
 
@@ -83,23 +85,16 @@ namespace ft
 
 			rbt_iterator() : node() { }
 			
-			explicit rbt_iterator(const node_pointer n) : node(n) { }
+			rbt_iterator(const node_pointer n) : node(n) { }
 
-			template <typename _T>
-			rbt_iterator(const rbt_iterator<_T> &src) : node(NULL)
-			{
-				*this = src;
-			}
-
-			template <typename Iter>
-			rbt_iterator(const Iter &src) : node(NULL)
+			rbt_iterator(const rbt_iterator &src) : node(NULL)
 			{
 				*this = src;
 			}
 
 			~rbt_iterator() { }
 
-			rbt_iterator &operator=(const rbt_iterator<T> &rhs)
+			rbt_iterator &operator=(const rbt_iterator &rhs)
 			{
 				node = rhs.node;
 				return *this;
@@ -215,7 +210,7 @@ namespace ft
 
 			rbt_const_iterator() : node(NULL) { }
 			
-			explicit rbt_const_iterator(const node_pointer n) : node(n) { }
+			rbt_const_iterator(const node_pointer n) : node(n) { }
 
 			rbt_const_iterator(const iterator &src) : node(src.node) { }
 
