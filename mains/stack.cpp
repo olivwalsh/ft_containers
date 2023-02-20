@@ -6,20 +6,11 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 14:50:34 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/07 15:58:30 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/20 15:57:12 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <iostream>
-
-#if REAL
-	#include <stack>
-	namespace ft = std;
-#else
-	#include "stack.hpp"
-#endif
-
-#include "utils.cpp"
+#include "utils.hpp"
 
 int main()
 {

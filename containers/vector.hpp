@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:03:35 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/19 16:17:38 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/20 15:52:15 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ namespace ft
 			typedef				ft::random_access_iterator<const_pointer>	const_iterator;
 			typedef				ft::reverse_iterator<iterator>				reverse_iterator;
 			typedef				ft::reverse_iterator<const_iterator>		const_reverse_iterator;
-			
 			
 			
 			/* ------------- constructors ------------- */
@@ -121,7 +120,7 @@ namespace ft
 			reference at(size_type pos)
 			{
 				if (pos < 0 || pos > _size)
-					throw std::out_of_range("vector::at(index) -> wrond index provided");
+					throw std::out_of_range("vector::at(index) -> wrong index provided");
 				else
 					return *(_first_element + pos);
 			}
@@ -129,7 +128,7 @@ namespace ft
 			const_reference at(size_type pos) const
 			{
 				if (pos < 0 || pos > _size)
-					throw std::out_of_range("vector::at(index) -> wrond index provided");
+					throw std::out_of_range("vector::at(index) -> wrong index provided");
 				else
 					return *(_first_element + pos);
 			}
