@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 10:36:26 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/17 18:33:49 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/20 18:54:50 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,14 @@ namespace ft
 			typedef typename	Container::const_reference	const_reference;
 
 	
-			explicit stack(const Container& cont = Container()) : c(cont) { }
+			explicit stack(const Container& cont = Container()) : c(cont)
+			{
+			}
+
+			stack( const stack& other ) : c(other.c)
+			{
+				// *this = other;
+			}
 			
 			~stack() { }
 

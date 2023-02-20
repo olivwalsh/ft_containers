@@ -6,15 +6,16 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 14:50:34 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/20 18:01:53 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/20 18:53:51 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.hpp"
 
 template <typename T>
-void print_stack(ft::stack<T>& s)
+void print_stack(ft::stack<T>& src)
 {
+	ft::stack<int> s(src);
     while (!s.empty())
 	{
         std::cout << s.top() << " ";
@@ -37,6 +38,10 @@ int main()
     std::cout << "printing s1" << std::endl;
     print_stack(s1);
 
+    // top
+	TITLE("Testing top");
+    std::cout << "s1 top: " << s1.top() << std::endl;
+	
     // copy constructor
 	TITLE("Testing copy constructor\n-> create s2 as a copy of s1");
     ft::stack<int> s2(s1);
@@ -65,9 +70,6 @@ int main()
     std::cout << "s1 after push: ";
     print_stack(s1);
 
-    // top
-	TITLE("Testing top");
-    std::cout << "s1 top: " << s1.top() << std::endl;
 
     // pop
 	TITLE("Testing pop");
