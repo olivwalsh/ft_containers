@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:03:35 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/20 15:52:15 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/20 17:35:59 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ namespace ft
 			
 			reference at(size_type pos)
 			{
-				if (pos < 0 || pos > _size)
+				if (pos < 0 || pos >= _size)
 					throw std::out_of_range("vector::at(index) -> wrong index provided");
 				else
 					return *(_first_element + pos);
@@ -127,7 +127,7 @@ namespace ft
 			
 			const_reference at(size_type pos) const
 			{
-				if (pos < 0 || pos > _size)
+				if (pos < 0 || pos >= _size)
 					throw std::out_of_range("vector::at(index) -> wrong index provided");
 				else
 					return *(_first_element + pos);
@@ -243,7 +243,7 @@ namespace ft
 
 			void					reserve(size_type new_capacity)
 			{
-				if (new_capacity > max_size())
+				if (new_capacity >= max_size())
 					throw std::length_error("ft::vector::reserve -> new_capacity exceeds max_size()");
 				if (_capacity < new_capacity)
 				{
@@ -309,8 +309,13 @@ namespace ft
 			template <class InputIt>
 			void insert(iterator pos, InputIt first, InputIt last, typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type* = 0)
 			{
-				for (; first != last; ++first)
-					pos = (insert(pos, 1, *first) + 1);
+				size_type distance = std::distance(first, last);
+
+				if (distance && distance < max_size())
+				{
+					for (; first != last; ++first)
+						pos = (insert(pos, 1, *first) + 1);
+				}
 			}
 			
 			

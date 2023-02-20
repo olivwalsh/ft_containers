@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 13:54:52 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/20 12:04:05 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/20 16:48:35 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,12 @@
 # include "type_traits.hpp"
 # include <iostream>
 # include <string>
-# define RED "\033[1;31m"
+
+# define RED_NODE "\033[1;31m"
 # define BLACK "\033[1;30m"
 # define RESET "\033[m"
-#define GREEN(s) "\033[1;32m" s "\033[m"
-# include <queue>
+# define GREEN(s) "\033[1;32m" s "\033[m"
+
 # include <iomanip>
 # include <cmath>
 # include "stack.hpp"
@@ -356,7 +357,7 @@ namespace ft
 				if (!check_consecutive_red(_root))
 					violation = true;
 				if (violation)
-					std::cout << RED << "One of the red-black tree rules has been violated" << RESET << std::endl;
+					std::cout << RED_NODE << "One of the red-black tree rules has been violated" << RESET << std::endl;
 				else
 					std::cout << GREEN("Tree is balanced!") << std::endl;
 			}
@@ -381,7 +382,7 @@ namespace ft
 					if (node != _nil_node)
 					{
 						if (node->color == red)
-							std::cout << RED;
+							std::cout << RED_NODE;
 						else
 							std::cout << BLACK;
 						std::cout << " " << node->value.first << RESET << std::endl;

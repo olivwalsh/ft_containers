@@ -26,11 +26,10 @@ void print(ft::map<Key, T>& lst)
 		std::cout << it->first << " => " << it->second << '\n';
 }
 
-/*
-	If you have a red black tree visualizer, uncomment the printing
-*/
+int main()
+{
 
-int main() {
+	std::cout << PURPLE("***** TESTING MAP *****") << std::endl << std::endl;
 
 	// Testing constructor
 	TITLE("Testing default constructor\n-> creating my_map, map<int, string> and inserting 3 values");

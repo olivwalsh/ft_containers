@@ -16,7 +16,7 @@
 
 #define _pair namespace::pair
 
-// #define RED(s) "\033[1;31m" s "\033[m"
+#define RED(s) "\033[1;31m" s "\033[m"
 # define GREEN(s) "\033[1;32m" s "\033[m"
 # define ITALIC_GREEN "\033[3;32m"
 # define RESET "\033[m"
@@ -24,6 +24,9 @@
 # define BOLD "\e[1m"
 # define ITALIC "\e[3m"
 
+// #define YELLOW(s) "\033[1;33m" s "\033[m"
+#define BLUE(s) "\033[1;34m" s "\033[m"
+#define PURPLE(s) "\033[1;35m" s "\033[m"
 
 #define nl() std::cout << std::endl;
 
