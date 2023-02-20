@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 22:53:22 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/20 11:59:00 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/20 12:15:22 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,12 +193,24 @@ namespace ft
 			
 			iterator erase( iterator pos )
 			{
-				return tree.erase(pos);
+				if (pos != end())
+					tree.erase(*pos);
+				return pos;
 			}
 			
 			iterator erase( iterator first, iterator last )
 			{
-				return tree.erase(first, last);
+				size_type distance = std::distance(first, last);
+
+				if (distance && distance < max_size())
+				{
+					while( first != last)
+					{
+						value_type	tmp = (*first++);
+						tree.erase(tmp);
+					}
+				}
+				return last;
 			}
 			
 			size_type erase( const Key& key )
