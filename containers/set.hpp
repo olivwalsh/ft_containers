@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 22:53:22 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/19 23:50:47 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/20 11:44:00 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,12 @@ namespace ft
 
 			class value_compare;
 			
-			typedef				Key 										key_type;
-			typedef				Key											value_type;
-			typedef	typename	Allocator::size_type						size_type;
-			typedef typename 	Allocator::difference_type					difference_type;
+			typedef		const	Key 										key_type;
+			typedef		const	Key											value_type;
+			typedef	typename	std::size_t									size_type;
+			typedef typename 	std::ptrdiff_t								difference_type;
 			typedef				Compare										key_compare;
-			typedef				Compare										value_compare;
+			// typedef				Compare										value_compare;
 			typedef				Allocator									allocator_type;
 			
 			typedef				value_type&									reference;
@@ -50,10 +50,10 @@ namespace ft
 		private:
 			typedef 			ft::red_black_tree<key_type,
 													key_compare
-													allocator_type>
-																			tree_type;
+													allocator_type>			tree_type;
+
 		public:
-			typedef	typename	tree_type::iterator							iterator;
+			typedef	typename	tree_type::const_iterator					iterator;
 			typedef	typename	tree_type::const_iterator					const_iterator;
 			typedef				ft::reverse_iterator<iterator>				reverse_iterator;
 			typedef				ft::reverse_iterator<const_iterator>		const_reverse_iterator;
@@ -78,18 +78,18 @@ namespace ft
 			
 			/* ------------- constructors ------------- */
 
-			explicit set( const Compare& comp, const Allocator& alloc = Allocator() )
-				: tree(value_compare(comp), alloc), compare(comp), allocator(alloc) { }
+			explicit set( const key_compare &comp = key_compare(), const Allocator& alloc = Allocator() )
+				: tree(comp, alloc), compare(comp), allocator(alloc) { }
 			
 			template< class InputIt >
-			set( InputIt first, InputIt last, const Compare& comp = Compare(), const Allocator& alloc = Allocator() )
-				: tree(value_compare(comp), alloc), compare(comp), allocator(alloc)
+			set( InputIt first, InputIt last, const key_compare &comp = key_compare(), const Allocator& alloc = Allocator() )
+				: tree(comp, alloc), compare(comp), allocator(alloc)
 			{
 				tree.insert(first, last);
 			}
 	 
 	 		set( const set& other )
-				: tree(value_compare(other.compare), other.allocator), compare(other.compare), allocator(other.allocator)
+				: tree(other.compare, other.allocator), compare(other.compare), allocator(other.allocator)
 			{
 				*this = other;
 			}
@@ -176,14 +176,13 @@ namespace ft
 			
 			std::pair<iterator, bool> insert( const value_type& value )
 			{
-				ft::pair<iterator, bool> pair = tree.insert(value);
-				
-				return std::pair<iterator, bool>(pair.first, pair.second);
+				return ft::pair<iterator, bool>(pair.first, pair.second);
 			}
 			
 			iterator insert( iterator pos, const value_type& value )
 			{
-				return tree.insert(pos, value);
+				(void)pos;
+				return insert(value).first;
 			}
 			
 			template <class InputIt>
@@ -222,7 +221,7 @@ namespace ft
 			
 			iterator find( const Key& key )
 			{
-				return tree.find(key);
+				return iterator(tree.find(key));
 			}
 			
 			const_iterator find( const Key& key ) const
@@ -232,14 +231,15 @@ namespace ft
 			
 			std::pair<iterator,iterator> equal_range( const Key& key )
 			{
-				return tree.equal_range(key);
-			}
-			std::pair<const_iterator,const_iterator> equal_range( const Key& key ) const
-			{
-				return tree.equal_range(key);
+				return ft::make_pair(tree.lower_bound(key), tree.upper_bound(key));
 			}
 			
-			iterator lower_bound( const Key& key )
+			std::pair<const_iterator,const_iterator> equal_range( const Key& key ) const
+			{
+				return ft::make_pair(tree.lower_bound(key), tree.upper_bound(key));
+			}
+			
+			iterator lower_bound( const key_type& key )
 			{
 				iterator it = begin();
 				
@@ -248,7 +248,7 @@ namespace ft
 				return it;
 			}
 			
-			const_iterator lower_bound( const Key& key ) const
+			const_iterator lower_bound( const key_type& key ) const
 			{
 				const_iterator it = begin();
 				
@@ -257,7 +257,7 @@ namespace ft
 				return it;
 			}
 			
-			iterator upper_bound( const Key& key )
+			iterator upper_bound( const key_type& key )
 			{
 				iterator it = begin();
 				
@@ -266,7 +266,7 @@ namespace ft
 				return it;
 			}
 			
-			const_iterator upper_bound( const Key& key ) const
+			const_iterator upper_bound( const key_type& key ) const
 			{
 				const_iterator it = begin();
 				
@@ -280,12 +280,12 @@ namespace ft
 			
 			key_compare key_comp() const
 			{
-				return tree.key_comp();
+				return key_compare();
 			}
 			
 			set::value_compare value_comp() const
 			{
-				return tree.key_comp();
+				return value_compare(key_comp());
 			}
 
 

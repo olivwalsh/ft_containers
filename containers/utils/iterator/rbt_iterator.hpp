@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 13:13:12 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/18 20:45:10 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/20 11:38:09 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,12 @@ namespace ft
 
 			template <typename _T>
 			rbt_iterator(const rbt_iterator<_T> &src) : node(NULL)
+			{
+				*this = src;
+			}
+
+			template <typename Iter>
+			rbt_iterator(const Iter &src) : node(NULL)
 			{
 				*this = src;
 			}
