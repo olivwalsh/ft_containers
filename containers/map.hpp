@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 10:36:24 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/20 15:26:02 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/20 17:50:12 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ namespace ft
 
 			void print()
 			{
-				tree.printTree();
+				tree.print_tree();
 			}
 
 			allocator_type get_allocator() const

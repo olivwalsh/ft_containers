@@ -6,45 +6,115 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 14:50:34 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/20 15:57:12 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/20 18:01:53 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.hpp"
 
+template <typename T>
+void print_stack(ft::stack<T>& s)
+{
+    while (!s.empty())
+	{
+        std::cout << s.top() << " ";
+        s.pop();
+    }
+    std::cout << std::endl;
+}
+
 int main()
 {
-	std::cout << "Testing stack" << std::endl;
-	ft::stack<float>		other_stack;
-	ft::vector<std::string>		lst;
 
-	lst.push_back("salut");
-	lst.push_back("tu vas bien?");
-	lst.push_back("super");
-	lst.push_back("et toi?");
+	std::cout << PURPLE("***** TESTING STACK *****") << std::endl << std::endl;
 
-	ft::stack<std::string, ft::vector<std::string> >	my_stack(lst);
+	TITLE("Testing default constructor\n-> create s1 and push 3 elements");
+    // default constructor
+    ft::stack<int> s1;
+    s1.push(1);
+    s1.push(2);
+    s1.push(3);
+    std::cout << "printing s1" << std::endl;
+    print_stack(s1);
 
-	std::cout << std::boolalpha << other_stack.empty() << std::endl;
-	other_stack.push(8.5); // 8.5;
-	other_stack.push(42.4242); // 8.5; 42.4242;
-	std::cout << other_stack.size() << '\n'; // 2
-	other_stack.pop(); // 8.5;
-	std::cout << other_stack.size() << '\n'; // 1
-	other_stack.push(78541.987); // 8.5; 78541.987;
-	std::cout << other_stack.size() << '\n'; // 2
-	std::cout << other_stack.top() << '\n'; //78541.987
-	std::cout << std::boolalpha << other_stack.empty() << std::endl;
+    // copy constructor
+	TITLE("Testing copy constructor\n-> create s2 as a copy of s1");
+    ft::stack<int> s2(s1);
+    std::cout << "printing s2";
+    print_stack(s2);
 
-	const std::string const_top = my_stack.top();
+    // operator=
+	TITLE("Testing operator=\n-> create s2 as a copy of s1");
+    ft::stack<int> s3;
+    s3 = s2;
+    std::cout << "printing s3";
+    print_stack(s3);
 
-	std::cout << "const top: " << const_top << '\n';
+    // empty
+	TITLE("Testing empty");
+    std::cout << "is s1 empty? " << (s1.empty() ? "true" : "false") << std::endl;
 
-	while (!my_stack.empty())
-	{
-		std::cout << my_stack.top() << '\n';
-		my_stack.pop();
-	}
+    // size
+	TITLE("Testing size");
+    std::cout << "s1 size: " << s1.size() << std::endl;
+
+    // push
+	TITLE("Testing push");
+    s1.push(4);
+    s1.push(5);
+    std::cout << "s1 after push: ";
+    print_stack(s1);
+
+    // top
+	TITLE("Testing top");
+    std::cout << "s1 top: " << s1.top() << std::endl;
+
+    // pop
+	TITLE("Testing pop");
+    s1.pop();
+    std::cout << "s1 after pop: ";
+    print_stack(s1);
+
+    // operator==
+	TITLE("Testing operator==");
+    ft::stack<int> s4(s3);
+    std::cout << "s3 == s4? " << (s3 == s4 ? "true" : "false") << std::endl;
+
+    // operator!=
+	TITLE("Testing operator!=");
+    std::cout << "s3 != s4? " << (s3 != s4 ? "true" : "false") << std::endl;
+
+    // operator<
+	TITLE("Testing operator<\n->s5.push(6) and creating stack s5 as a copy of s3");
+    ft::stack<int> s5(s3);
+    s5.push(6);
+    std::cout << "s3 < s5? " << (s3 < s5 ? "true" : "false") << std::endl;
+
+    // operator<=
+	TITLE("Testing operator<=");
+    std::cout << "s3 <= s5? " << (s3 <= s5 ? "true" : "false") << std::endl;
+
+    // operator>
+	TITLE("Testing operator>");
+    std::cout << "s5 > s3? " << (s5 > s3 ? "true" : "false") << std::endl;
+
+    // operator>=
+	TITLE("Testing operator>=");
+    std::cout << "s5 >= s3? " << (s5 >= s3 ? "true" : "false") << std::endl;
+
+    // swap
+	TITLE("Testing swap");
+    std::cout << "Before swap:" << std::endl;
+    std::cout << "s3: ";
+    print_stack(s3);
+    std::cout << "s5: ";
+    print_stack(s5);
+    swap(s3, s5);
+    std::cout << "s3: ";
+    print_stack(s3);
+    std::cout << "s5: ";
+    std::cout << "After swap:" << std::endl;
+    print_stack(s5);
 
 	return 0;
 }
