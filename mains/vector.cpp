@@ -6,20 +6,11 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 21:58:20 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/07 15:31:27 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/20 14:37:15 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <iostream>
-
-#if REAL
-	#include <vector>
-	namespace ft = std;
-#else
-	#include "vector.hpp"
-#endif
-
-#include "utils.cpp"
+#include "utils.hpp"
 
 void test_constructors()
 {
