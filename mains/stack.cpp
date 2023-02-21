@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 14:50:34 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/20 18:53:51 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/21 13:51:01 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,12 @@ void print_stack(ft::stack<T>& src)
     std::cout << std::endl;
 }
 
-int main()
+void test_stack()
 {
 
-	std::cout << PURPLE("***** TESTING STACK *****") << std::endl << std::endl;
-
+	std::cout << std::endl;
+	std::cout << PURPLE("***** TESTING STACK *****") << std::endl;
+	
 	TITLE("Testing default constructor\n-> create s1 and push 3 elements");
     // default constructor
     ft::stack<int> s1;
@@ -118,5 +119,4 @@ int main()
     std::cout << "After swap:" << std::endl;
     print_stack(s5);
 
-	return 0;
 }

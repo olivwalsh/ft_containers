@@ -6,15 +6,16 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 21:58:20 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/20 18:38:48 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/21 13:50:31 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.hpp"
 
-int main( void )
+void test_vector()
 {
-	std::cout << PURPLE("***** TESTING VECTOR *****") << std::endl << std::endl;
+	std::cout << std::endl;
+	std::cout << PURPLE("***** TESTING VECTOR *****") << std::endl;
 	
 	// vec -> test constructor and insert with count and value
 
@@ -39,7 +40,7 @@ int main( void )
 	std::cout << GREEN("Vec1 (constructed with range iterator) : ");
 	print(vec1);
 	
-	std::cout << YELLOW << "Comparison test :" << RESET << std::endl;
+	SUBTITLE("Comparison test :");
 	if (vec == vec1)
 		std::cout << "Vec and Vec1 is equal" << std:: endl << std::endl;
 	else
@@ -64,7 +65,7 @@ int main( void )
 	std::cout << GREEN("Vec2 (after operator= with Vec) : ");
 	print(vec2);
 
-	std::cout << YELLOW << "Comparison test :" << RESET << std::endl;
+	SUBTITLE("Comparison test :");
 	if (vec != vec2)
 		std::cout << "Vec and Vec2 is not equal" << std::endl << std::endl;
 	else
@@ -116,7 +117,7 @@ int main( void )
 	std::cout << GREEN("Vec3 (after erase with range iterator) : ");
 	print(vec3);
 
-	std::cout << YELLOW << "Comparison test :" << RESET << std::endl;
+	SUBTITLE("Comparison test :");
 	if (vec2 < vec3)
 		std::cout << "Vec2 is less than vec3" << std:: endl << std::endl;
 	else
@@ -130,7 +131,7 @@ int main( void )
 	std::cout << GREEN("Vec2 (after swap with Vec3) : ");
 	print(vec2);
 
-	std::cout << YELLOW << "Comparison test :" << RESET << std::endl;
+	SUBTITLE("Comparison test :");
 	if (vec2 < vec3)
 		std::cout << "Vec2 is less than vec3" << std:: endl << std::endl;
 	else
@@ -177,7 +178,7 @@ int main( void )
 	std::cout << GREEN("Vec4 (after assign with value) : ");
 	print(vec4);
 
-	std::cout << YELLOW << "Comparison test :" << RESET << std::endl;
+	SUBTITLE("Comparison test :");
 	if (vec4 > vec5)
 		std::cout << "Vec4 is more than Vec5" << std:: endl << std::endl;
 	else
@@ -268,5 +269,4 @@ int main( void )
 		std::cerr << RED("ERROR : ") << e.what() << std::endl << std::endl;
 	}
 	
-	return 0;
 }

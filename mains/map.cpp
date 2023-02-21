@@ -26,13 +26,18 @@ void print(ft::map<Key, T>& lst)
 		std::cout << it->first << " => " << it->second << '\n';
 }
 
-int main()
+void test_map()
 {
 
-	std::cout << PURPLE("***** TESTING MAP *****") << std::endl << std::endl;
+	std::cout << std::endl;
+	std::cout << PURPLE("***** TESTING MAP *****") << std::endl;
+	
+	TITLE("--> Testing default constructor and insert with 3 values");
+	
+// Testing default constructor
+	ft::map<int, std::string> mp;
 
-	// Testing constructor
-	TITLE("Testing default constructor\n-> creating my_map, map<int, string> and inserting 3 values");
+	SUBTITLE("Map : ");
 	ft::map<int, std::string> my_map;
 	my_map.insert(ft::make_pair(1, "one"));
 	my_map.insert(ft::make_pair(2, "two"));
@@ -61,7 +66,7 @@ int main()
 
 	// Testing get_allocator
 	std::allocator<ft::pair<const int, std::string> > my_allocator = my_map.get_allocator();
-	// ft::map<int, std::string> my_third_map(my_allocator);
+	(void)my_allocator;
 
 	TITLE("Testing at\n-> my_map.at(1)");
 	// Testing at
@@ -161,7 +166,7 @@ int main()
 		std::cout << "Found " << found->first << ": " << found->second << std::endl;
 	else
 		std::cout << "Not found" << std::endl;
-	std::cout << ITALIC_GREEN << "-> searching for key 6" << RESET << std::endl;
+	SUBTITLE("-> searching for key 6");
 	found = my_map.find(6);
 	if (found != my_map.end())
 		std::cout << "Found " << found->first << ": " << found->second << std::endl;
@@ -299,5 +304,4 @@ int main()
     print(map2);
 	nl();
 
-	return 0;
 }

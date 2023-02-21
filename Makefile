@@ -17,7 +17,7 @@ UTILS_DIR		= 	$(addprefix $(CONTAINERS_DIR), utils/)
 ITERATOR_DIR	=	$(addprefix $(UTILS_DIR), iterator/)
 SRC_DIR			= 	mains/
 
-SRC				=	stack.cpp
+SRC				=	test.cpp set.cpp map.cpp vector.cpp stack.cpp utils.cpp
 
 OBJ				=	$(addprefix $(OBJ_DIR), $(SRC:.cpp=.o))
 
