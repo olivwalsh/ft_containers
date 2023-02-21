@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 13:43:56 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/21 14:10:05 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/21 18:49:07 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int main( void )
 
 	gettimeofday(&start, NULL);
 	test_set();
-	// check_performance("set : ", start);
+	check_performance("set : ", start);
 	
     return 0;
 }

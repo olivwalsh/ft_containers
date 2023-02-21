@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:03:35 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/20 18:55:23 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/21 16:38:59 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -311,11 +311,11 @@ namespace ft
 			{
 				size_type distance = std::distance(first, last);
 
-				if (distance && distance < max_size())
-				{
-					for (; first != last; ++first)
-						pos = (insert(pos, 1, *first) + 1);
-				}
+				if (distance && distance >= max_size())
+					throw std::length_error("vector::range insert");
+		
+				for (; first != last; ++first)
+					pos = (insert(pos, 1, *first) + 1);
 			}
 			
 			
@@ -357,7 +357,8 @@ namespace ft
 			
 			void pop_back()
 			{
-				erase(end() - 1);
+				if (_size)
+					erase(end() - 1);
 			}
 			
 			void resize(size_type count, T value = T())

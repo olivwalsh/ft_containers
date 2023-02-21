@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 13:13:12 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/20 13:46:31 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/21 18:39:27 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,11 @@
 # define RBT_ITERATOR_HPP
 
 # include "red_black_tree.hpp"
+# include <algorithm>
+# include <memory>
+# include <stdexcept>
+# include <iostream>
+# include <new>
 
 # define black	true
 # define red	false
@@ -107,6 +112,8 @@ namespace ft
 
 			reference operator*() const
 			{
+				if (!node)
+					exit(1);
 				return node->value;	
 			}
 
@@ -117,61 +124,27 @@ namespace ft
 
 			rbt_iterator &operator++()
 			{
-				if (node && node->right)
-				{
-					node = node->right;
-					while (node && node->left)
-						node = node->left;
-				}
-				else
-				{
-					node_pointer tmp = node->parent;
-					while (tmp && node == tmp->right)
-					{
-						node = tmp;
-						tmp = tmp->parent;
-					}
-					if (node && node->right != tmp)
-						node = tmp;
-				}
+				node = rb_increment(node);
 				return *this;
 			}
 
 			rbt_iterator operator++(int)
 			{
 				rbt_iterator tmp = *this;
-				++(*this);
+				node = rb_increment(node);
 				return tmp;
 			}
 
 			rbt_iterator &operator--()
 			{
-				if (node && node->color == red && node->parent && node->parent->parent == node)
-					node = node->right;
-				else if (node && node->left)
-				{
-					node_pointer tmp = node->left;
-					while (tmp && tmp->right)
-						tmp = tmp->right;
-					node = tmp;
-				}
-				else
-				{
-					node_pointer tmp = node->parent;
-					while (tmp && node == tmp->left)
-					{
-						node = tmp;
-						tmp = tmp->parent;
-					}
-					node = tmp;
-				}
+				node = rb_decrement(node);
 				return *this;
 			}
 
 			rbt_iterator operator--(int)
 			{
 				rbt_iterator tmp = *this;
-				--(*this);
+				node = rb_decrement(node);
 				return tmp;
 			}
 
@@ -186,6 +159,60 @@ namespace ft
 			}
 
 			node_pointer								node;
+
+			private:
+
+				node_pointer rb_increment(node_pointer current)
+				{
+					node_pointer tmp = NULL;
+					
+		
+					if (!current)
+						return NULL;
+
+					if (current && current->right)
+					{
+						tmp = current->right;
+						while (tmp && tmp->left)
+							tmp = tmp->left;
+					}
+					else
+					{
+						tmp = current->parent;
+						while (tmp && !current->is_left_child)
+						{
+							current = tmp;
+							tmp = tmp->parent;
+						}
+					}
+					return tmp;
+				}
+
+				node_pointer rb_decrement(node_pointer current)
+				{
+					node_pointer tmp = NULL;
+					
+					if (!current)
+						return NULL;
+
+					if (current && current->left)
+					{
+						tmp = current->left;
+						while (tmp && tmp->left)
+							tmp = tmp->left;
+					}
+					else
+					{
+						tmp = current->parent;
+						while (tmp && current->is_left_child)
+						{
+							current = tmp;
+							tmp = tmp->parent;
+						}
+					}
+					return tmp;
+				}
+				
 		
 	};
 
@@ -308,6 +335,7 @@ namespace ft
 			}
 
 			node_pointer								node;
+			
 		
 	};
 };

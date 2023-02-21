@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 10:36:24 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/20 17:50:12 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/21 18:36:11 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -244,7 +244,7 @@ namespace ft
 			{
 				size_type distance = std::distance(first, last);
 
-				if (distance && distance < max_size())
+				if (first != NULL && last != NULL && distance && distance < max_size())
 				{
 					while( first != last)
 					{
