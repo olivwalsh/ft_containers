@@ -37,8 +37,8 @@ diff:
 	make re
 	make re NAME=std_container REAL=1
 	@echo "Checking diff between ft and std"
-	@./$(NAME) 5 2>/dev/null 1>ft
-	@./$(REAL_BIN) 5 2>/dev/null 1>std
+	@./$(NAME) 2>/dev/null 1>ft
+	@./$(REAL_BIN) 2>/dev/null 1>std
 	@DIFF=$$(diff ft std >/dev/null 2>&1; echo $$?) ; \
 	export DIFF ; \
 	$(MAKE) check_diff
