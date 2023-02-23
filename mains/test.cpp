@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 13:43:56 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/22 11:00:44 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/23 11:58:32 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,23 @@
 	
 int main( void )
 {
-	struct timeval	start;
+	// struct timeval	start;
 	
-	gettimeofday(&start, NULL);
-	test_vector();
-	check_performance("vector : ", start);
+	// gettimeofday(&start, NULL);
+	// test_vector();
+	// check_performance("vector : ", start);
 	
-	gettimeofday(&start, NULL);
-	test_stack();
-	check_performance("stack : ", start);
+	// gettimeofday(&start, NULL);
+	// test_stack();
+	// check_performance("stack : ", start);
 
-	gettimeofday(&start, NULL);
+	// gettimeofday(&start, NULL);
 	test_map();
-	check_performance("map : ", start);
+	// check_performance("map : ", start);
 
-	gettimeofday(&start, NULL);
-	test_set();
-	check_performance("set : ", start);
+	// gettimeofday(&start, NULL);
+	// test_set();
+	// check_performance("set : ", start);
 	
     return 0;
 }

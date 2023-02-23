@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 13:54:52 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/20 17:48:54 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/23 10:57:40 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ namespace ft
 			typedef				node<Value>										*node_pointer;
 			
 			typedef				ft::rbt_iterator<value_type>					iterator;
-			typedef				ft::rbt_const_iterator<value_type>				const_iterator;
+			typedef				ft::rbt_iterator<const value_type>				const_iterator;
 
 			typedef				ft::reverse_iterator< iterator >				reverse_iterator;
 			typedef				ft::reverse_iterator< const_iterator >			const_reverse_iterator;
