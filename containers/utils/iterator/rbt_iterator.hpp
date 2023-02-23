@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 13:13:12 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/23 11:59:42 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/23 12:14:23 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ namespace ft
 			node_pointer _node;
 	};
 	
-	template <typename T>
+	template <typename T, typename node_type>
 	class rbt_iterator
 	{
 		public:
@@ -84,8 +84,7 @@ namespace ft
 			typedef std::bidirectional_iterator_tag		iterator_category;
 			typedef std::ptrdiff_t 						difference_type;
 
-			typedef node<T>								node_type;
-			typedef node<T>*							node_pointer;
+			typedef node_type*							node_pointer;
 
 			node_pointer					node;
 			
@@ -101,9 +100,9 @@ namespace ft
 				return *this;
 			}
 
-			operator rbt_iterator<const value_type>() const
+			operator rbt_iterator<const value_type, const node_type>()
 			{
-				return rbt_iterator<const value_type>(node);	
+				return rbt_iterator<const value_type, const node_type>(node);
 			}
 
 			node_pointer base() const
