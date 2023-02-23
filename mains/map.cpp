@@ -28,19 +28,18 @@ void print(ft::map<Key, T>& lst)
 
 void test_map()
 {
-
 	std::cout << std::endl;
 	std::cout << PURPLE("***** TESTING MAP *****") << std::endl;
 
 
 	ft::map<int, std::string> mp;
-	ft::map<int, std::string>::iterator it = mp.begin();
-	ft::map<int, std::string>::const_iterator cit = mp.begin();
-	
-	if (it == cit)
-		std::cout << "iterator and const iterator are comparable in map!!" << std::endl;
-	else
-		std::cout << "fail..." << std::endl;
+    ft::map<int, std::string>::iterator it = mp.begin();
+    ft::map<int, std::string>::const_iterator cit = mp.begin();
+    
+    if (it == cit)
+        std::cout << "iterator and const iterator are comparable in map!!" << std::endl;
+    else
+        std::cout << "fail..." << std::endl;
 
 // 	TITLE("--> Testing default constructor and insert with 3 values");
 	

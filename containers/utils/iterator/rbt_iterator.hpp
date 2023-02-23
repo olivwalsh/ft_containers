@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 13:13:12 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/23 12:14:23 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/23 13:36:07 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,13 +96,13 @@ namespace ft
 
 			rbt_iterator& operator=(rbt_iterator const &rhs)
 			{
-				node = rhs.node;
+				node = rhs.node;      
 				return *this;
 			}
 
-			operator rbt_iterator<const value_type, const node_type>()
+			operator rbt_iterator<const value_type, node_type>()
 			{
-				return rbt_iterator<const value_type, const node_type>(node);
+				return rbt_iterator<const value_type, node_type>(node);
 			}
 
 			node_pointer base() const
@@ -148,12 +148,12 @@ namespace ft
 				return tmp;
 			}
 
-			bool operator==(const rbt_iterator& x) const
-			{
-				return node == x.node;
+			bool operator==(const rbt_iterator<const value_type, node_type>& rhs ) const
+			{ 
+				return node == rhs.node;
 			}
 
-			bool operator!=(const rbt_iterator& x) const
+			bool operator!=(const rbt_iterator<const value_type, node_type>& x) const
 			{
 				return node != x.node;
 			}
