@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 22:53:22 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/20 13:45:41 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/24 09:51:47 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ namespace ft
 													allocator_type>			tree_type;
 
 		public:
-			typedef	typename	tree_type::const_iterator					iterator;
+			typedef	typename	tree_type::iterator							iterator;
 			typedef	typename	tree_type::const_iterator					const_iterator;
 			typedef				ft::reverse_iterator<iterator>				reverse_iterator;
 			typedef				ft::reverse_iterator<const_iterator>		const_reverse_iterator;
