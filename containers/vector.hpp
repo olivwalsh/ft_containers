@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:03:35 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/25 14:16:58 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/25 17:36:31 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -284,9 +284,7 @@ namespace ft
 					return pos;
 					
 				size_type index = getIteratorPosition(pos);
-				// std::cout << "capacity = " << _capacity << std::endl;
 				size_type new_capacity = getNewCapacity(count);
-				// std::cout << "new_capacity = " << new_capacity << std::endl;
 				reserve(new_capacity);
 				if (!empty())
 				{

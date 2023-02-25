@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 10:36:24 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/21 18:36:11 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/25 17:35:19 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,7 +176,7 @@ namespace ft
 			{
 				if (empty())
 					return rend();
-				return reverse_iterator(end());
+				return const_reverse_iterator(end());
 			}
 
 			reverse_iterator rend()
@@ -186,7 +186,7 @@ namespace ft
 
 			const_reverse_iterator rend() const
 			{
-				return reverse_iterator(begin());
+				return const_reverse_iterator(begin());
 			}
 		
 			
@@ -227,7 +227,7 @@ namespace ft
 			}
 
 			template <class InputIt>
-			void insert(InputIt first, InputIt last, typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type* = 0)
+			void insert(InputIt first, InputIt last)
 			{
 				tree.insert(first, last);
 			}

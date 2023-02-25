@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 17:43:35 by owalsh            #+#    #+#             */
-/*   Updated: 2023/01/25 14:40:26 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/25 15:04:49 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,10 +82,10 @@ namespace ft
 	struct is_integral_helper<unsigned int> : ft::true_type {};
 
 	template <>
-	struct is_integral_helper<long int> : ft::true_type {};
+	struct is_integral_helper<long long int> : ft::true_type {};
 
 	template <>
-	struct is_integral_helper<long long int> : ft::true_type {};
+	struct is_integral_helper<long int> : ft::true_type {};
 
 	template <>
 	struct is_integral_helper<bool> : ft::true_type {};

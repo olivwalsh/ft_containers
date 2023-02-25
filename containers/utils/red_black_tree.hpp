@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 13:54:52 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/25 09:37:38 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/25 17:37:16 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,15 +212,18 @@ namespace ft
 			}
 
 			template <class InputIt>
-			void insert(InputIt first, InputIt last, typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type* = 0)
+			void insert(InputIt first, InputIt last)
 			{
-				size_type distance = std::distance(first, last);
-
-				if (distance && distance < max_size())
+				typedef typename ft::iterator_traits<InputIt>::iterator_category category;
+				if (typeid(category) != typeid(std::input_iterator_tag))
 				{
-					for (; first != last; ++first)
-						insert(*first);
-				}
+					size_type distance = ft::distance(first, last);
+					if (distance && distance >= max_size())
+						return ;
+   				}
+				
+				for (; first != last; ++first)
+					insert(*first);
 			}
 
 			size_type get_height()
