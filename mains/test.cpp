@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 13:43:56 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/25 10:26:40 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/25 14:33:23 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,22 +26,11 @@ int main( void )
 	// check_performance("vector : ", start);
 
 	 
-	ft::set<int> myset;
+	ft::set<int> const st;
+	ft::set<int>::iterator it = st.begin(); 
+	// <-- no error, actually ! set allows for const_iterator => iterator conversion
 
-  	for (int i=1; i<=5; i++)
-		myset.insert(i*10);   // myset: 10 20 30 40 50
-
-	ft::pair<ft::set<int>::const_iterator, ft::set<int>::const_iterator> ret;
-	// ret = myset.equal_range(30); /// --> this doesnt work.
-
-	ft::set<int>::const_iterator lit = myset.lower_bound(30);
-	ft::set<int>::const_iterator uit = myset.upper_bound(30);
-	ret = ft::make_pair(lit, uit); // making a pair of 2 const works
-
-	// ret = ft::make_pair(myset.lower_bound(30), myset.upper_bound(30));
-	
-	std::cout << "the lower bound points to: " << *ret.first << '\n';
-	std::cout << "the upper bound points to: " << *ret.second << '\n';
+	(void)it;
 	
 	// ft::set<int>::iterator it = myset.begin();
 	// std::cout << "set begin " << *it << std::endl;

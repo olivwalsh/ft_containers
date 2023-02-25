@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 13:13:12 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/25 10:25:13 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/25 14:40:15 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ namespace ft
 			
 			rbt_iterator() : node() { }
 			rbt_iterator(node_pointer n) : node(n) { }
-			rbt_iterator(rbt_iterator const &other) : node(other.node) { }
+			rbt_iterator(const rbt_iterator &other) : node(other.node) { }
 
 			~rbt_iterator() { }
 
@@ -84,7 +84,7 @@ namespace ft
 				return *this;
 			}
 
-			operator rbt_iterator<const value_type, node_type>()
+			operator rbt_iterator<const value_type, node_type>() const
 			{
 				return rbt_iterator<const value_type, node_type>(node);
 			}
