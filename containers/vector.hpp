@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:03:35 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/21 16:38:59 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/24 19:25:20 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -283,7 +283,9 @@ namespace ft
 					return pos;
 					
 				size_type index = getIteratorPosition(pos);
+				// std::cout << "capacity = " << _capacity << std::endl;
 				size_type new_capacity = getNewCapacity(count);
+				// std::cout << "new_capacity = " << new_capacity << std::endl;
 				reserve(new_capacity);
 				if (!empty())
 				{
@@ -309,11 +311,13 @@ namespace ft
 			template <class InputIt>
 			void insert(iterator pos, InputIt first, InputIt last, typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type* = 0)
 			{
-				size_type distance = std::distance(first, last);
-
-				if (distance && distance >= max_size())
-					throw std::length_error("vector::range insert");
-		
+				typedef typename ft::iterator_traits<InputIt>::iterator_category category;
+				if (typeid(category) != typeid(std::input_iterator_tag))
+				{
+					size_type distance = ft::distance(first, last);
+					if (distance && distance >= max_size())
+						return ;
+   				}
 				for (; first != last; ++first)
 					pos = (insert(pos, 1, *first) + 1);
 			}
@@ -392,7 +396,7 @@ namespace ft
 			
 		private:
 		
-			int	getNewCapacity(size_t count)
+			size_t	getNewCapacity(size_t count)
 			{
 				if (empty())
 					return count;

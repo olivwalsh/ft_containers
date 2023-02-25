@@ -6,12 +6,14 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 15:18:10 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/07 16:12:24 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/24 18:46:59 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ITERATOR_TRAITS_HPP
 # define ITERATOR_TRAITS_HPP
+
+# include <iterator>
 
 namespace ft
 {
@@ -47,6 +49,54 @@ namespace ft
 		typedef const	Tp*								pointer;
 		typedef const	Tp&								reference;
 	};
+	
+	template <typename It>
+	typename iterator_traits<It>::difference_type
+	iterator_difference(It first, It last)
+	{
+		return (last - first);
+	}
+
+	template <typename It>
+	typename iterator_traits<It>::difference_type
+	compute_difference(It first, It last, std::random_access_iterator_tag)
+	{
+		return (last - first);
+	}
+
+	template <typename It>
+	typename iterator_traits<It>::difference_type
+	compute_difference(It first, It last, std::bidirectional_iterator_tag)
+	{
+		size_t	i = 0;
+		while (first != last)
+		{
+			first++;
+			i++;
+		}
+		return (i);
+	}
+
+	template <typename It>
+	typename iterator_traits<It>::difference_type
+	compute_difference(It first, It last, std::input_iterator_tag)
+	{
+		typename std::iterator_traits<It>::difference_type count = 0;
+		while (first != last)
+		{
+			++count;
+			++first;
+		}
+		return count;
+	}
+
+	template <typename It>
+	typename iterator_traits<It>::difference_type
+	distance(It first, It last)
+	{
+		return (compute_difference(first, last, typename ft::iterator_traits<It>::iterator_category()));
+	}
+
 		
 };
 

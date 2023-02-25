@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 22:53:22 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/24 09:51:47 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/25 10:26:53 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <iostream>
 # include "reverse_iterator.hpp"
 # include "pair.hpp"
+# include <utility>
 # include "red_black_tree.hpp"
 # include "algorithm.hpp"
 # include "type_traits.hpp"
@@ -34,12 +35,10 @@ namespace ft
 
 			class value_compare;
 			
-			typedef				Key 										key_type;
 			typedef				Key											value_type;
 			typedef	typename	std::size_t									size_type;
 			typedef typename 	std::ptrdiff_t								difference_type;
 			typedef				Compare										key_compare;
-			// typedef				Compare										value_compare;
 			typedef				Allocator									allocator_type;
 			
 			typedef				value_type&									reference;
@@ -48,7 +47,7 @@ namespace ft
 			typedef typename	Allocator::const_pointer					const_pointer;
 			
 		private:
-			typedef 			ft::red_black_tree<key_type,
+			typedef 			ft::red_black_tree< value_type,
 													key_compare,
 													allocator_type>			tree_type;
 
@@ -241,17 +240,17 @@ namespace ft
 				return tree.find(key);
 			}
 			
-			ft::pair<iterator,iterator> equal_range( const Key& key )
+			ft::pair<iterator,iterator> equal_range( const value_type& key )
 			{
-				return ft::make_pair(tree.lower_bound(key), tree.upper_bound(key));
+				return ft::make_pair(lower_bound(key), upper_bound(key));
 			}
 			
-			ft::pair<const_iterator,const_iterator> equal_range( const Key& key ) const
+			ft::pair<const_iterator, const_iterator> equal_range( const value_type& key ) const
 			{
-				return ft::make_pair(tree.lower_bound(key), tree.upper_bound(key));
+				return ft::make_pair(lower_bound(key), upper_bound(key));
 			}
 			
-			iterator lower_bound( const key_type& key )
+			iterator lower_bound( const value_type& key )
 			{
 				iterator it = begin();
 				
@@ -260,7 +259,7 @@ namespace ft
 				return it;
 			}
 			
-			const_iterator lower_bound( const key_type& key ) const
+			const_iterator lower_bound( const value_type& key ) const
 			{
 				const_iterator it = begin();
 				
@@ -269,7 +268,7 @@ namespace ft
 				return it;
 			}
 			
-			iterator upper_bound( const key_type& key )
+			iterator upper_bound( const value_type& key )
 			{
 				iterator it = begin();
 				
@@ -278,7 +277,7 @@ namespace ft
 				return it;
 			}
 			
-			const_iterator upper_bound( const key_type& key ) const
+			const_iterator upper_bound( const value_type& key ) const
 			{
 				const_iterator it = begin();
 				

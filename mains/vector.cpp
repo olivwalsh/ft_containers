@@ -6,43 +6,50 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 21:58:20 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/23 11:58:03 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/24 19:17:55 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.hpp"
+#include <sstream>
 
 void test_vector()
 {
 	std::cout << std::endl;
 	std::cout << PURPLE("***** TESTING VECTOR *****") << std::endl;
 	
-
-	
-		
-	
 	// vec -> test constructor and insert with count and value
 
-// 	TITLE("Testing constructor and insert with count and value");
+	TITLE("Testing constructor and insert with count and value");
 	
-// 	ft::vector<int>	vec(5, 1);
+	ft::vector<int>	vec(5, 1);
 	
-// 	std::cout << GREEN("Vec (constructed with value) : ");
-// 	print(vec);
+	std::cout << GREEN("Vec (constructed with value) : ");
+	print(vec);
 
-// 	vec.insert(vec.begin(), 3, 2);
+	vec.insert(vec.begin(), 3, 2);
 
-// 	std::cout << GREEN("Vec (after insert) : ");
-// 	print(vec);
+	std::cout << GREEN("Vec (after insert) : ");
+	print(vec);
 	
-// 	// vec1 -> test constructor with range iterator
+	// vec1 -> test constructor with range iterator
 
-// 	TITLE("Testing constructor with range iterator");
+	TITLE("Testing constructor with range iterator");
 
-// 	ft::vector<int>	vec1(vec.begin(), vec.end());
+	ft::vector<int>	vec1(vec.begin(), vec.end());
 
-// 	std::cout << GREEN("Vec1 (constructed with range iterator) : ");
-// 	print(vec1);
+	std::cout << GREEN("Vec1 (constructed with range iterator) : ");
+	print(vec1);
+
+	TITLE("Testing insert with iterator range of input iteratory category (no backward move)");
+	
+	std::istringstream str("1 2 3 4 5 6 7 8 9 0 A B C D E F");
+    std::istreambuf_iterator<char> it(str), end;
+
+    ft::vector<char> v(2, 'U');
+	v.insert(v.end(), it, end);
+	
+	print(v);
 	
 // 	SUBTITLE("Comparison test :");
 // 	if (vec == vec1)
@@ -206,7 +213,12 @@ void test_vector()
 // 	ft::vector<int>::iterator it5 = vec5.begin();
 // 	try
 // 	{
+// 		// std::istringstream str("1 2 3 4 5 6 7 8 9 0 A B C D E F");
+// 		// std::istringstream lol("1 2 3 4 5 6 7 8 9 0 A B C D E F");
+//    		// std::istreambuf_iterator<char> it(str), end;
+//    		// std::istreambuf_iterator<char> itlol(lol), lolend;
 // 		vec7.insert(vec7.begin(), it5, vec6.begin());
+// 		// vec7.insert(vec7.begin(), it, lolend);
 		
 // 		std::cout << GREEN("Vec7 (after insert with a range of different iterator): ");
 // 		print(vec7);
@@ -237,6 +249,19 @@ void test_vector()
 // 		std::cerr << RED("ERROR : ") << e.what() << std::endl << std::endl;
 // 	}
 
+// 	try
+// 	{
+// 		long long max_size = vec.max_size();
+// 		std::cout << "Max size of vector: " << max_size << '\n';
+// 		std::cout << "Trying to insert max_size + 1 number of elements to vector " << std::endl;
+// 		vec.insert(vec.begin(), max_size + 1, 42);
+// 	}
+// 	catch(const std::exception& e)
+// 	{
+// 		std::cerr << RED("ERROR : ") << e.what() << '\n';
+// 	}
+	
+	
 // 	try
 // 	{	
 // 		vec.reserve(vec.max_size());

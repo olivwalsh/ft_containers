@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 13:54:52 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/23 13:18:56 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/25 09:37:38 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,11 @@ namespace ft
 			typedef 			node<Value>										node_type;
 			typedef				node<Value>*									node_pointer;
 			
-			typedef				ft::rbt_iterator<value_type, node_type>				iterator;
-			typedef				ft::rbt_iterator<const value_type, node_type> const_iterator;
+			typedef				ft::rbt_iterator<value_type, node_type>			iterator;
+			typedef				ft::rbt_iterator<const value_type, node_type> 	const_iterator;
 
-			typedef				ft::reverse_iterator< iterator >					reverse_iterator;
-			typedef				ft::reverse_iterator< const_iterator >				const_reverse_iterator;
+			typedef				ft::reverse_iterator< iterator >				reverse_iterator;
+			typedef				ft::reverse_iterator< const_iterator >			const_reverse_iterator;
 
 			typedef typename 	Allocator::template rebind< node_type >::other	node_allocator;
 

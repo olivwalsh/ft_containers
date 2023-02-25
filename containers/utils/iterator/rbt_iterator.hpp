@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 13:13:12 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/23 13:42:54 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/25 10:25:13 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,24 +46,10 @@ namespace ft
 				: value(0), left(NULL), right(NULL), parent(NULL), is_left_child(false), color(red) { }
 			node(const value_type &value)
 				: value(value), left(NULL), right(NULL), parent(NULL), is_left_child(false), color(red) { }
-			
-			
 			node(const node& copy )
 				: value(copy.value), left(copy.left), right(copy.right), parent(copy.parent), is_left_child(copy.is_left_child), color(copy.color) { }
 			
 			~node() { }
-
-			node_pointer get_sibling()
-			{
-				if (!_node)
-				
-					return NULL;
-				if (!_node->parent)
-					return NULL;
-				if (_node->is_left_child)
-					return _node->right;
-				return _node->left;
-			}
 		
 		private:
 			node_pointer _node;
