@@ -15,10 +15,13 @@ OBJ_DIR			=	obj/
 CONTAINERS_DIR	= 	containers/
 UTILS_DIR		= 	$(addprefix $(CONTAINERS_DIR), utils/)
 ITERATOR_DIR	=	$(addprefix $(UTILS_DIR), iterator/)
+# SRC_DIR			= 	srcs/
 SRC_DIR			= 	mains/
 
-# SRC				=	ite_n0b.cpp
 SRC				=	test.cpp set.cpp map.cpp vector.cpp stack.cpp utils.cpp
+# SRC				=	main.cpp test_enable_if.cpp test_equal.cpp test_is_integral.cpp \
+# 					test_lexicographical_compare.cpp test_map.cpp test_pair.cpp \
+# 					test_reverse_iterator.cpp test_set.cpp test_stack.cpp test_vector.cpp
 
 OBJ				=	$(addprefix $(OBJ_DIR), $(SRC:.cpp=.o))
 

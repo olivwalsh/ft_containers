@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:03:35 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/25 17:36:31 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/26 17:10:47 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,7 +245,7 @@ namespace ft
 			void					reserve(size_type new_capacity)
 			{
 				if (new_capacity >= max_size())
-					throw std::length_error("ft::vector::reserve -> new_capacity exceeds max_size()");
+					throw std::length_error("vector::reserve");
 				if (_capacity < new_capacity)
 				{
 					pointer tmp = allocate_and_copy(new_capacity);
@@ -284,26 +284,23 @@ namespace ft
 					return pos;
 					
 				size_type index = getIteratorPosition(pos);
-				size_type new_capacity = getNewCapacity(count);
-				reserve(new_capacity);
-				if (!empty())
+				if (_size + count > _capacity)
 				{
-					pointer tab_end = _first_element + _size - 1;
-					for (pointer new_tab_end = tab_end + count; new_tab_end != _first_element + index + count - 1; --new_tab_end)
-					{
-						_memory_handle.construct(new_tab_end, *tab_end);
-						_memory_handle.destroy(tab_end);
-						tab_end--;
-					}
-					
+					size_type new_capacity = getNewCapacity(count);
+					reserve(new_capacity);
 				}
+				if (!empty()) {
+					pointer src_end = _first_element + _size;
+					pointer dest_end = _first_element + _size + count;
+					std::copy_backward(_first_element + index, src_end, dest_end);
+				}
+
 				pointer tmp = _first_element + index;
-				while (count--)
-				{
-					_memory_handle.construct(tmp, value);
-					tmp++;
-					_size++;
+				for (size_type i = 0; i < count; ++i) {
+					_memory_handle.construct(tmp + i, value);
 				}
+
+				_size += count;
 				return iterator(_first_element + index);
 			}
 			
