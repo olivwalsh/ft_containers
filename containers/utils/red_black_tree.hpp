@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 13:54:52 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/25 17:37:16 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/26 19:37:44 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,10 +254,6 @@ namespace ft
 				return tmp;
 			}
 
-			/**
-			 *  @return  node pointer pointing to first element equal to or greater
-			 *           than value, or end().
-			 **/
 			node_pointer lower_bound( value_type value) const
 			{
 				node_pointer tmp = _root;
@@ -276,10 +272,6 @@ namespace ft
 				return lower;
 			}
 
-			/**
-			 *  @return  node pointer pointing to first element greater
-			 *           than value, or end().
-			 **/
 			node_pointer upper_bound( value_type value) const
 			{
 				node_pointer tmp = _root;

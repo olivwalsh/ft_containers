@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 22:53:22 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/25 14:44:05 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/26 19:34:49 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,7 +199,7 @@ namespace ft
 			
 			iterator erase( iterator first, iterator last )
 			{
-				size_type distance = std::distance(first, last);
+				size_type distance = ft::distance(first, last);
 
 				if (distance && distance < max_size())
 				{

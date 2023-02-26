@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 10:36:24 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/25 17:35:19 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/26 19:35:44 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,10 +107,10 @@ namespace ft
 				return *this;
 			}
 
-			void print()
-			{
-				tree.print_tree();
-			}
+			// void print()
+			// {
+			// 	tree.print_tree();
+			// }
 
 			allocator_type get_allocator() const
 			{
@@ -242,7 +242,7 @@ namespace ft
 
 			iterator erase(iterator first, iterator last)
 			{
-				size_type distance = std::distance(first, last);
+				size_type distance = ft::distance(first, last);
 
 				if (first != NULL && last != NULL && distance && distance < max_size())
 				{
@@ -272,7 +272,7 @@ namespace ft
 			{
 				ft::pair<const_iterator, const_iterator> tmp = equal_range(key);
 
-				size_type count = std::distance(tmp.first, tmp.second); 
+				size_type count = ft::distance(tmp.first, tmp.second); 
 				return count;
 			}
 			

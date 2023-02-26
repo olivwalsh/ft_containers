@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 21:58:20 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/26 16:04:55 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/26 19:43:22 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,17 @@ void test_vector()
 	else
 		std::cout << "Vec and Vec1 is not equal" << std::endl << std::endl;
 
+
+	SUBTITLE("Testing iterator comparison with const iterator :");
+
+	ft::vector<int>::iterator ite = vec1.begin();
+	ft::vector<int>::const_iterator cit = vec1.begin();
+
+	if (ite == cit)
+		std::cout << "iterator and const_iterator are comparable" << std::endl;
+	else
+		std::cout << "this is weird" << std::endl;
+	
 	// vec2 -> test assignment operator and operator[] and at
 
 	TITLE("Testing operator=, operator[], and at\n");

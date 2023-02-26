@@ -6,11 +6,12 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 14:50:34 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/21 13:51:01 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/26 19:53:24 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.hpp"
+#include <list>
 
 template <typename T>
 void print_stack(ft::stack<T>& src)
@@ -38,6 +39,16 @@ void test_stack()
     s1.push(3);
     std::cout << "printing s1" << std::endl;
     print_stack(s1);
+
+	std::list<int> lst;
+
+	for (int i = 0; i < 10; i++)
+		lst.insert(lst.begin(), i*5);
+		
+	ft::stack<int, std::list<int> > compatible(lst);
+    std::cout << "printing stack as a copy of std::list" << std::endl;
+	std::cout << "Stack size: " << compatible.size() << std::endl;
+  	std::cout << "Top element: " << compatible.top() << std::endl;
 
     // top
 	TITLE("Testing top");

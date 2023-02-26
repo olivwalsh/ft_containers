@@ -196,7 +196,7 @@ void test_map()
     if (itnormal == const_ite)
         std::cout << "iterator and const iterator are comparable in map!!" << std::endl;
 	else
-        std::cout << "fail... cannot compare an iterator with a const iterator" << std::endl;
+        std::cout << "fail..." << std::endl;
 
 	// Testing lower_bound
 	TITLE("Testing lower_bound\n-> searching for lower bound of key 4");

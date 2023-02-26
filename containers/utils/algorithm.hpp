@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 10:57:21 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/25 15:04:55 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/26 19:31:05 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,16 @@ namespace ft
 		}
 		return true;
 	}
+
+	template< class InputIt1, class InputIt2 >
+	InputIt2 copy_backward(InputIt1 first, InputIt1 last, InputIt2 d_last)
+	{
+		while (first != last)
+			*(--d_last) = *(--last);
+	
+		return d_last;
+	}
+	
 };
 
 #endif

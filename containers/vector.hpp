@@ -6,7 +6,7 @@
 /*   By: owalsh <owalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:03:35 by owalsh            #+#    #+#             */
-/*   Updated: 2023/02/26 17:10:47 by owalsh           ###   ########.fr       */
+/*   Updated: 2023/02/26 19:34:53 by owalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ namespace ft
 				const allocator_type& alloc = allocator_type())
 				: _size(0), _capacity(0), _first_element(NULL), _memory_handle(alloc)
 			{
-				_size = std::distance(first, last);
+				_size = ft::distance(first, last);
 				if (_size > max_size())
 					throw std::length_error("vector");
 					
@@ -292,7 +292,7 @@ namespace ft
 				if (!empty()) {
 					pointer src_end = _first_element + _size;
 					pointer dest_end = _first_element + _size + count;
-					std::copy_backward(_first_element + index, src_end, dest_end);
+					ft::copy_backward(_first_element + index, src_end, dest_end);
 				}
 
 				pointer tmp = _first_element + index;
@@ -333,7 +333,7 @@ namespace ft
 			
 			iterator erase(iterator first, iterator last)
 			{
-				size_type dist = std::distance(first, last);
+				size_type dist = ft::distance(first, last);
 				for (iterator it = first; it != last; ++it)
 					_memory_handle.destroy(it.base());
 				if (first + dist == end())
